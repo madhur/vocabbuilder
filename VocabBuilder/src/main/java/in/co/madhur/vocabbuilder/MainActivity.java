@@ -13,7 +13,8 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-import in.co.madhur.vocabbuilder.in.co.madhur.vocabbuilder.fragments.AboutDialog;
+import in.co.madhur.vocabbuilder.fragments.AboutDialog;
+import in.co.madhur.vocabbuilder.fragments.WordListFragment;
 
 
 public class MainActivity extends ActionBarActivity {
@@ -63,6 +64,10 @@ public class MainActivity extends ActionBarActivity {
         getActionBar().setDisplayHomeAsUpEnabled(true);
         getActionBar().setDisplayShowHomeEnabled(true);
         getActionBar().setHomeButtonEnabled(true);
+
+
+
+        getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, new WordListFragment()).commit();
     }
 
 
@@ -137,6 +142,13 @@ public class MainActivity extends ActionBarActivity {
     /** Swaps fragments in the main content view */
     private void selectItem(int position)
     {
+        // An alphabet list is selected, return
+        if(position > 0 && position <27)
+        {
+
+
+
+        }
 
         switch (position)
         {

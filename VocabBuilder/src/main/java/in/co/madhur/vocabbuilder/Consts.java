@@ -5,6 +5,8 @@ package in.co.madhur.vocabbuilder;
  */
 public class Consts {
 
+    public static final String PACKAGE="in.co.madhur.vocabbuilder";
+
 
     enum LISTS
     {

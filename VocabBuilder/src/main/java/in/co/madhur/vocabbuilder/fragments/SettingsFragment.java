@@ -1,4 +1,4 @@
-package in.co.madhur.vocabbuilder.in.co.madhur.vocabbuilder.fragments;
+package in.co.madhur.vocabbuilder.fragments;
 
 import android.support.v4.app.FragmentActivity;
 
