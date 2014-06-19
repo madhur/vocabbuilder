@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/ImproveyourVocabulary.iml" filepath="$PROJECT_DIR$/ImproveyourVocabulary.iml" />
+      <module fileurl="file://$PROJECT_DIR$/VocabBuilder/VocabBuilder.iml" filepath="$PROJECT_DIR$/VocabBuilder/VocabBuilder.iml" />
+    </modules>
+  </component>
+</project>
+
