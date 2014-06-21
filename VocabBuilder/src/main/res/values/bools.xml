@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <bool name="enable_pro_default">false</bool>
+    <bool name="enabled_notifications_default">true</bool>
+</resources>

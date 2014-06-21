@@ -1,5 +1,6 @@
 package in.co.madhur.vocabbuilder.model;
 
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -86,5 +87,33 @@ public class Word
     public void setRating(int rating)
     {
         this.rating = rating;
+    }
+
+
+    public static class NameSorter implements Comparator<Word>
+    {
+
+        @Override
+        public int compare(Word lhs, Word rhs) {
+
+            return lhs.getName().compareTo(rhs.getName());
+        }
+
+    }
+
+    public static class RatingSorter implements Comparator<Word>
+    {
+
+
+        @Override
+        public int compare(Word lhs, Word rhs)
+        {
+            if(lhs.getRating()< rhs.getRating())
+                return -1;
+            else if(lhs.getRating() > rhs.getRating())
+                return 1;
+            else
+                return 0;
+        }
     }
 }

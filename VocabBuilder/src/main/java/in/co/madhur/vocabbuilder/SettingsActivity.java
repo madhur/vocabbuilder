@@ -8,7 +8,7 @@ import in.co.madhur.vocabbuilder.fragments.SettingsFragment;
 /**
  * Created by madhur on 19-Jun-14.
  */
-public class SettingsActivity extends ActionBarActivity
+public class SettingsActivity extends BaseActivity
 {
 
     @Override

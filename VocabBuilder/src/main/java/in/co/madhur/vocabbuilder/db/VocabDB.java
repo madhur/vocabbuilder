@@ -24,7 +24,7 @@ public class VocabDB
 
     public static synchronized VocabDB getInstance(Context context)
     {
-        if (vocabDb == null)
+        if (vocabDb == null || db==null)
         {
             db = new DbHelper(context);
             vocabDb = new VocabDB();

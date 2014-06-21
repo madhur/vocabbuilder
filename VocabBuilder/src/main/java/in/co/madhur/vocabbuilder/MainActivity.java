@@ -17,7 +17,7 @@ import in.co.madhur.vocabbuilder.fragments.AboutDialog;
 import in.co.madhur.vocabbuilder.fragments.WordListFragment;
 
 
-public class MainActivity extends ActionBarActivity
+public class MainActivity extends BaseActivity
 {
 
     private DrawerLayout mDrawerLayout;
@@ -27,6 +27,8 @@ public class MainActivity extends ActionBarActivity
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
+
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -68,7 +70,8 @@ public class MainActivity extends ActionBarActivity
         getActionBar().setHomeButtonEnabled(true);
 
 
-        getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, new WordListFragment()).commit();
+
+
     }
 
 
@@ -78,7 +81,10 @@ public class MainActivity extends ActionBarActivity
         super.onPostCreate(savedInstanceState);
         mDrawerToggle.syncState();
 
+        LoadMainFragment();
+
     }
+
 
 
     /* Called whenever we call invalidateOptionsMenu() */
@@ -128,6 +134,11 @@ public class MainActivity extends ActionBarActivity
 
     public void LoadMainFragment()
     {
+        WordListFragment wordFragment=new WordListFragment();
+
+
+        getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, wordFragment).commit();
+
 
 
     }
@@ -152,19 +163,7 @@ public class MainActivity extends ActionBarActivity
 
         }
 
-        switch (position)
-        {
-            case 0:
-                LoadMainFragment();
-                break;
 
-
-            case 4:
-                AboutDialog dialog = new AboutDialog();
-                dialog.show(getSupportFragmentManager(), "about");
-                break;
-
-        }
 
         mDrawerList.setItemChecked(position, true);
         mDrawerLayout.closeDrawer(mDrawerList);

@@ -6,4 +6,33 @@
 
     </style>
 
+    <style name="Black" parent="@style/Theme.AppCompat">
+
+        <!-- API 14 theme customizations can go here. -->
+        <!-- <item name="android:windowBackground">@color/pitch_black</item> -->
+
+        <item name="android:listViewStyle">@style/ListViewDark</item>
+
+
+    </style>
+
+    <style name="Light" parent="@style/Theme.AppCompat.Light.DarkActionBar">
+        <item name="android:listViewStyle">@style/ListViewLight</item>
+
+        <!-- API 14 theme customizations can go here. -->
+        <!-- <item name="android:windowBackground">@color/white_opaque</item> -->
+
+    </style>
+
+    <style name="ListViewDark" parent="@android:style/Widget.ListView">
+        <item name="android:background">#ff000000</item>
+
+
+    </style>
+
+    <style name="ListViewLight" parent="@android:style/Widget.ListView">
+        <item name="android:background">#ffffff</item>
+
+    </style>
+
 </resources>

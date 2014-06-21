@@ -4,6 +4,7 @@
 
     <PreferenceCategory android:title="@string/configuration">
         <CheckBoxPreference
+            android:defaultValue="@bool/enable_pro_default"
             android:key="enable_pro"
             android:summary="@string/enable_pro_desc"
             android:title="@string/enable_pro">
@@ -16,16 +17,29 @@
             android:title="@string/view_hidden_words"></Preference>
 
         <ListPreference
+            android:defaultValue="@string/words_sort_order_default"
             android:entries="@array/words_sort_order"
             android:entryValues="@array/words_sort_order_values"
             android:key="words_sort_order"
             android:summary="@string/words_sort_order_desc"
             android:title="@string/words_sort_order"></ListPreference>
 
+        <ListPreference
+            android:defaultValue="@string/pick_theme_default"
+            android:dialogTitle="@string/pick_theme"
+            android:entries="@array/themes"
+            android:entryValues="@array/themes_values"
+            android:key="pick_theme"
+            android:summary="@string/themes_desc"
+            android:title="@string/themes" />
+
     </PreferenceCategory>
 
-    <PreferenceCategory android:title="@string/customize_vocabpro" android:summary="@string/customize_vocabpro_desc">
+    <PreferenceCategory
+        android:summary="@string/customize_vocabpro_desc"
+        android:title="@string/customize_vocabpro">
         <ListPreference
+            android:defaultValue="@string/words_mode_default"
             android:entries="@array/words_mode"
             android:entryValues="@array/words_mode_values"
             android:key="words_mode"
@@ -38,6 +52,7 @@
             android:title="@string/notification_preference">
 
             <CheckBoxPreference
+                android:defaultValue="@bool/enabled_notifications_default"
                 android:key="enable_notifications"
                 android:summary="@string/enable_notifications_desc"
                 android:title="@string/enable_notifications"></CheckBoxPreference>
@@ -47,11 +62,12 @@
                 android:dependency="enable_notifications"
                 android:entries="@array/notification_interval"
                 android:entryValues="@array/notification_interval_values"
-                android:key="sync_interval"
+                android:key="notification_interval"
                 android:summary="@string/notification_interval_desc"
                 android:title="@string/notification_interval"/>
 
             <ListPreference
+                android:defaultValue="@string/select_notification_words_default"
                 android:entries="@array/select_notification_words"
                 android:entryValues="@array/select_notification_words_values"
                 android:key="select_notification_words"

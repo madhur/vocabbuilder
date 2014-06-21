@@ -62,6 +62,15 @@
         <item>4</item>
     </string-array>
 
+    <string-array name="themes">
+        <item>@string/dark</item>
+        <item>@string/light</item>
+    </string-array>
+    <string-array name="themes_values">
+        <item>0</item>
+        <item>1</item>
+    </string-array>
+
     <string name="difficulty">Difficulty</string>
     <string name="alphabetical">Alphabetical</string>
     <string name="flashcards">FlashCards</string>
@@ -74,4 +83,10 @@
     <string name="halfstarred">Half Starred words</string>
     <string name="fullstarred">Full starred words</string>
     <string name="bothhalfandfullstarred">Both half and full starred words</string>
+
+    <string name="dark">Dark</string>
+    <string name="black">Black</string>
+    <string name="sepia">Sepia</string>
+    <string name="light">Light</string>
+
 </resources>

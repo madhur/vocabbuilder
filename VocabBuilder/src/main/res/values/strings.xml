@@ -50,6 +50,21 @@
 
     <string name="follow_twitter">Follow me on Twitter</string>
     <string name="interval_default">300</string>
-    <string name="select_notification_words">Select Cateogory of words for notification</string>
+    <string name="select_notification_words">Select Category</string>
     <string name="select_notification_words_desc">Select the category of words for notification based on stars</string>
+    <string name="words_sort_order_default">0</string>
+    <string name="words_mode_default">0</string>
+    <string name="select_notification_words_default">0</string>
+
+    <string name="pick_theme">Pick Theme</string>
+    <string name="themes">Theme</string>
+    <string name="themes_desc">Set the theme for app</string>
+    <string name="pick_theme_default">0</string>
+    <string name="default_theme">0</string>
+
+    <string name="feedback_button">Feedback</string>
+    <string name="rate_button">Rate</string>
+    <string name="whatsnew_tab" formatted="false">What\'s new</string>
+    <string name="send_email">Send Email</string>
+
 </resources>
