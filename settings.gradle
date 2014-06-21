@@ -1,1 +1,2 @@
 include ':VocabBuilder'
+include ':libraries:android-support-v4-preferencefragment'

@@ -1,8 +1,8 @@
 package in.co.madhur.vocabbuilder;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
+import android.content.Intent;
 import android.support.v4.app.ActionBarDrawerToggle;
+import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -17,14 +17,16 @@ import in.co.madhur.vocabbuilder.fragments.AboutDialog;
 import in.co.madhur.vocabbuilder.fragments.WordListFragment;
 
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends ActionBarActivity
+{
 
     private DrawerLayout mDrawerLayout;
     private ListView mDrawerList;
     private ActionBarDrawerToggle mDrawerToggle;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -57,14 +59,13 @@ public class MainActivity extends ActionBarActivity {
         mDrawerList.setAdapter(new ArrayAdapter<String>(this, R.layout.drawer_list_item, Consts.LISTS.names()));
 
         // Set the adapter for the list view
-      //  mDrawerList.setAdapter(new ArrayAdapter<String>(this, R.layout.drawer_list_item, mPlanetTitles));
+        //  mDrawerList.setAdapter(new ArrayAdapter<String>(this, R.layout.drawer_list_item, mPlanetTitles));
         // Set the list's click listener
         mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
 
         getActionBar().setDisplayHomeAsUpEnabled(true);
         getActionBar().setDisplayShowHomeEnabled(true);
         getActionBar().setHomeButtonEnabled(true);
-
 
 
         getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, new WordListFragment()).commit();
@@ -80,14 +81,6 @@ public class MainActivity extends ActionBarActivity {
     }
 
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
-    }
-
     /* Called whenever we call invalidateOptionsMenu() */
     @Override
     public boolean onPrepareOptionsMenu(Menu menu)
@@ -100,7 +93,8 @@ public class MainActivity extends ActionBarActivity {
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
@@ -111,7 +105,11 @@ public class MainActivity extends ActionBarActivity {
         }
 
         int id = item.getItemId();
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_settings)
+        {
+            Intent i = new Intent();
+            i.setClass(this, SettingsActivity.class);
+            startActivity(i);
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -135,17 +133,21 @@ public class MainActivity extends ActionBarActivity {
     }
 
 
-
-
-
-
-    /** Swaps fragments in the main content view */
+    /**
+     * Swaps fragments in the main content view
+     */
     private void selectItem(int position)
     {
         // An alphabet list is selected, return
-        if(position > 0 && position <27)
+        if (position > 0 && position < 27)
         {
+            Fragment wordFragment = getSupportFragmentManager().getFragments().get(0);
+            if (wordFragment instanceof WordListFragment)
+            {
+                WordListFragment wordsFragment = (WordListFragment) wordFragment;
+                wordsFragment.LoadWord(position);
 
+            }
 
 
         }
@@ -155,9 +157,6 @@ public class MainActivity extends ActionBarActivity {
             case 0:
                 LoadMainFragment();
                 break;
-
-
-
 
 
             case 4:

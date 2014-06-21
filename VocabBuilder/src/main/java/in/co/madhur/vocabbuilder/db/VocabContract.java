@@ -11,7 +11,7 @@ public class VocabContract
     public static abstract class Words implements BaseColumns
     {
         public static final String TABLE_NAME = "words";
-
+        public static final String ID="Id";
         public static final String WORD="word";
         public static final String MEANING="meaning";
         public static final String IS_HIDDEN="hidden";

@@ -1,0 +1,17 @@
+<resources>
+    <item name="padding_x" type="dimen">5dp</item>
+    <item name="padding_4x" type="dimen">20dp</item>
+    <item name="padding_5x" type="dimen">25dp</item>
+    <item name="padding_2x" type="dimen">10dp</item>
+    <item name="padding_3x" type="dimen">15dp</item>
+
+    <item name="font_size_medium" type="dimen">16dp</item>
+    <item name="font_size_large" type="dimen">24dp</item>
+
+    <bool name="enable_autosync">true</bool>
+    <bool name="enable_notifications">true</bool>
+    <bool name="enable_sound">true</bool>
+    <bool name="enable_vibrate">true</bool>
+    <bool name="enable_led">true</bool>
+
+</resources>

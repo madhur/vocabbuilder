@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory android:title="@string/configuration">
+        <CheckBoxPreference
+            android:key="enable_pro"
+            android:summary="@string/enable_pro_desc"
+            android:title="@string/enable_pro">
+
+        </CheckBoxPreference>
+
+        <Preference
+            android:key="view_hidden_items"
+            android:summary="@string/view_hidden_words_desc"
+            android:title="@string/view_hidden_words"></Preference>
+
+        <ListPreference
+            android:entries="@array/words_sort_order"
+            android:entryValues="@array/words_sort_order_values"
+            android:key="words_sort_order"
+            android:summary="@string/words_sort_order_desc"
+            android:title="@string/words_sort_order"></ListPreference>
+
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/customize_vocabpro" android:summary="@string/customize_vocabpro_desc">
+        <ListPreference
+            android:entries="@array/words_mode"
+            android:entryValues="@array/words_mode_values"
+            android:key="words_mode"
+            android:summary="@string/words_mode_desc"
+            android:title="@string/words_mode"></ListPreference>
+
+        <PreferenceScreen
+            android:key="notification_preference"
+            android:summary="@string/notification_preference_desc"
+            android:title="@string/notification_preference">
+
+            <CheckBoxPreference
+                android:key="enable_notifications"
+                android:summary="@string/enable_notifications_desc"
+                android:title="@string/enable_notifications"></CheckBoxPreference>
+
+            <ListPreference
+                android:defaultValue="@string/interval_default"
+                android:dependency="enable_notifications"
+                android:entries="@array/notification_interval"
+                android:entryValues="@array/notification_interval_values"
+                android:key="sync_interval"
+                android:summary="@string/notification_interval_desc"
+                android:title="@string/notification_interval"/>
+
+            <ListPreference
+                android:entries="@array/select_notification_words"
+                android:entryValues="@array/select_notification_words_values"
+                android:key="select_notification_words"
+                android:summary="@string/select_notification_words_desc"
+                android:title="@string/select_notification_words">
+
+            </ListPreference>
+
+            <CheckBoxPreference
+                android:defaultValue="@bool/enable_sound"
+                android:dependency="enable_notifications"
+                android:key="enable_sound"
+                android:summary="@string/enable_sound_desc"
+                android:title="@string/enable_sound"/>
+            <CheckBoxPreference
+                android:defaultValue="@bool/enable_vibrate"
+                android:dependency="enable_notifications"
+                android:key="enable_vibrate"
+                android:summary="@string/enable_vibrate_desc"
+                android:title="@string/enable_vibrate"/>
+            <CheckBoxPreference
+                android:defaultValue="@bool/enable_led"
+                android:dependency="enable_notifications"
+                android:key="enable_led"
+                android:summary="@string/enable_led_desc"
+                android:title="@string/enable_led"/>
+
+        </PreferenceScreen>
+
+
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/action_about">
+        <Preference
+            android:key="action_about"
+            android:summary="@string/action_about_desc"
+            android:title="@string/action_about"/>
+        <Preference
+            android:key="follow_twitter"
+            android:title="@string/follow_twitter"/>
+    </PreferenceCategory>
+
+
+</PreferenceScreen>

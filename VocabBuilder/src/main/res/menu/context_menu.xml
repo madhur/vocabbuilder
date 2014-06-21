@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:id="@+id/action_synonyms"
+          android:title="@string/action_synonyms"
+          android:orderInCategory="100"
+        />
+
+    <item android:id="@+id/action_similar"
+          android:title="@string/action_similar"
+          android:orderInCategory="100"
+        />
+
+
+    <item android:id="@+id/action_hide"
+          android:title="@string/action_hide"
+          android:orderInCategory="100"
+        />
+
+
+</menu>

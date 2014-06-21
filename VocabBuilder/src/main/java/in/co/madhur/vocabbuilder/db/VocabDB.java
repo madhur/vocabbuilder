@@ -1,8 +1,10 @@
 package in.co.madhur.vocabbuilder.db;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteStatement;
 import android.util.Log;
 
 import java.io.IOException;
@@ -29,17 +31,43 @@ public class VocabDB
             try
             {
                 db.createDataBase();
-            }
-            catch (IOException e)
+            } catch (IOException e)
             {
                 Log.e(App.TAG, "Error creating datrabase");
             }
 
             return vocabDb;
-        }
-        else
+        } else
             return vocabDb;
 
+    }
+
+    public int SetRating(int Id, int rating)
+    {
+
+        SQLiteDatabase database = db.getWritableDatabase();
+
+        ContentValues values=new ContentValues();
+        values.put(VocabContract.Words.DIFFICULTY, rating);
+
+        try
+
+        {
+            return database.update(VocabContract.Words.TABLE_NAME,values, VocabContract.Words.ID+"="+Id, null );
+
+        }
+        catch (Exception e)
+        {
+            Log.e(App.TAG, e.getMessage());
+
+        }
+        finally
+        {
+
+            database.close();
+        }
+
+        return 0;
     }
 
 
@@ -48,7 +76,7 @@ public class VocabDB
         SQLiteDatabase database = db.getReadableDatabase();
         List<Word> wordList = new ArrayList<Word>();
 
-        String viewName=startLetter+"_VIEW";
+        String viewName = startLetter + "_VIEW";
 
         Cursor c = database.query(viewName, // The table to
                 // query
@@ -65,9 +93,16 @@ public class VocabDB
             do
             {
                 Word singleWord = new Word();
+
                 singleWord.setName(c.getString(c.getColumnIndexOrThrow(VocabContract.Words.WORD)));
+                singleWord.setMeaning(c.getString(c.getColumnIndexOrThrow(VocabContract.Words.MEANING)));
+                singleWord.setId(c.getInt(c.getColumnIndexOrThrow(VocabContract.Words.ID)));
+                singleWord.setRating(c.getInt(c.getColumnIndexOrThrow(VocabContract.Words.DIFFICULTY)));
 
-
+                if (c.getInt(c.getColumnIndexOrThrow(VocabContract.Words.IS_HIDDEN)) == 1)
+                    singleWord.setHidden(true);
+                else
+                    singleWord.setHidden(false);
 
 
                 wordList.add(singleWord);

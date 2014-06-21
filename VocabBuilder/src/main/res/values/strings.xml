@@ -1,10 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">Improve your Vocabulary</string>
+    <string name="app_name">Vocab Builder</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    <string name="action_search">Search</string>
+    <string name="action_sort">Sort</string>
     <string name="drawer_open">Drawer open</string>
     <string name="drawer_close">Drawer Close</string>
+    <string name="search_hint">Search</string>
 
+    <string name="action_synonyms">Synonyms</string>
+    <string name="action_similar">Similar</string>
+    <string name="action_hide">Hide</string>
+    <string name="enable_pro">Enable Pro Mode</string>
+
+    <string name="enable_notifications">Enable notifications</string>
+    <string name="enable_notifications_desc">Enable notification information message</string>
+    <string name="enable_sound_desc">Play sound on notification</string>
+    <string name="enable_sound">Play sound</string>
+    <string name="enable_vibrate_desc">Vibrate phone on notification</string>
+    <string name="enable_vibrate">Vibrate phone</string>
+    <string name="enable_led_desc">Flash lights on notification</string>
+    <string name="enable_led">LED</string>
+    <string name="enable_pro_desc">Enable Pro mode to add/edit/delete words yourself</string>
+    <string name="view_hidden_words_desc">View hidden words and unhide them</string>
+    <string name="view_hidden_words">View hidden words</string>
+    <string name="words_sort_order">Sort order of words</string>
+    <string name="words_sort_order_desc">Set sort order to be either alphabetical or by difficulty</string>
+    <string name="customize_vocabpro">Customize VocabPro</string>
+    <string name="customize_vocabpro_desc">Customize VocabPro according to your learning preferences</string>
+    <string name="configuration">Configuration</string>
+    <string name="words_mode">Words Look and Feel</string>
+    <string name="words_mode_desc">Customize if words are to be shown as flashcards or standard dictionary</string>
+    <string name="notification_preference">Learning Notifications</string>
+    <string name="notification_preference_desc">Customize notification according to your learning preferences</string>
+
+    <string name="every1hour">Every 1 hour</string>
+    <string name="every2hour">Every 2 hours</string>
+    <string name="every4hour">Every 4 hours</string>
+    <string name="every6hour">Every 6 hours</string>
+    <string name="every12hour">Every 12 hours</string>
+    <string name="every24hour">Every 24 hours</string>
+    <string name="notification_interval">Notification Interval</string>
+    <string name="notification_interval_desc">Select the interval at which notification would appear to help you learn words</string>
+
+    <string name="action_about">About</string>
+    <string name="action_about_desc">View information about this app</string>
+
+    <string name="follow_twitter">Follow me on Twitter</string>
+    <string name="interval_default">300</string>
+    <string name="select_notification_words">Select Cateogory of words for notification</string>
+    <string name="select_notification_words_desc">Select the category of words for notification based on stars</string>
 </resources>

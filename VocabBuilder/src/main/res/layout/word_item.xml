@@ -1,11 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView android:id="@+id/word"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+    <RelativeLayout
+        android:id="@+id/backview" android:background="@android:color/white"
+        android:layout_width="match_parent"
+        android:paddingTop="@dimen/padding_2x"
+        android:paddingBottom="@dimen/padding_2x"
+        android:layout_height="match_parent">
 
-</RelativeLayout>
+        <TextView
+            android:id="@+id/meaning" android:textSize="@dimen/font_size_medium" android:paddingLeft="@dimen/padding_4x" android:layout_marginTop="@dimen/padding_x"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+
+
+        </RelativeLayout>
+
+
+    <RelativeLayout
+        android:id="@+id/frontview" android:background="@android:color/white"
+        android:paddingTop="@dimen/padding_2x"
+        android:paddingBottom="@dimen/padding_2x"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/word" android:textSize="@dimen/font_size_large"  android:paddingLeft="@dimen/padding_4x" android:layout_marginTop="@dimen/padding_x"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <RatingBar
+            android:id="@+id/ratingBar"
+            android:layout_alignParentRight="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:layout_marginRight="@dimen/padding_2x"
+            android:numStars="1"
+            android:stepSize="0.5"
+            android:rating="0" />
+
+
+    </RelativeLayout>
+
+
+</FrameLayout>
