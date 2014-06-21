@@ -12,20 +12,66 @@
         <!-- <item name="android:windowBackground">@color/pitch_black</item> -->
 
         <item name="android:listViewStyle">@style/ListViewDark</item>
+        <item name="listBackgroundColor">@android:color/black</item>
 
+        <item name="android:actionBarWidgetTheme">@style/Theme.AppCompat</item>
+        <item name="actionBarWidgetTheme">@style/Theme.AppCompat</item>
+        <item name="android:spinnerDropDownItemStyle">@style/Dark.Widget.DropDownItem.Spinner</item>
+        <item name="android:spinnerItemStyle">@style/Widget.Spinner</item>
 
     </style>
 
     <style name="Light" parent="@style/Theme.AppCompat.Light.DarkActionBar">
         <item name="android:listViewStyle">@style/ListViewLight</item>
-
+        <item name="listBackgroundColor">@android:color/white</item>
+        <item name="android:actionBarWidgetTheme">@style/Theme.AppCompat.Light.DarkActionBar</item>
+        <item name="actionBarWidgetTheme">@style/Theme.AppCompat.Light.DarkActionBar</item>
+        <item name="android:spinnerDropDownItemStyle">@style/Light.Widget.DropDownItem.Spinner</item>
+        <item name="android:spinnerItemStyle">@style/Widget.Spinner</item>
         <!-- API 14 theme customizations can go here. -->
         <!-- <item name="android:windowBackground">@color/white_opaque</item> -->
 
     </style>
 
+
+    <!--<style name="Theme.myapp" parent="@style/Theme.Light.DarkActionBar">-->
+        <!--<item name="android:actionDropDownStyle">@style/myapp_DropDownNav</item>-->
+        <!--<item name="android:actionBarWidgetTheme">@style/myapp.actionBarWidgetTheme</item>-->
+    <!--</style>-->
+
+    <!--<style name="myapp.actionBarWidgetTheme" parent="@style/Theme.">-->
+        <!--<item name="android:spinnerDropDownItemStyle">@style/myapp.Widget.DropDownItem.Spinner</item>-->
+    <!--</style>-->
+
+    <!--<style name="myapp_DropDownNav" parent="@android:style/Widget.Spinner.DropDown.ActionBar">-->
+        <!--<item name="background">@drawable/spinner_background_ab_myapp</item>-->
+        <!--<item name="android:background">@drawable/spinner_background_ab_myapp</item>-->
+        <!--<item name="android:popupBackground">@drawable/menu_dropdown_panel_myapp</item>-->
+        <!--<item name="android:dropDownSelector">@drawable/selectable_background_myapp</item>-->
+    <!--</style>-->
+
+    <style name="Widget.Spinner" parent="@android:style/Widget.Spinner">
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:background">@android:color/transparent</item>
+    </style>
+
+
+
+    <style name="Light.Widget.DropDownItem.Spinner" parent="@android:style/Widget.DropDownItem.Spinner">
+        <item name="android:textColor">@android:color/black</item>
+        <item name="android:background">@android:color/white</item>
+    </style>
+
+    <style name="Dark.Widget.DropDownItem.Spinner" parent="@android:style/Widget.DropDownItem.Spinner">
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:background">@android:color/black</item>
+    </style>
+
+
+
     <style name="ListViewDark" parent="@android:style/Widget.ListView">
         <item name="android:background">#ff000000</item>
+
 
 
     </style>

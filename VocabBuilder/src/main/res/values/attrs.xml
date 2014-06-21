@@ -14,4 +14,9 @@
     <bool name="enable_vibrate">true</bool>
     <bool name="enable_led">true</bool>
 
+    <declare-styleable name="customAttrs">
+        <attr name="listBackgroundColor" format="reference" />
+    </declare-styleable>
+
+
 </resources>

@@ -100,7 +100,7 @@ public class WordsAdapter extends BaseAdapter implements Filterable
             public void onLayouted(TextView view)
             {
                 int lineCount = view.getLineCount();
-              //  Log.d(App.TAG, "Lines " + String.valueOf(lineCount));
+
                 view.setTag(lineCount);
             }
         });
@@ -112,7 +112,7 @@ public class WordsAdapter extends BaseAdapter implements Filterable
 
             if (rl != null)
             {
-                Log.d(App.TAG, "rl original height " + String.valueOf(rl.getHeight()));
+//                Log.d(App.TAG, "rl original height " + String.valueOf(rl.getHeight()));
 
                 LayoutedTextView tv=(LayoutedTextView)rl.findViewById(R.id.meaning);
 
@@ -141,7 +141,7 @@ public class WordsAdapter extends BaseAdapter implements Filterable
 
             if (rl != null)
             {
-                Log.d(App.TAG, "rl original height " + String.valueOf(rl.getHeight()));
+//                Log.d(App.TAG, "rl original height " + String.valueOf(rl.getHeight()));
                 int desiredHeight = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 60, context.getResources().getDisplayMetrics());
 
 

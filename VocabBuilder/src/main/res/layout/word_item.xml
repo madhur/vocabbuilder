@@ -11,15 +11,15 @@
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:paddingBottom="@dimen/padding_2x"
-        android:tag="back"
-        android:paddingTop="@dimen/padding_2x">
+        android:paddingTop="@dimen/padding_2x"
+        android:tag="back">
 
         <in.co.madhur.vocabbuilder.LayoutedTextView
             android:id="@+id/meaning"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/padding_x"
             android:layout_marginRight="@dimen/padding_2x"
+            android:layout_marginTop="@dimen/padding_x"
             android:paddingLeft="@dimen/padding_4x"
             android:textSize="@dimen/font_size_medium"/>
 
@@ -28,10 +28,11 @@
 
 
     <RelativeLayout
-        android:id="@+id/frontview" android:background="@android:color/black"
+        android:id="@+id/frontview"
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="60dp"
+        android:background="?attr/listBackgroundColor"
         android:paddingBottom="@dimen/padding_2x"
         android:paddingTop="@dimen/padding_2x">
 
@@ -56,11 +57,6 @@
 
 
     </RelativeLayout>
-
-
-
-
-
 
 
 </FrameLayout>

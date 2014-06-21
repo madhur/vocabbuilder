@@ -1,9 +1,11 @@
 package in.co.madhur.vocabbuilder;
 
 import android.content.Intent;
+import android.preference.PreferenceManager;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -12,12 +14,14 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.SpinnerAdapter;
 
 import in.co.madhur.vocabbuilder.fragments.AboutDialog;
 import in.co.madhur.vocabbuilder.fragments.WordListFragment;
+import in.co.madhur.vocabbuilder.service.Alarms;
 
 
-public class MainActivity extends BaseActivity
+public class MainActivity extends BaseActivity implements ActionBar.OnNavigationListener
 {
 
     private DrawerLayout mDrawerLayout;
@@ -65,12 +69,37 @@ public class MainActivity extends BaseActivity
         // Set the list's click listener
         mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
 
-        getActionBar().setDisplayHomeAsUpEnabled(true);
-        getActionBar().setDisplayShowHomeEnabled(true);
-        getActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+
+        getSupportActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
+
+        ArrayAdapter<CharSequence> someAdapter = new
+                ArrayAdapter<CharSequence>(this, android.R.layout.simple_spinner_item,
+                android.R.id.text1, getResources().getStringArray(R.array.spinner_items));
+
+        someAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+//        SpinnerAdapter mSpinnerAdapter = ArrayAdapter.createFromResource(this, R.array.spinner_items,
+//                android.R.layout.simple_spinner_item);
+//
+//        mSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        getSupportActionBar().setListNavigationCallbacks(someAdapter, this);
+
+        PreferenceManager.setDefaultValues(this, R.xml.settings, false);
 
 
+        // Schedule alarm if its enabled
+        Alarms alarms = new Alarms(this);
 
+        if (!alarms.DoesAlarmExist())
+        {
+            if (alarms.ShouldSchedule())
+                alarms.Schedule();
+        }
 
     }
 
@@ -84,7 +113,6 @@ public class MainActivity extends BaseActivity
         LoadMainFragment();
 
     }
-
 
 
     /* Called whenever we call invalidateOptionsMenu() */
@@ -121,6 +149,12 @@ public class MainActivity extends BaseActivity
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public boolean onNavigationItemSelected(int i, long l)
+    {
+        return false;
+    }
+
 
     private class DrawerItemClickListener implements
             ListView.OnItemClickListener
@@ -134,11 +168,10 @@ public class MainActivity extends BaseActivity
 
     public void LoadMainFragment()
     {
-        WordListFragment wordFragment=new WordListFragment();
+        WordListFragment wordFragment = new WordListFragment();
 
 
         getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, wordFragment).commit();
-
 
 
     }
@@ -162,7 +195,6 @@ public class MainActivity extends BaseActivity
 
 
         }
-
 
 
         mDrawerList.setItemChecked(position, true);

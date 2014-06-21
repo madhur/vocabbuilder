@@ -12,6 +12,7 @@ import android.support.v4.preference.PreferenceFragment;
 import in.co.madhur.vocabbuilder.AppPreferences;
 import in.co.madhur.vocabbuilder.Consts;
 import in.co.madhur.vocabbuilder.R;
+import in.co.madhur.vocabbuilder.service.Alarms;
 
 import static in.co.madhur.vocabbuilder.AppPreferences.Keys;
 
@@ -99,6 +100,24 @@ public class SettingsFragment extends PreferenceFragment
             }
         });
 
+
+        findPreference(Keys.ENABLE_NOTIFICATIONS.key).setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener()
+        {
+
+            @Override
+            public boolean onPreferenceChange(Preference preference, Object newValue)
+            {
+                Boolean newVal = (Boolean) newValue;
+                Alarms alarms = new Alarms(getActivity());
+
+                if (newVal)
+                    alarms.Schedule();
+                else
+                    alarms.cancel();
+
+                return true;
+            }
+        });
 
 
     }

@@ -15,6 +15,9 @@ public class Consts {
     public static final String WHATS_NEW_TAG="whatsnew";
     public static final String MY_EMAIL="ahuja.madhur@gmail.com";
 
+    public static final String ACTION_REMIND_WORD="in.co.madhur.vocabbuilder.ACTION.REMIND_WORD";
+
+
     public enum WORDS_SORT_ORDER
     {
         ALPHABETICAL, DIFFICULTY
@@ -23,6 +26,11 @@ public class Consts {
     public enum THEME
     {
         DARK, LIGHT
+    }
+
+    public enum SELECT_NOTIFICATION_WORDS
+    {
+        ALL_WORDS, UNSTARRED, HALF_STARRED, FULL_STARRED, BOTH
     }
 
 
