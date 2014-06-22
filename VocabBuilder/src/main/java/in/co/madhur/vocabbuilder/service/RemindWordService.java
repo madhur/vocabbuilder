@@ -1,7 +1,5 @@
 package in.co.madhur.vocabbuilder.service;
 
-import android.app.IntentService;
-import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.os.PowerManager;
@@ -15,7 +13,6 @@ import java.util.Random;
 
 import in.co.madhur.vocabbuilder.App;
 import in.co.madhur.vocabbuilder.AppPreferences;
-import in.co.madhur.vocabbuilder.MainActivity;
 import in.co.madhur.vocabbuilder.db.VocabDB;
 import in.co.madhur.vocabbuilder.model.Word;
 
@@ -123,12 +120,14 @@ public class RemindWordService extends WakefulIntentService
 
         Notifications notifications = new Notifications(this);
 
-        NotificationCompat.Builder noti = notifications.GetNotificationBuilder(selectedWord.getName(), selectedWord.getMeaning());
+        if(appPreferences.IsMultipleNotifications())
+            NOTIFICATION_ID++;
+
+        NotificationCompat.Builder noti = notifications.GetNotificationBuilder(NOTIFICATION_ID, selectedWord.getId(), selectedWord.getName(), selectedWord.getMeaning(), selectedWord.getRating());
 
         noti = notifications.GetExpandedBuilder(noti, selectedWord.getMeaning(), selectedWord.getName());
 
-        if(appPreferences.IsMultipleNotifications())
-            NOTIFICATION_ID++;
+
 
         notifications.FireNotification(NOTIFICATION_ID, noti, appPreferences.getBoolMetadata(AppPreferences.Keys.ENABLE_VIBRATE), appPreferences.getBoolMetadata(AppPreferences.Keys.ENABLE_SOUND), appPreferences.getBoolMetadata(AppPreferences.Keys.ENABLE_LED));
 

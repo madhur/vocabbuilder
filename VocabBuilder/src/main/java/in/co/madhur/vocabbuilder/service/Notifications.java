@@ -6,16 +6,19 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
-import android.os.Bundle;
 import android.provider.Settings;
 import android.support.v4.app.NotificationCompat;
-import android.support.v4.app.TaskStackBuilder;
+import android.util.Log;
 
-import java.util.ArrayList;
-
+import in.co.madhur.vocabbuilder.App;
 import in.co.madhur.vocabbuilder.Consts;
 import in.co.madhur.vocabbuilder.MainActivity;
+import in.co.madhur.vocabbuilder.NotificationActivity;
 import in.co.madhur.vocabbuilder.R;
+
+import static in.co.madhur.vocabbuilder.Consts.STAR.FULL_STAR;
+import static in.co.madhur.vocabbuilder.Consts.STAR.HALF_STAR;
+import static in.co.madhur.vocabbuilder.Consts.STAR.NO_STAR;
 
 /**
  * Created by madhur on 21-Jun-14.
@@ -24,7 +27,7 @@ public class Notifications
 {
 
     private Context context;
-    private final int PI_REQUEST_CODE=0;
+    private  int PI_REQUEST_CODE = 0;
 
     public Notifications(Context context)
     {
@@ -32,7 +35,7 @@ public class Notifications
         this.context = context;
     }
 
-    public NotificationCompat.Builder GetNotificationBuilder(String title, String contentText)
+    public NotificationCompat.Builder GetNotificationBuilder(int id, int wordId, String title, String contentText, int rating)
     {
         NotificationCompat.Builder noti = new NotificationCompat.Builder(context);
         noti.setContentTitle(title);
@@ -43,7 +46,47 @@ public class Notifications
         noti.setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_launcher));
         noti.setContentIntent(GetNotificationIntent());
 
+        if(rating== NO_STAR.ordinal())
+        {
+            noti.addAction(R.drawable.half_star, context.getString(R.string.set), BuildNotificationActionIntent(id, wordId, HALF_STAR.ordinal()));
+            noti.addAction(R.drawable.full_star, context.getString(R.string.set), BuildNotificationActionIntent(id, wordId, FULL_STAR.ordinal()));
+
+        }
+        else if(rating==HALF_STAR.ordinal())
+        {
+            noti.addAction(R.drawable.no_star, context.getString(R.string.set), BuildNotificationActionIntent(id, wordId, NO_STAR.ordinal()));
+            noti.addAction(R.drawable.full_star,context.getString(R.string.set), BuildNotificationActionIntent(id, wordId, FULL_STAR.ordinal()));
+        }
+        else if(rating==FULL_STAR.ordinal())
+        {
+            noti.addAction(R.drawable.no_star,context.getString(R.string.set), BuildNotificationActionIntent(id, wordId, NO_STAR.ordinal()));
+            noti.addAction(R.drawable.half_star, context.getString(R.string.set), BuildNotificationActionIntent(id, wordId, HALF_STAR.ordinal()));
+        }
+
+        noti.addAction(R.drawable.ic_action_remove, context.getString(R.string.dismiss), BuildNotificationActionIntent(id,wordId, -1) );
+
+
         return noti;
+    }
+
+    public PendingIntent BuildNotificationActionIntent(int notificationId, int wordId, int targetRating)
+    {
+        // Build the file action intent (e.g. VIEW or SEND) that we eventually want to start.
+
+
+        // Build the intent to start the NotificationActivity.
+        final Intent notificationIntent = new Intent(context, NotificationActivity.class);
+        // This flag must be set on activities started from a notification.
+        notificationIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        // Pass the file action and notification id to the NotificationActivity.
+
+        notificationIntent.putExtra(Consts.INTENT_EXTRA_NOTIFICATION_ID, notificationId);
+        notificationIntent.putExtra(Consts.TARGET_RATING, targetRating);
+        notificationIntent.putExtra(Consts.TARGET_WORD, wordId);
+
+        // Return a pending intent to pass to the notification manager.
+        Log.d(App.TAG, "creating PI with " + String.valueOf(PI_REQUEST_CODE));
+        return PendingIntent.getActivity(context, PI_REQUEST_CODE++, notificationIntent, PendingIntent.FLAG_ONE_SHOT);
     }
 
 
@@ -52,23 +95,9 @@ public class Notifications
         Intent launchIntent = new Intent();
         launchIntent.setClass(context, MainActivity.class);
         launchIntent.setAction(Consts.ACTION_SHOW_RECENT);
-        // The stack builder object will contain an artificial back stack for the
-// started Activity.
-// This ensures that navigating backward from the Activity leads out of
-// your application to the Home screen.
-//        TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
-//// Adds the back stack for the Intent (but not the Intent itself)
-//        stackBuilder.addParentStack(MainActivity.class);
-//// Adds the Intent that starts the Activity to the top of the stack
-//        stackBuilder.addNextIntent(launchIntent);
 
-        PendingIntent resultPendingIntent=PendingIntent.getActivity(context, PI_REQUEST_CODE, launchIntent , PendingIntent.FLAG_UPDATE_CURRENT);
 
-//        PendingIntent resultPendingIntent =
-//                stackBuilder.getPendingIntent(
-//                        PI_REQUEST_CODE,
-//                        PendingIntent.FLAG_UPDATE_CURRENT
-//                );
+        PendingIntent resultPendingIntent = PendingIntent.getActivity(context, PI_REQUEST_CODE, launchIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         return resultPendingIntent;
 
@@ -127,7 +156,7 @@ public class Notifications
     private boolean isNotificationVisible()
     {
         Intent notificationIntent = new Intent(context, MainActivity.class);
-        PendingIntent test = PendingIntent.getActivity(context,PI_REQUEST_CODE, notificationIntent, PendingIntent.FLAG_NO_CREATE);
+        PendingIntent test = PendingIntent.getActivity(context, PI_REQUEST_CODE, notificationIntent, PendingIntent.FLAG_NO_CREATE);
         return test != null;
     }
 

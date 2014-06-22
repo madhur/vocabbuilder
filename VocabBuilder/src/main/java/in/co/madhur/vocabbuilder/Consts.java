@@ -20,7 +20,15 @@ public class Consts {
     public static final String ACTION_VIEW_WORD="in.co.madhur.vocabbuilder.ACTION.VIEW_WORD";
     public static final String ACTION_ADD_WORD="in.co.madhur.vocabbuilder.ACTION.ADD_WORD";
     public static final String ACTION_SHOW_RECENT="in.co.madhur.vocabbuilder.ACTION.SHOW_RECENT";
+    public static final String INTENT_EXTRA_NOTIFICATION_ID ="notification_ID" ;
+    public static final String TARGET_RATING="target_rating";
+    public static final String TARGET_WORD="target_word";
 
+
+    public enum STAR
+    {
+        NO_STAR, HALF_STAR, FULL_STAR
+    }
 
     public enum WORDS_SORT_ORDER
     {

@@ -148,6 +148,39 @@ public class VocabDB
         return 0;
     }
 
+    public int UpdateRating(int Id, int targetRating) throws Exception
+    {
+
+        SQLiteDatabase database = db.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(VocabContract.Words.ID, Id);
+        values.put(VocabContract.Words.DIFFICULTY, targetRating);
+
+
+        try
+
+        {
+
+            int rowsAffected = database.update(VocabContract.Words.TABLE_NAME, values, VocabContract.Words.ID + "=" + Id, null);
+
+
+        }
+        catch (Exception e)
+        {
+            Log.e(App.TAG, e.getMessage());
+            throw e;
+
+        }
+        finally
+        {
+
+            database.close();
+        }
+
+        return 0;
+    }
+
     public List<Word> GetRecentWords() throws Exception
     {
         SQLiteDatabase database = db.getReadableDatabase();

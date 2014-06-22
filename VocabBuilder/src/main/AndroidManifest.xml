@@ -57,6 +57,13 @@
             </intent-filter>
         </activity>
 
+        <activity
+            android:name=".NotificationActivity"
+            android:excludeFromRecents="true"
+            android:exported="true"
+            android:noHistory="true"
+            android:theme="@android:style/Theme.NoDisplay"></activity>
+
         <receiver android:name=".receiver.AlarmReceiver">
             <intent-filter>
                 <action android:name="in.co.madhur.vocabbuilder.ACTION.REMIND_WORD"></action>
@@ -73,6 +80,7 @@
             android:name=".service.RemindWordService"
             android:exported="false">
         </service>
+        <service android:name=".service.MarkWordService"></service>
     </application>
 
 </manifest>

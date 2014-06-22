@@ -121,9 +121,22 @@ public class WordListFragment extends Fragment
             public void onClickFrontView(int position)
             {
                 Log.d("swipe", String.format("onClickFrontView %d", position));
+                WordsAdapter wordsAdapter = (WordsAdapter) listView.getAdapter();
+
+                Word word= (Word) wordsAdapter.getItem(position);
 
                 //listView.openAnimate(position); //when you touch front view it will open
                 super.onClickFrontView(position);
+
+                Intent wordIntent=new Intent();
+                wordIntent.setClass(getActivity(), WordActivity.class);
+                wordIntent.setAction(Consts.ACTION_VIEW_WORD);
+
+                Bundle data=new Bundle();
+                data.putInt("id",word.getId());
+                wordIntent.putExtras(data);
+
+                startActivity(wordIntent);
 
             }
 
@@ -144,6 +157,9 @@ public class WordListFragment extends Fragment
             }
 
         });
+
+
+
 
 
         registerForContextMenu(listView);
@@ -181,8 +197,8 @@ public class WordListFragment extends Fragment
             if(word!=null)
             {
 
-                menu.findItem(R.id.action_synonyms).setTitle(getString(R.string.action_synonyms) + " " + word.getName());
-                menu.findItem(R.id.action_similar).setTitle(getString(R.string.action_similar) + " " + word.getName());
+          //      menu.findItem(R.id.action_synonyms).setTitle(getString(R.string.action_synonyms) + " " + word.getName());
+           //     menu.findItem(R.id.action_similar).setTitle(getString(R.string.action_similar) + " " + word.getName());
                 menu.findItem(R.id.action_hide).setTitle(getString(R.string.action_hide) + " " + word.getName());
                 menu.findItem(R.id.action_edit).setTitle(getString(R.string.action_edit) + " " + word.getName());
                 menu.findItem(R.id.action_view).setTitle(getString(R.string.action_view) + " " + word.getName());

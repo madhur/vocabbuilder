@@ -83,44 +83,6 @@ public class WordAddFragment extends BaseWordFragment
         return v;
     }
 
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState)
-    {
-        super.onActivityCreated(savedInstanceState);
-        Word word = null;
-
-//        WordId = getArguments().getInt("id");
-
-//        VocabDB vocabDB = VocabDB.getInstance(getActivity());
-//
-//        try
-//        {
-//            word = vocabDB.GetSingleWord(WordId);
-//        }
-//        catch (Exception e)
-//        {
-//            Crouton.showText(getActivity(), "Exception wile getting single word", Style.ALERT);
-//            e.printStackTrace();
-//            return;
-//        }
-
-      //  word_name.setText(word.getName());
-     //   word_meaning.setText(word.getMeaning());
-
-//        for(Word w: word.getSynonyms())
-//        {
-//            synonymsTextView.addObject(w);
-//        }
-//
-//        for(Word w:word.getSimilar())
-//        {
-//            similarTextView.addObject(w);
-//        }
-
-
-    }
-
-
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item)
