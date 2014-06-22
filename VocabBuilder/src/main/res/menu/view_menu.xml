@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+  ~ Author: Madhur Ahuja
+  ~ Copyright (c) 2014.
+  -->
+
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <group
+        android:id="@+id/group_pro"
+        android:visible="false">
+        <item
+            android:id="@+id/action_edit"
+            android:icon="@drawable/ic_action_edit"
+            android:title="@string/action_edit"
+            app:showAsAction="always">
+
+        </item>
+    </group>
+
+</menu>

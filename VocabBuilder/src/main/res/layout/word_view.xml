@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+  ~ Author: Madhur Ahuja
+  ~ Copyright (c) 2014.
+  -->
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical"
+              android:paddingLeft="@dimen/padding_4x"
+              android:paddingRight="@dimen/padding_4x"
+              android:paddingTop="@dimen/padding_4x"
+              android:weightSum="1">
+
+
+    <TextView
+        android:id="@+id/word"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/font_size_large"
+        android:textStyle="italic"/>
+
+    <TextView
+        android:id="@+id/meaning"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/padding_4x"
+        android:text="@string/meaning"
+        android:textSize="@dimen/font_size_medium"/>
+
+
+    <TextView
+        android:id="@+id/synonymslabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/padding_4x"
+        android:text="@string/action_synonyms"
+        android:textSize="@dimen/font_size_medium"/>
+
+    <ListView
+        android:id="@+id/synonymsListView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"></ListView>
+
+
+    <TextView
+        android:id="@+id/similarlabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/padding_4x"
+        android:text="@string/action_similar"
+        android:textSize="@dimen/font_size_medium"/>
+
+
+    <ListView
+        android:id="@+id/similarListView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"></ListView>
+
+
+</LinearLayout>

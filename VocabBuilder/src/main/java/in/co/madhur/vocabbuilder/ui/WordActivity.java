@@ -12,6 +12,7 @@ import in.co.madhur.vocabbuilder.BaseActivity;
 import in.co.madhur.vocabbuilder.Consts;
 import in.co.madhur.vocabbuilder.fragments.WordAddFragment;
 import in.co.madhur.vocabbuilder.fragments.WordEditFragment;
+import in.co.madhur.vocabbuilder.fragments.WordViewFragment;
 
 /**
  * Created by madhur on 22-Jun-14.
@@ -33,7 +34,7 @@ public class WordActivity extends BaseActivity
         }
         else if(action.equalsIgnoreCase(Consts.ACTION_VIEW_WORD))
         {
-            fragment=new WordEditFragment();
+            fragment=new WordViewFragment();
 
         }
         else if(action.equalsIgnoreCase(Consts.ACTION_ADD_WORD))

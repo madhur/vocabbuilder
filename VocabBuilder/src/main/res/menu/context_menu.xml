@@ -2,16 +2,12 @@
 
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item
-        android:id="@+id/action_synonyms"
-        android:orderInCategory="100"
-        android:title="@string/action_synonyms"
-        />
+
 
     <item
-        android:id="@+id/action_similar"
+        android:id="@+id/action_view"
         android:orderInCategory="100"
-        android:title="@string/action_similar"
+        android:title="@string/action_view"
         />
 
     <group android:id="@+id/group_pro_context" android:visible="false">

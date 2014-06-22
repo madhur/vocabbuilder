@@ -185,6 +185,7 @@ public class WordListFragment extends Fragment
                 menu.findItem(R.id.action_similar).setTitle(getString(R.string.action_similar) + " " + word.getName());
                 menu.findItem(R.id.action_hide).setTitle(getString(R.string.action_hide) + " " + word.getName());
                 menu.findItem(R.id.action_edit).setTitle(getString(R.string.action_edit) + " " + word.getName());
+                menu.findItem(R.id.action_view).setTitle(getString(R.string.action_view) + " " + word.getName());
             }
 
         }
@@ -236,7 +237,16 @@ public class WordListFragment extends Fragment
 
                 return true;
 
+            case R.id.action_view:
+                wordIntent=new Intent();
+                wordIntent.setClass(getActivity(), WordActivity.class);
+                wordIntent.setAction(Consts.ACTION_VIEW_WORD);
 
+                data=new Bundle();
+                data.putInt("id", word.getId());
+                wordIntent.putExtras(data);
+
+                startActivity(wordIntent);
 
         }
         return super.onContextItemSelected(item);
