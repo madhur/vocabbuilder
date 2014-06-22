@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.text.TextUtils;
 import android.util.Log;
 
 import java.io.IOException;
@@ -459,6 +460,9 @@ public class VocabDB
                 else
                     singleWord.setHidden(false);
 
+                singleWord.setSimilar(GetWordsFromString(c.getString(c.getColumnIndexOrThrow(VocabContract.Words.SIMILAR))));
+                singleWord.setSynonyms(GetWordsFromString(c.getString(c.getColumnIndexOrThrow(VocabContract.Words.SYNONYMS))));
+
 
                 return singleWord;
 
@@ -468,12 +472,132 @@ public class VocabDB
         }
         catch (Exception e)
         {
-            Log.e(App.TAG, e.getMessage());
+            e.printStackTrace();
             throw e;
         }
 
 
         return null;
+    }
+
+    public int UpdateWord(int Id, String meaning, List<Word> synonyms, List<Word> similar) throws Exception
+    {
+
+        SQLiteDatabase database = db.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(VocabContract.Words.ID, Id);
+        values.put(VocabContract.Words.MEANING, meaning);
+        values.put(VocabContract.Words.SYNONYMS , FormatWords(synonyms));
+        values.put(VocabContract.Words.SIMILAR , FormatWords(similar));
+
+
+        try
+
+        {
+
+            int rowsAffected = database.update(VocabContract.Words.TABLE_NAME, values, VocabContract.Words.ID + "=" + Id, null);
+
+            Log.d(App.TAG, "Rows affected with update " +String.valueOf(rowsAffected));
+        }
+        catch (Exception e)
+        {
+            Log.e(App.TAG, e.getMessage());
+            throw e;
+
+        }
+        finally
+        {
+
+            database.close();
+        }
+
+        return 0;
+
+    }
+
+
+    public int AddWord(String word, String meaning, List<Word> synonyms, List<Word> similar) throws Exception
+    {
+
+        SQLiteDatabase database = db.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(VocabContract.Words.WORD, word);
+        values.put(VocabContract.Words.MEANING, meaning);
+        values.put(VocabContract.Words.SYNONYMS , FormatWords(synonyms));
+        values.put(VocabContract.Words.SIMILAR , FormatWords(similar));
+        values.put(VocabContract.Words.IS_HIDDEN, 0);
+
+
+        try
+
+        {
+
+            long rowsAffected = database.insert(VocabContract.Words.TABLE_NAME, null,  values);
+            Log.d(App.TAG, "Rows affected with insert " +String.valueOf(rowsAffected));
+        }
+        catch (Exception e)
+        {
+            Log.e(App.TAG, e.getMessage());
+            throw e;
+
+        }
+        finally
+        {
+
+            database.close();
+        }
+
+        return 0;
+
+    }
+
+    private String FormatWords(List<Word> words)
+    {
+        StringBuilder sb=new StringBuilder();
+
+        if(words.size()==0)
+            return "";
+
+        for(Word word:words)
+        {
+            sb.append(word.getId());
+            sb.append(";");
+        }
+
+        return sb.toString();
+
+    }
+
+    private List<Word> GetWordsFromString(String format)
+    {
+
+        ArrayList<Word> words=new ArrayList<Word>();
+        if(TextUtils.isEmpty(format))
+            return words;
+
+        String[] ids=format.split(";");
+
+        for(String id: ids)
+        {
+            Word word=null;
+            try
+            {
+                word = GetSingleWord(Integer.parseInt(id));
+            }
+            catch (Exception e)
+            {
+                e.printStackTrace();
+                continue;
+            }
+
+            words.add(word);
+
+        }
+
+        return words;
+
     }
 
 

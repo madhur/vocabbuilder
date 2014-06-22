@@ -16,6 +16,8 @@ public class Word implements Serializable
     private String name;
     private String meaning;
     private long date;
+    private List<Word> synonyms;
+    private List<Word> similar;
 
     public Word(String word, String meaning)
     {
@@ -105,6 +107,26 @@ public class Word implements Serializable
     public String toString()
     {
         return getName();
+    }
+
+    public List<Word> getSynonyms()
+    {
+        return synonyms;
+    }
+
+    public void setSynonyms(List<Word> synonyms)
+    {
+        this.synonyms = synonyms;
+    }
+
+    public List<Word> getSimilar()
+    {
+        return similar;
+    }
+
+    public void setSimilar(List<Word> similar)
+    {
+        this.similar = similar;
     }
 
     public static class NameSorter implements Comparator<Word>

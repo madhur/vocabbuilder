@@ -75,6 +75,6 @@
     <string name="word">Word</string>
     <string name="meaning">Meaning</string>
     <string name="action_save">Save</string>
-    <string name="empty_word_error">Word meaning cannot be empty</string>
+    <string name="empty_word_error">Word meaning or name cannot be empty</string>
 
 </resources>

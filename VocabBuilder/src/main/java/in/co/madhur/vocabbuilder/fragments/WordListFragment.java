@@ -197,6 +197,8 @@ public class WordListFragment extends Fragment
 
         Word word = (Word) listView.getItemAtPosition(info.position);
 
+        Intent wordIntent;
+        Bundle data;
 
         switch (item.getItemId())
         {
@@ -222,20 +224,20 @@ public class WordListFragment extends Fragment
                 return true;
 
             case R.id.action_edit:
-                Intent wordIntent=new Intent();
+                 wordIntent=new Intent();
                 wordIntent.setClass(getActivity(), WordActivity.class);
                 wordIntent.setAction(Consts.ACTION_EDIT_WORD);
 
-                Bundle data=new Bundle();
+                 data=new Bundle();
                 data.putInt("id", word.getId());
                 wordIntent.putExtras(data);
 
                 startActivity(wordIntent);
-//
-//                MainActivity activity= (MainActivity) getActivity();
-//                activity.LoadWordFragment();
 
                 return true;
+
+
+
         }
         return super.onContextItemSelected(item);
     }
@@ -290,6 +292,20 @@ public class WordListFragment extends Fragment
 
             return true;
 
+        }
+
+        if(item.getItemId() == R.id.action_add)
+        {
+            Intent wordIntent = new Intent();
+            wordIntent.setClass(getActivity(), WordActivity.class);
+            wordIntent.setAction(Consts.ACTION_ADD_WORD);
+
+            //data=new Bundle();
+            // data.putInt("id", word.getId());
+            //wordIntent.putExtras(data);
+
+            startActivity(wordIntent);
+            return true;
         }
 
         return super.onOptionsItemSelected(item);

@@ -17,7 +17,6 @@ import android.widget.ListView;
 import java.util.List;
 
 import de.keyboardsurfer.android.widget.crouton.Crouton;
-import in.co.madhur.vocabbuilder.fragments.WordFragment;
 import in.co.madhur.vocabbuilder.fragments.WordListFragment;
 import in.co.madhur.vocabbuilder.service.Alarms;
 
@@ -229,11 +228,11 @@ public class MainActivity extends BaseActivity implements ActionBar.OnNavigation
 
     }
 
-    public void LoadWordFragment()
-    {
-        WordFragment fragment=new WordFragment();
-        getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, fragment).commit();
-    }
+//    public void LoadWordFragment()
+//    {
+//        WordFragment fragment=new WordFragment();
+//        getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, fragment).commit();
+//    }
 
     public void LoadMainFragment(Fragment wordFragment, SPINNER_ITEMS item)
     {

@@ -15,7 +15,7 @@
               android:weightSum="1">
 
 
-    <TextView
+    <EditText
         android:id="@+id/word"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -59,7 +59,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/padding_4x"
         android:text="@string/action_similar"
-        android:textSize="@dimen/font_size_large"/>
+        android:textSize="@dimen/font_size_medium"/>
 
     <in.co.madhur.vocabbuilder.controls.WordCompletionTextView
         android:id="@+id/similarsearchView"

@@ -10,7 +10,8 @@ import android.support.v4.app.Fragment;
 
 import in.co.madhur.vocabbuilder.BaseActivity;
 import in.co.madhur.vocabbuilder.Consts;
-import in.co.madhur.vocabbuilder.fragments.WordFragment;
+import in.co.madhur.vocabbuilder.fragments.WordAddFragment;
+import in.co.madhur.vocabbuilder.fragments.WordEditFragment;
 
 /**
  * Created by madhur on 22-Jun-14.
@@ -28,15 +29,20 @@ public class WordActivity extends BaseActivity
 
         if(action.equalsIgnoreCase(Consts.ACTION_EDIT_WORD))
         {
-            fragment=new WordFragment();
+            fragment=new WordEditFragment();
         }
         else if(action.equalsIgnoreCase(Consts.ACTION_VIEW_WORD))
         {
-            fragment=new WordFragment();
+            fragment=new WordEditFragment();
 
         }
+        else if(action.equalsIgnoreCase(Consts.ACTION_ADD_WORD))
+        {
+            fragment=new WordAddFragment();
+        }
 
-        fragment.setArguments(getIntent().getExtras());
+        if(getIntent().getExtras()!=null)
+            fragment.setArguments(getIntent().getExtras());
 
         getSupportFragmentManager().beginTransaction().replace(android.R.id.content, fragment).commit();
 
