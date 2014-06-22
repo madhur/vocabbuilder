@@ -1,3 +1,8 @@
+/*
+ * Author: Madhur Ahuja
+ * Copyright (c) 2014.
+ */
+
 package in.co.madhur.vocabbuilder;
 
 import android.os.Bundle;

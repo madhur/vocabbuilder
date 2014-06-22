@@ -72,5 +72,9 @@
     <string name="notification_screen_on_desc">If selected, the screen will automatically turn on when notification arrives. Note that selecting this option can have negative impact on battery life.</string>
     <string name="add_word">Add</string>
     <string name="action_edit">Edit</string>
+    <string name="word">Word</string>
+    <string name="meaning">Meaning</string>
+    <string name="action_save">Save</string>
+    <string name="empty_word_error">Word meaning cannot be empty</string>
 
 </resources>

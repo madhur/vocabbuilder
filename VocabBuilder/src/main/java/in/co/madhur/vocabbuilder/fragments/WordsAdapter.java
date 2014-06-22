@@ -1,4 +1,4 @@
-package in.co.madhur.vocabbuilder;
+package in.co.madhur.vocabbuilder.fragments;
 
 import android.content.Context;
 import android.util.Log;
@@ -18,6 +18,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import in.co.madhur.vocabbuilder.App;
+import in.co.madhur.vocabbuilder.AppPreferences;
+import in.co.madhur.vocabbuilder.Consts;
+import in.co.madhur.vocabbuilder.R;
+import in.co.madhur.vocabbuilder.controls.LayoutedTextView;
 import in.co.madhur.vocabbuilder.db.VocabDB;
 import in.co.madhur.vocabbuilder.model.Word;
 

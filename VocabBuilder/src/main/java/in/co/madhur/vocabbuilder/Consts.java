@@ -16,6 +16,9 @@ public class Consts {
     public static final String MY_EMAIL="ahuja.madhur@gmail.com";
 
     public static final String ACTION_REMIND_WORD="in.co.madhur.vocabbuilder.ACTION.REMIND_WORD";
+    public static final String ACTION_EDIT_WORD="in.co.madhur.vocabbuilder.ACTION.EDIT_WORD";
+    public static final String ACTION_VIEW_WORD="in.co.madhur.vocabbuilder.ACTION.VIEW_WORD";
+    public static final String ACTION_ADD_WORD="in.co.madhur.vocabbuilder.ACTION.ADD_WORD";
     public static final String ACTION_SHOW_RECENT="in.co.madhur.vocabbuilder.ACTION.SHOW_RECENT";
 
 

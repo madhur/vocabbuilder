@@ -33,9 +33,9 @@ import in.co.madhur.vocabbuilder.AppPreferences;
 import in.co.madhur.vocabbuilder.Consts;
 import in.co.madhur.vocabbuilder.R;
 import in.co.madhur.vocabbuilder.SettingsActivity;
-import in.co.madhur.vocabbuilder.WordsAdapter;
 import in.co.madhur.vocabbuilder.db.VocabDB;
 import in.co.madhur.vocabbuilder.model.Word;
+import in.co.madhur.vocabbuilder.ui.WordActivity;
 
 /**
  * Created by madhur on 19-Jun-14.
@@ -220,6 +220,22 @@ public class WordListFragment extends Fragment
                 }
 
                 return true;
+
+            case R.id.action_edit:
+                Intent wordIntent=new Intent();
+                wordIntent.setClass(getActivity(), WordActivity.class);
+                wordIntent.setAction(Consts.ACTION_EDIT_WORD);
+
+                Bundle data=new Bundle();
+                data.putInt("id", word.getId());
+                wordIntent.putExtras(data);
+
+                startActivity(wordIntent);
+//
+//                MainActivity activity= (MainActivity) getActivity();
+//                activity.LoadWordFragment();
+
+                return true;
         }
         return super.onContextItemSelected(item);
     }
@@ -402,7 +418,10 @@ public class WordListFragment extends Fragment
                 if(item== Consts.SPINNER_ITEMS.HIDDEN)
                     words = vocabDB.GetHiddenWords();
                 else if (params.length > 0 && !TextUtils.isEmpty(params[0]))
+                {
                     words = vocabDB.GetWords(params[0]);
+                    App.Cache.Put(params[0], words);
+                }
                 else if(item== Consts.SPINNER_ITEMS.RECENT)
                     words = vocabDB.GetRecentWords();
             }

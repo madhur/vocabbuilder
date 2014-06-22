@@ -4,7 +4,6 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteStatement;
 import android.util.Log;
 
 import java.io.IOException;
@@ -12,7 +11,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import in.co.madhur.vocabbuilder.App;
-import in.co.madhur.vocabbuilder.Consts;
 import in.co.madhur.vocabbuilder.model.Word;
 
 import static in.co.madhur.vocabbuilder.Consts.SELECT_NOTIFICATION_WORDS;
@@ -27,7 +25,7 @@ public class VocabDB
 
     public static synchronized VocabDB getInstance(Context context)
     {
-        if(context==null)
+        if (context == null)
             throw new NullPointerException("Context cannot be null");
 
         if (vocabDb == null || db == null)
@@ -123,7 +121,7 @@ public class VocabDB
 
         ContentValues values = new ContentValues();
         values.put(VocabContract.Words.ID, Id);
-        values.put(VocabContract.Words.IS_HIDDEN,1);
+        values.put(VocabContract.Words.IS_HIDDEN, 1);
 
 
         try
@@ -181,6 +179,59 @@ public class VocabDB
 
                     //Date a special column in this category
                     singleWord.setDate(c.getInt(c.getColumnIndexOrThrow(VocabContract.RecentWords.DATE)));
+
+                    if (c.getInt(c.getColumnIndexOrThrow(VocabContract.Words.IS_HIDDEN)) == 1)
+                        singleWord.setHidden(true);
+                    else
+                        singleWord.setHidden(false);
+
+
+                    wordList.add(singleWord);
+                }
+                while (c.moveToNext());
+            }
+
+            c.close();
+        }
+        catch (Exception e)
+        {
+            Log.e(App.TAG, e.getMessage());
+            throw e;
+        }
+
+        return wordList;
+    }
+
+
+    public List<Word> GetAllWords() throws Exception
+    {
+        SQLiteDatabase database = db.getReadableDatabase();
+        List<Word> wordList = new ArrayList<Word>();
+
+
+        try
+
+        {
+            Cursor c = database.query(VocabContract.Words.TABLE_NAME, // The table to
+                    // query
+                    null, // The columns to return
+                    null, // The columns for the WHERE clause
+                    null, // The values for the WHERE clause
+                    null, // don't group the rows
+                    null, // don't filter by row groups
+                    null // The sort order
+            );
+
+            if (c.moveToFirst())
+            {
+                do
+                {
+                    Word singleWord = new Word();
+
+                    singleWord.setName(c.getString(c.getColumnIndexOrThrow(VocabContract.Words.WORD)));
+                    singleWord.setMeaning(c.getString(c.getColumnIndexOrThrow(VocabContract.Words.MEANING)));
+                    singleWord.setId(c.getInt(c.getColumnIndexOrThrow(VocabContract.Words.ID)));
+                    singleWord.setRating(c.getInt(c.getColumnIndexOrThrow(VocabContract.Words.DIFFICULTY)));
 
                     if (c.getInt(c.getColumnIndexOrThrow(VocabContract.Words.IS_HIDDEN)) == 1)
                         singleWord.setHidden(true);
@@ -335,7 +386,7 @@ public class VocabDB
             Cursor c = database.query(VocabContract.Words.TABLE_NAME, // The table to
                     // query
                     null, // The columns to return
-                    VocabContract.Words.IS_HIDDEN+"=1",
+                    VocabContract.Words.IS_HIDDEN + "=1",
                     null, // The values for the WHERE clause
                     null, // don't group the rows
                     null, // don't filter by row groups
@@ -374,6 +425,55 @@ public class VocabDB
 
 
         return wordList;
+    }
+
+    public Word GetSingleWord(int Id) throws Exception
+    {
+        SQLiteDatabase database = db.getReadableDatabase();
+
+
+        try
+        {
+
+            Cursor c = database.query(VocabContract.Words.TABLE_NAME, // The table to
+                    // query
+                    null, // The columns to return
+                    VocabContract.Words.ID + "=" + String.valueOf(Id),
+                    null, // The values for the WHERE clause
+                    null, // don't group the rows
+                    null, // don't filter by row groups
+                    null // The sort order
+            );
+
+            if (c.moveToFirst())
+            {
+                Word singleWord = new Word();
+
+                singleWord.setName(c.getString(c.getColumnIndexOrThrow(VocabContract.Words.WORD)));
+                singleWord.setMeaning(c.getString(c.getColumnIndexOrThrow(VocabContract.Words.MEANING)));
+                singleWord.setId(c.getInt(c.getColumnIndexOrThrow(VocabContract.Words.ID)));
+                singleWord.setRating(c.getInt(c.getColumnIndexOrThrow(VocabContract.Words.DIFFICULTY)));
+
+                if (c.getInt(c.getColumnIndexOrThrow(VocabContract.Words.IS_HIDDEN)) == 1)
+                    singleWord.setHidden(true);
+                else
+                    singleWord.setHidden(false);
+
+
+                return singleWord;
+
+            }
+
+            c.close();
+        }
+        catch (Exception e)
+        {
+            Log.e(App.TAG, e.getMessage());
+            throw e;
+        }
+
+
+        return null;
     }
 
 

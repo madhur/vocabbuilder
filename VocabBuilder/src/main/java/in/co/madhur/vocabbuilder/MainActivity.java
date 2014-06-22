@@ -17,6 +17,7 @@ import android.widget.ListView;
 import java.util.List;
 
 import de.keyboardsurfer.android.widget.crouton.Crouton;
+import in.co.madhur.vocabbuilder.fragments.WordFragment;
 import in.co.madhur.vocabbuilder.fragments.WordListFragment;
 import in.co.madhur.vocabbuilder.service.Alarms;
 
@@ -31,6 +32,7 @@ public class MainActivity extends BaseActivity implements ActionBar.OnNavigation
     private ListView mDrawerList;
     private ActionBarDrawerToggle mDrawerToggle;
     private boolean initializing = true;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -225,6 +227,12 @@ public class MainActivity extends BaseActivity implements ActionBar.OnNavigation
         LoadMainFragment(wordFragment, item);
 
 
+    }
+
+    public void LoadWordFragment()
+    {
+        WordFragment fragment=new WordFragment();
+        getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, fragment).commit();
     }
 
     public void LoadMainFragment(Fragment wordFragment, SPINNER_ITEMS item)

@@ -14,7 +14,7 @@
         android:paddingTop="@dimen/padding_2x"
         android:tag="back">
 
-        <in.co.madhur.vocabbuilder.LayoutedTextView
+        <in.co.madhur.vocabbuilder.controls.LayoutedTextView
             android:id="@+id/meaning"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

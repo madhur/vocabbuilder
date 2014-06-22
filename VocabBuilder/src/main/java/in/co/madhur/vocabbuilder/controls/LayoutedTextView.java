@@ -1,4 +1,4 @@
-package in.co.madhur.vocabbuilder;
+package in.co.madhur.vocabbuilder.controls;
 
 import android.content.Context;
 import android.util.AttributeSet;

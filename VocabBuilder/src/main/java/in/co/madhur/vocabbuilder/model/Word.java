@@ -1,12 +1,13 @@
 package in.co.madhur.vocabbuilder.model;
 
+import java.io.Serializable;
 import java.util.Comparator;
 import java.util.List;
 
 /**
  * Created by madhur on 19-Jun-14.
  */
-public class Word
+public class Word implements Serializable
 {
 
     private boolean isHidden;
@@ -100,6 +101,11 @@ public class Word
         this.date = date;
     }
 
+    @Override
+    public String toString()
+    {
+        return getName();
+    }
 
     public static class NameSorter implements Comparator<Word>
     {
