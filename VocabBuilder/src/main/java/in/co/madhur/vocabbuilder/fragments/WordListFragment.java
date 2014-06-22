@@ -56,10 +56,14 @@ public class WordListFragment extends Fragment
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
-        setHasOptionsMenu(true);
-        appPreferences = new AppPreferences(getActivity());
+        ;
+
 
         super.onCreate(savedInstanceState);
+
+        setHasOptionsMenu(true);
+
+        appPreferences = new AppPreferences(getActivity());
     }
 
     @Override
@@ -178,6 +182,31 @@ public class WordListFragment extends Fragment
     @Override
     public boolean onContextItemSelected(MenuItem item)
     {
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+        SwipeListView lv = (SwipeListView) info.targetView;
+        Word word = (Word) lv.getItemAtPosition(info.position);
+
+
+        switch (item.getItemId())
+        {
+
+            case R.id.action_hide:
+
+                try
+                {
+                    VocabDB.getInstance(getActivity()).HideWord(word.getId());
+                }
+                catch (Exception e)
+                {
+                    e.printStackTrace();
+                }
+
+                return true;
+
+
+
+
+        }
         return super.onContextItemSelected(item);
     }
 

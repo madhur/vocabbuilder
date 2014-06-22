@@ -50,7 +50,7 @@ public class Notifications
     private PendingIntent GetNotificationIntent()
     {
         Intent launchIntent = new Intent();
-
+        launchIntent.setClass(context, MainActivity.class);
         launchIntent.setAction(Consts.ACTION_SHOW_RECENT);
         // The stack builder object will contain an artificial back stack for the
 // started Activity.

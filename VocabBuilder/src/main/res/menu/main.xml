@@ -20,5 +20,5 @@
           android:orderInCategory="100"
           android:icon="@drawable/ic_action_sort_by_size"
 
-          app:showAsAction="never" />
+          app:showAsAction="ifRoom" />
 </menu>

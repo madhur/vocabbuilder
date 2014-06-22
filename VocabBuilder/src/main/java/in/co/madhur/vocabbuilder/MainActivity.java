@@ -7,6 +7,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -29,6 +31,7 @@ public class MainActivity extends BaseActivity implements ActionBar.OnNavigation
     private DrawerLayout mDrawerLayout;
     private ListView mDrawerList;
     private ActionBarDrawerToggle mDrawerToggle;
+    private boolean initializing = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -76,13 +79,14 @@ public class MainActivity extends BaseActivity implements ActionBar.OnNavigation
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
+
         getSupportActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
 
         ArrayAdapter<CharSequence> someAdapter = new
-                ArrayAdapter<CharSequence>(this, android.R.layout.simple_spinner_item,
+                ArrayAdapter<CharSequence>(getSupportActionBar().getThemedContext(), R.layout.support_simple_spinner_dropdown_item,
                 android.R.id.text1, getResources().getStringArray(R.array.spinner_items));
 
-        someAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        someAdapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
 
 
         getSupportActionBar().setListNavigationCallbacks(someAdapter, this);
@@ -100,23 +104,18 @@ public class MainActivity extends BaseActivity implements ActionBar.OnNavigation
         }
 
         Intent intent = getIntent();
-        if (intent != null)
+        Log.d(App.TAG, intent.getAction());
+
+        if (intent != null && intent.getAction().equalsIgnoreCase(Consts.ACTION_SHOW_RECENT))
         {
-            String action = intent.getAction();
-            if (action.equalsIgnoreCase(Consts.ACTION_SHOW_RECENT))
-            {
-                LoadMainFragment(SPINNER_ITEMS.RECENT);
-
-
-            }
-
-
+            //LoadMainFragment(SPINNER_ITEMS.RECENT);
+            getSupportActionBar().setSelectedNavigationItem(SPINNER_ITEMS.RECENT.ordinal());
         }
-//        else
-//        {
-//
-//            LoadMainFragment(SPINNER_ITEMS.RECENT);
-//        }
+        else
+        {
+            Log.d(App.TAG, "loading main");
+            LoadMainFragment();
+        }
 
     }
 
@@ -168,6 +167,12 @@ public class MainActivity extends BaseActivity implements ActionBar.OnNavigation
     @Override
     public boolean onNavigationItemSelected(int itemPosition, long itemId)
     {
+        if (initializing)
+        {
+            initializing = false;
+            return false;
+        }
+
         WordListFragment wordFragment;
         SPINNER_ITEMS item = SPINNER_ITEMS.values()[itemPosition];
 
