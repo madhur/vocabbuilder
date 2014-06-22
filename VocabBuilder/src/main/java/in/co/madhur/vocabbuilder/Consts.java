@@ -16,11 +16,12 @@ public class Consts {
     public static final String MY_EMAIL="ahuja.madhur@gmail.com";
 
     public static final String ACTION_REMIND_WORD="in.co.madhur.vocabbuilder.ACTION.REMIND_WORD";
+    public static final String ACTION_SHOW_RECENT="in.co.madhur.vocabbuilder.ACTION.SHOW_RECENT";
 
 
     public enum WORDS_SORT_ORDER
     {
-        ALPHABETICAL, DIFFICULTY
+        ALPHABETICAL, DIFFICULTY, DATE
     }
 
     public enum THEME
@@ -33,11 +34,16 @@ public class Consts {
         ALL_WORDS, UNSTARRED, HALF_STARRED, FULL_STARRED, BOTH
     }
 
+    public enum SPINNER_ITEMS
+    {
+        ACTIVE,RECENT,HIDDEN
+    }
+
 
 
     public enum LISTS
     {
-        Home,
+
         A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z;
 
 

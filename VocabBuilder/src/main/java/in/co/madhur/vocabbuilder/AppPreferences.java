@@ -28,7 +28,7 @@ public class AppPreferences
     public enum Keys
     {
         ENABLE_PRO("enable_pro"),
-        VIEW_HIDDEN_ITEMS("view_hidden_items"),
+
         WORDS_SORT_ORDER("words_sort_order"),
         WORDS_MODE("words_mode"),
         ENABLE_NOTIFICATIONS("enable_notifications"),
@@ -39,6 +39,8 @@ public class AppPreferences
         SELECT_NOTIFICATION_WORDS("select_notification_words"),
         PICK_THEME("pick_theme"),
         LAST_NOTIFICATION_TIME("last_notification_time"),
+        ALLOW_MULTIPLE_NOTIFICATIONS("allow_multiple_notifications"),
+        NOTIFICATION_SCREEN_ON("notification_screen_on"),
         FOLLOW_TWITTER("follow_twitter"),
         ACTION_ABOUT("action_about");
 
@@ -52,6 +54,20 @@ public class AppPreferences
         }
 
     }
+
+
+    public boolean IsWakelockEnabled()
+    {
+
+        return sharedPreferences.getBoolean(Keys.NOTIFICATION_SCREEN_ON.key, context.getResources().getBoolean(R.bool.notification_screen_on_default));
+    }
+
+    public boolean IsMultipleNotifications()
+    {
+        return sharedPreferences.getBoolean(Keys.ALLOW_MULTIPLE_NOTIFICATIONS.key, context.getResources().getBoolean(R.bool.allow_multiple_notifications_default));
+
+    }
+
 
     public Consts.THEME GetTheme()
     {

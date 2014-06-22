@@ -6,10 +6,12 @@ import android.app.SearchableInfo;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Looper;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.MenuItemCompat;
 
 import android.support.v7.widget.SearchView;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
@@ -32,6 +34,8 @@ import com.fortysevendeg.swipelistview.SwipeListViewListener;
 import java.util.Comparator;
 import java.util.List;
 
+import de.keyboardsurfer.android.widget.crouton.Crouton;
+import de.keyboardsurfer.android.widget.crouton.Style;
 import in.co.madhur.vocabbuilder.App;
 import in.co.madhur.vocabbuilder.AppPreferences;
 import in.co.madhur.vocabbuilder.Consts;
@@ -73,10 +77,9 @@ public class WordListFragment extends Fragment
             {
                 super.onOpened(position, toRight);
 
-                WordsAdapter wordsAdapter=(WordsAdapter)listView.getAdapter();
+                WordsAdapter wordsAdapter = (WordsAdapter) listView.getAdapter();
                 wordsAdapter.setDisplayedPosition(position);
                 wordsAdapter.notifyDataSetChanged();
-
 
 
             }
@@ -86,7 +89,7 @@ public class WordListFragment extends Fragment
             {
                 super.onOpened(position, fromRight);
 
-                WordsAdapter wordsAdapter=(WordsAdapter)listView.getAdapter();
+                WordsAdapter wordsAdapter = (WordsAdapter) listView.getAdapter();
                 wordsAdapter.setDisplayedPosition(-1);
                 wordsAdapter.notifyDataSetChanged();
             }
@@ -183,7 +186,24 @@ public class WordListFragment extends Fragment
     {
         super.onActivityCreated(savedInstanceState);
 
-        LoadWord(1);
+        Bundle data=getArguments();
+
+        if(data!=null)
+        {
+            Consts.SPINNER_ITEMS item= Consts.SPINNER_ITEMS.values()[data.getInt(Consts.SPINNER_ITEMS.class.getName())];
+
+            if(item== Consts.SPINNER_ITEMS.ACTIVE)
+                LoadWord(0);
+            else if(item== Consts.SPINNER_ITEMS.RECENT)
+                LoadRecents();
+            else if(item== Consts.SPINNER_ITEMS.HIDDEN)
+                LoadHiddenWords();
+
+        }
+        else
+        {
+            LoadWord(0);
+        }
     }
 
     @Override
@@ -268,20 +288,41 @@ public class WordListFragment extends Fragment
     public void LoadWord(String startLetter)
     {
 
-        new GetWords().execute(startLetter);
+        new GetWords(Consts.SPINNER_ITEMS.ACTIVE).execute(startLetter);
 
     }
 
     public void LoadWord(int position)
     {
 
-        new GetWords().execute(String.valueOf(Consts.LISTS.values()[position]));
+        new GetWords(Consts.SPINNER_ITEMS.ACTIVE).execute(String.valueOf(Consts.LISTS.values()[position]));
 
     }
 
+    public void LoadRecents()
+    {
+
+        new GetWords(Consts.SPINNER_ITEMS.RECENT).execute("");
+
+
+    }
+
+    public void LoadHiddenWords()
+    {
+        new GetWords(Consts.SPINNER_ITEMS.HIDDEN).execute("hidden");
+    }
+
+
     private class GetWords extends AsyncTask<String, Integer, List<Word>>
     {
-        VocabDB vocabDB;
+        private VocabDB vocabDB;
+        private Consts.SPINNER_ITEMS item;
+
+        public GetWords(Consts.SPINNER_ITEMS item)
+        {
+            this.item=item;
+
+        }
 
         @Override
         protected void onPreExecute()
@@ -293,8 +334,33 @@ public class WordListFragment extends Fragment
         protected List<Word> doInBackground(String... params)
         {
             vocabDB = VocabDB.getInstance(getActivity());
-            List<Word> words = vocabDB.GetWords(params[0]);
 
+            List<Word> words = null;
+            try
+            {
+
+                if(item== Consts.SPINNER_ITEMS.HIDDEN)
+                    words = vocabDB.GetHiddenWords();
+                else if (params.length > 0 && !TextUtils.isEmpty(params[0]))
+                    words = vocabDB.GetWords(params[0]);
+                else if(item== Consts.SPINNER_ITEMS.RECENT)
+                    words = vocabDB.GetRecentWords();
+            }
+            catch (final Exception e)
+            {
+                Log.e(App.TAG,"Error in do in background");
+
+
+                getActivity().runOnUiThread(new Runnable()
+                {
+                    public void run()
+                    {
+                        Crouton.showText(getActivity(), e.getMessage(), Style.ALERT);
+
+                    }
+                });
+
+            }
 
             return words;
 
@@ -305,8 +371,15 @@ public class WordListFragment extends Fragment
         protected void onPostExecute(List<Word> result)
         {
             super.onPostExecute(result);
-            WordsAdapter adapter = new WordsAdapter(result, getActivity());
-            listView.setAdapter(adapter);
+            if (result != null)
+            {
+                WordsAdapter adapter = new WordsAdapter(result, getActivity());
+
+                if(item== Consts.SPINNER_ITEMS.RECENT)
+                    adapter.Sort(Consts.WORDS_SORT_ORDER.DATE);
+
+                listView.setAdapter(adapter);
+            }
 
 
         }

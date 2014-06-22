@@ -8,6 +8,9 @@ import android.provider.BaseColumns;
 public class VocabContract
 {
 
+    public static final String RECENTS_VIEW="recents";
+    public static final String WORDS_VIEW="_VIEW";
+
     public static abstract class Words implements BaseColumns
     {
         public static final String TABLE_NAME = "words";
@@ -18,6 +21,14 @@ public class VocabContract
         public static final String DIFFICULTY="difficulty";
         public static final String SYNONYMS="synonyms";
         public static final String SIMILAR="similar";
+
+    }
+
+    public static abstract class RecentWords implements  BaseColumns
+    {
+        public static final String TABLE_NAME = "recent_words";
+        public static final String ID="Id";
+        public static final String DATE="date";
 
     }
 }

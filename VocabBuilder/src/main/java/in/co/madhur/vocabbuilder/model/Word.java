@@ -14,6 +14,7 @@ public class Word
     private int rating;
     private String name;
     private String meaning;
+    private long date;
 
     public Word(String word, String meaning)
     {
@@ -89,6 +90,16 @@ public class Word
         this.rating = rating;
     }
 
+    public long getDate()
+    {
+        return date;
+    }
+
+    public void setDate(long date)
+    {
+        this.date = date;
+    }
+
 
     public static class NameSorter implements Comparator<Word>
     {
@@ -111,6 +122,22 @@ public class Word
             if(lhs.getRating()< rhs.getRating())
                 return -1;
             else if(lhs.getRating() > rhs.getRating())
+                return 1;
+            else
+                return 0;
+        }
+    }
+
+
+    public static class DateSorter implements Comparator<Word>
+    {
+
+        @Override
+        public int compare(Word lhs, Word rhs)
+        {
+            if(lhs.getDate() < rhs.getDate())
+                return -1;
+            else if(lhs.getDate() > rhs.getDate())
                 return 1;
             else
                 return 0;

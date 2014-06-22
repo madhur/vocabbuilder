@@ -11,11 +11,6 @@
 
         </CheckBoxPreference>
 
-        <Preference
-            android:key="view_hidden_items"
-            android:summary="@string/view_hidden_words_desc"
-            android:title="@string/view_hidden_words"></Preference>
-
         <ListPreference
             android:defaultValue="@string/words_sort_order_default"
             android:entries="@array/words_sort_order"
@@ -31,7 +26,7 @@
             android:entryValues="@array/themes_values"
             android:key="pick_theme"
             android:summary="@string/themes_desc"
-            android:title="@string/themes" />
+            android:title="@string/themes"/>
 
     </PreferenceCategory>
 
@@ -56,6 +51,20 @@
                 android:key="enable_notifications"
                 android:summary="@string/enable_notifications_desc"
                 android:title="@string/enable_notifications"></CheckBoxPreference>
+
+            <CheckBoxPreference
+                android:defaultValue="@bool/allow_multiple_notifications_default"
+                android:key="allow_multiple_notifications"
+                android:summary="@string/allow_multiple_notifications_desc"
+                android:title="@string/allow_multiple_notifications">
+
+            </CheckBoxPreference>
+
+            <CheckBoxPreference
+                android:defaultValue="@bool/notification_screen_on_default"
+                android:key="notification_screen_on"
+                android:summary="@string/notification_screen_on_desc"
+                android:title="@string/notification_screen_on"></CheckBoxPreference>
 
             <ListPreference
                 android:defaultValue="@string/interval_default"

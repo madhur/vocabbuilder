@@ -7,10 +7,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.TaskStackBuilder;
 
 import java.util.ArrayList;
 
+import in.co.madhur.vocabbuilder.Consts;
+import in.co.madhur.vocabbuilder.MainActivity;
 import in.co.madhur.vocabbuilder.R;
 
 /**
@@ -19,7 +23,8 @@ import in.co.madhur.vocabbuilder.R;
 public class Notifications
 {
 
-    Context context;
+    private Context context;
+    private final int PI_REQUEST_CODE=0;
 
     public Notifications(Context context)
     {
@@ -44,13 +49,26 @@ public class Notifications
 
     private PendingIntent GetNotificationIntent()
     {
-        Intent launchIntent=new Intent();
-     //   launchIntent.setClass(context, LaunchService.class);
-      //  Bundle data=new Bundle();
-      //  data.putString("key", Keys.NOTIFICATION_CLICK_INTENT.key);
-      //  launchIntent.putExtras(data);
-        launchIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        PendingIntent resultPendingIntent = PendingIntent.getService(context, 0, launchIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        Intent launchIntent = new Intent();
+
+        launchIntent.setAction(Consts.ACTION_SHOW_RECENT);
+        // The stack builder object will contain an artificial back stack for the
+// started Activity.
+// This ensures that navigating backward from the Activity leads out of
+// your application to the Home screen.
+//        TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
+//// Adds the back stack for the Intent (but not the Intent itself)
+//        stackBuilder.addParentStack(MainActivity.class);
+//// Adds the Intent that starts the Activity to the top of the stack
+//        stackBuilder.addNextIntent(launchIntent);
+
+        PendingIntent resultPendingIntent=PendingIntent.getActivity(context, PI_REQUEST_CODE, launchIntent , PendingIntent.FLAG_UPDATE_CURRENT);
+
+//        PendingIntent resultPendingIntent =
+//                stackBuilder.getPendingIntent(
+//                        PI_REQUEST_CODE,
+//                        PendingIntent.FLAG_UPDATE_CURRENT
+//                );
 
         return resultPendingIntent;
 
@@ -75,16 +93,19 @@ public class Notifications
     }
 
 
-    public void FireNotification(int id, NotificationCompat.Builder builder,  boolean vibrate, boolean sound, boolean led)
+    public void FireNotification(int id, NotificationCompat.Builder builder, boolean vibrate, boolean sound, boolean led)
     {
         NotificationManager mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-        Notification notification=builder.build();
+        Notification notification = builder.build();
 
-        if(vibrate)
+        if (vibrate)
             notification.defaults |= Notification.DEFAULT_VIBRATE;
-        if(sound)
+        if (sound)
+        {
             notification.defaults |= Notification.DEFAULT_SOUND;
-        if(led)
+            builder.setSound(Settings.System.DEFAULT_NOTIFICATION_URI);
+        }
+        if (led)
             notification.defaults |= Notification.DEFAULT_LIGHTS;
 
         mNotificationManager.notify(id, builder.build());
@@ -101,6 +122,13 @@ public class Notifications
     {
         NotificationManager mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         mNotificationManager.cancel(id);
+    }
+
+    private boolean isNotificationVisible()
+    {
+        Intent notificationIntent = new Intent(context, MainActivity.class);
+        PendingIntent test = PendingIntent.getActivity(context,PI_REQUEST_CODE, notificationIntent, PendingIntent.FLAG_NO_CREATE);
+        return test != null;
     }
 
 

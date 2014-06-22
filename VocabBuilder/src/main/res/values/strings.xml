@@ -66,5 +66,9 @@
     <string name="rate_button">Rate</string>
     <string name="whatsnew_tab" formatted="false">What\'s new</string>
     <string name="send_email">Send Email</string>
+    <string name="allow_multiple_notifications">Allow multiple notifications</string>
+    <string name="allow_multiple_notifications_desc">If selected the app will show a completely new notification rather than replacing the old one.</string>
+    <string name="notification_screen_on">Turn Screen On</string>
+    <string name="notification_screen_on_desc">If selected, the screen will automatically turn on when notification arrives. Note that selecting this option can have negative impact on battery life.</string>
 
 </resources>

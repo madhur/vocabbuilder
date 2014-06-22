@@ -1,7 +1,10 @@
 package in.co.madhur.vocabbuilder.service;
 
 import android.app.IntentService;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
+import android.os.PowerManager;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
@@ -12,6 +15,7 @@ import java.util.Random;
 
 import in.co.madhur.vocabbuilder.App;
 import in.co.madhur.vocabbuilder.AppPreferences;
+import in.co.madhur.vocabbuilder.MainActivity;
 import in.co.madhur.vocabbuilder.db.VocabDB;
 import in.co.madhur.vocabbuilder.model.Word;
 
@@ -21,6 +25,7 @@ import in.co.madhur.vocabbuilder.model.Word;
 public class RemindWordService extends WakefulIntentService
 {
     private AppPreferences appPreferences;
+    private int NOTIFICATION_ID=0;
 
     public RemindWordService()
     {
@@ -44,7 +49,16 @@ public class RemindWordService extends WakefulIntentService
 
         VocabDB vocabDB = VocabDB.getInstance(this);
 
-        List<Word> words = vocabDB.GetFilteredWords(appPreferences.GetNotificationWordSetting());
+        List<Word> words = null;
+
+        try
+        {
+            words = vocabDB.GetFilteredWords(appPreferences.GetNotificationWordSetting());
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
 
         if (words.size() == 0)
         {
@@ -61,6 +75,23 @@ public class RemindWordService extends WakefulIntentService
 
 
         SendNotification(selectedWord);
+
+        if(appPreferences.IsWakelockEnabled())
+        {
+            PowerManager pm = (PowerManager) this.getSystemService(Context.POWER_SERVICE);
+            PowerManager.WakeLock wl = pm.newWakeLock(PowerManager.SCREEN_DIM_WAKE_LOCK | PowerManager.ACQUIRE_CAUSES_WAKEUP, App.TAG);
+            wl.acquire(15000);
+        }
+
+
+        try
+        {
+            vocabDB.PutRecentWord(selectedWord.getId());
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
 
         appPreferences.SaveSuccessfulNotification();
 
@@ -85,6 +116,8 @@ public class RemindWordService extends WakefulIntentService
         return false;
     }
 
+
+
     private void SendNotification(Word selectedWord)
     {
 
@@ -94,7 +127,10 @@ public class RemindWordService extends WakefulIntentService
 
         noti = notifications.GetExpandedBuilder(noti, selectedWord.getMeaning(), selectedWord.getName());
 
-        notifications.FireNotification(0, noti, appPreferences.getBoolMetadata(AppPreferences.Keys.ENABLE_VIBRATE), appPreferences.getBoolMetadata(AppPreferences.Keys.ENABLE_SOUND), appPreferences.getBoolMetadata(AppPreferences.Keys.ENABLE_LED));
+        if(appPreferences.IsMultipleNotifications())
+            NOTIFICATION_ID++;
+
+        notifications.FireNotification(NOTIFICATION_ID, noti, appPreferences.getBoolMetadata(AppPreferences.Keys.ENABLE_VIBRATE), appPreferences.getBoolMetadata(AppPreferences.Keys.ENABLE_SOUND), appPreferences.getBoolMetadata(AppPreferences.Keys.ENABLE_LED));
 
 
     }

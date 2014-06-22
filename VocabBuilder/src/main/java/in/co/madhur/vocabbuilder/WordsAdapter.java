@@ -22,6 +22,8 @@ import java.util.List;
 import in.co.madhur.vocabbuilder.db.VocabDB;
 import in.co.madhur.vocabbuilder.model.Word;
 
+import static in.co.madhur.vocabbuilder.Consts.SPINNER_ITEMS;
+
 /**
  * Created by madhur on 19-Jun-14.
  */
@@ -40,6 +42,30 @@ public class WordsAdapter extends BaseAdapter implements Filterable
         originalWords = new ArrayList<Word>();
 
         setActiveSortOrder(new AppPreferences(context).GetSortOrder());
+
+        Sort();
+
+        for (Word word : words)
+        {
+            originalWords.add(word);
+        }
+
+    }
+
+    public WordsAdapter(List<Word> words, Context context, SPINNER_ITEMS item)
+    {
+        this.words = words;
+        this.context = context;
+        originalWords = new ArrayList<Word>();
+
+        if(item==SPINNER_ITEMS.RECENT)
+        {
+            setActiveSortOrder(Consts.WORDS_SORT_ORDER.DATE);
+        }
+        else
+        {
+            setActiveSortOrder(new AppPreferences(context).GetSortOrder());
+        }
 
         Sort();
 
@@ -87,7 +113,8 @@ public class WordsAdapter extends BaseAdapter implements Filterable
 
             view.setTag(holder);
 
-        } else
+        }
+        else
         {
             view = convertView;
             holder = (ViewHolder) view.getTag();
@@ -114,19 +141,19 @@ public class WordsAdapter extends BaseAdapter implements Filterable
             {
 //                Log.d(App.TAG, "rl original height " + String.valueOf(rl.getHeight()));
 
-                LayoutedTextView tv=(LayoutedTextView)rl.findViewById(R.id.meaning);
+                LayoutedTextView tv = (LayoutedTextView) rl.findViewById(R.id.meaning);
 
-                if(tv!=null)
+                if (tv != null)
                 {
-                    if(tv.getTag()!=null)
+                    if (tv.getTag() != null)
                     {
                         int lineCount = (Integer) tv.getTag();
-                        Log.d(App.TAG, "Lines " + String.valueOf(lineCount));
+//                        Log.d(App.TAG, "Lines " + String.valueOf(lineCount));
 
 
-                        if(lineCount> 1)
+                        if (lineCount > 1)
                         {
-                            int desiredHeight = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 60 + 15*lineCount, context.getResources().getDisplayMetrics());
+                            int desiredHeight = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 60 + 15 * lineCount, context.getResources().getDisplayMetrics());
                             rl.getLayoutParams().height = desiredHeight;
                         }
                     }
@@ -136,7 +163,8 @@ public class WordsAdapter extends BaseAdapter implements Filterable
             }
 
 
-        } else
+        }
+        else
         {
 
             if (rl != null)
@@ -182,7 +210,14 @@ public class WordsAdapter extends BaseAdapter implements Filterable
                     int dbRating = (int) (ratingBar.getRating() * 2);
 
 
-                    VocabDB.getInstance(context).SetRating(itemId, dbRating);
+                    try
+                    {
+                        VocabDB.getInstance(context).SetRating(itemId, dbRating);
+                    }
+                    catch (Exception e)
+                    {
+                        Log.e(App.TAG, e.getMessage());
+                    }
 
                     Word.findById(words, itemId).setRating(dbRating);
 
@@ -216,7 +251,8 @@ public class WordsAdapter extends BaseAdapter implements Filterable
         {
             Collections.sort(words, Collections.reverseOrder(new Word.RatingSorter()));
             setActiveSortOrder(Consts.WORDS_SORT_ORDER.DIFFICULTY);
-        } else
+        }
+        else
         {
 
             Collections.sort(words, new Word.NameSorter());
@@ -229,14 +265,26 @@ public class WordsAdapter extends BaseAdapter implements Filterable
 
     public void Sort()
     {
-        if (getActiveSortOrder() == Consts.WORDS_SORT_ORDER.ALPHABETICAL)
+
+        Sort(getActiveSortOrder());
+
+    }
+
+    public void Sort(Consts.WORDS_SORT_ORDER sortOrder)
+    {
+
+        if (sortOrder == Consts.WORDS_SORT_ORDER.ALPHABETICAL)
         {
             Collections.sort(words, new Word.NameSorter());
-        } else
+        }
+        else if(sortOrder== Consts.WORDS_SORT_ORDER.DATE)
+        {
+            Collections.sort(words, Collections.reverseOrder(new Word.DateSorter()));
+        }
+        else
         {
             Collections.sort(words, Collections.reverseOrder(new Word.RatingSorter()));
         }
-
 
     }
 
@@ -306,7 +354,8 @@ public class WordsAdapter extends BaseAdapter implements Filterable
 
                     }
                 }
-            } else
+            }
+            else
             {
                 filteredWords = originalWords;
             }

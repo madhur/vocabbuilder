@@ -6,7 +6,6 @@ import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -14,11 +13,14 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.SpinnerAdapter;
 
-import in.co.madhur.vocabbuilder.fragments.AboutDialog;
+import java.util.List;
+
+import de.keyboardsurfer.android.widget.crouton.Crouton;
 import in.co.madhur.vocabbuilder.fragments.WordListFragment;
 import in.co.madhur.vocabbuilder.service.Alarms;
+
+import static in.co.madhur.vocabbuilder.Consts.*;
 
 
 public class MainActivity extends BaseActivity implements ActionBar.OnNavigationListener
@@ -62,7 +64,7 @@ public class MainActivity extends BaseActivity implements ActionBar.OnNavigation
         // Set the drawer toggle as the DrawerListener
         mDrawerLayout.setDrawerListener(mDrawerToggle);
 
-        mDrawerList.setAdapter(new ArrayAdapter<String>(this, R.layout.drawer_list_item, Consts.LISTS.names()));
+        mDrawerList.setAdapter(new ArrayAdapter<String>(this, R.layout.drawer_list_item, LISTS.names()));
 
         // Set the adapter for the list view
         //  mDrawerList.setAdapter(new ArrayAdapter<String>(this, R.layout.drawer_list_item, mPlanetTitles));
@@ -82,10 +84,6 @@ public class MainActivity extends BaseActivity implements ActionBar.OnNavigation
 
         someAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
-//        SpinnerAdapter mSpinnerAdapter = ArrayAdapter.createFromResource(this, R.array.spinner_items,
-//                android.R.layout.simple_spinner_item);
-//
-//        mSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
         getSupportActionBar().setListNavigationCallbacks(someAdapter, this);
 
@@ -101,6 +99,25 @@ public class MainActivity extends BaseActivity implements ActionBar.OnNavigation
                 alarms.Schedule();
         }
 
+        Intent intent = getIntent();
+        if (intent != null)
+        {
+            String action = intent.getAction();
+            if (action.equalsIgnoreCase(Consts.ACTION_SHOW_RECENT))
+            {
+                LoadMainFragment(SPINNER_ITEMS.RECENT);
+
+
+            }
+
+
+        }
+//        else
+//        {
+//
+//            LoadMainFragment(SPINNER_ITEMS.RECENT);
+//        }
+
     }
 
 
@@ -110,7 +127,6 @@ public class MainActivity extends BaseActivity implements ActionBar.OnNavigation
         super.onPostCreate(savedInstanceState);
         mDrawerToggle.syncState();
 
-        LoadMainFragment();
 
     }
 
@@ -150,9 +166,46 @@ public class MainActivity extends BaseActivity implements ActionBar.OnNavigation
     }
 
     @Override
-    public boolean onNavigationItemSelected(int i, long l)
+    public boolean onNavigationItemSelected(int itemPosition, long itemId)
     {
-        return false;
+        WordListFragment wordFragment;
+        SPINNER_ITEMS item = SPINNER_ITEMS.values()[itemPosition];
+
+        List<Fragment> fragments = getSupportFragmentManager().getFragments();
+        if (fragments != null && fragments.size() > 0)
+        {
+            wordFragment = (WordListFragment) getSupportFragmentManager().getFragments().get(0);
+
+            if (item == SPINNER_ITEMS.ACTIVE)
+                wordFragment.LoadWord(0);
+            else if (item == SPINNER_ITEMS.HIDDEN)
+                wordFragment.LoadHiddenWords();
+            else if (item == SPINNER_ITEMS.RECENT)
+                wordFragment.LoadRecents();
+
+        }
+        else
+        {
+            wordFragment = new WordListFragment();
+            LoadMainFragment(wordFragment, item);
+        }
+
+
+//            if(itemPosition== SPINNER_ITEMS.RECENT.ordinal())
+//            {
+//                wordsFragment.LoadRecents();
+//            }
+//            else if(itemPosition==SPINNER_ITEMS.ACTIVE.ordinal())
+//            {
+//                ((WordListFragment) wordFragment).LoadWord(1);
+//            }
+//            else if(itemPosition==SPINNER_ITEMS.HIDDEN.ordinal())
+//            {
+//                wordsFragment.LoadHiddenWords();
+//            }
+
+
+        return true;
     }
 
 
@@ -168,14 +221,38 @@ public class MainActivity extends BaseActivity implements ActionBar.OnNavigation
 
     public void LoadMainFragment()
     {
+        LoadMainFragment(SPINNER_ITEMS.ACTIVE);
+
+    }
+
+    public void LoadMainFragment(SPINNER_ITEMS item)
+    {
         WordListFragment wordFragment = new WordListFragment();
 
+        LoadMainFragment(wordFragment, item);
+
+
+    }
+
+    public void LoadMainFragment(Fragment wordFragment, SPINNER_ITEMS item)
+    {
+
+        Bundle data = new Bundle();
+        data.putInt(Consts.SPINNER_ITEMS.class.getName(), item.ordinal());
+        wordFragment.setArguments(data);
 
         getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, wordFragment).commit();
 
 
     }
 
+
+    @Override
+    protected void onDestroy()
+    {
+        super.onDestroy();
+        Crouton.cancelAllCroutons();
+    }
 
     /**
      * Swaps fragments in the main content view
