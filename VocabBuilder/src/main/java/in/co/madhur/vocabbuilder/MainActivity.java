@@ -1,15 +1,13 @@
 package in.co.madhur.vocabbuilder;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
-import android.os.Bundle;
-import android.text.TextUtils;
 import android.util.Log;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -22,7 +20,8 @@ import de.keyboardsurfer.android.widget.crouton.Crouton;
 import in.co.madhur.vocabbuilder.fragments.WordListFragment;
 import in.co.madhur.vocabbuilder.service.Alarms;
 
-import static in.co.madhur.vocabbuilder.Consts.*;
+import static in.co.madhur.vocabbuilder.Consts.LISTS;
+import static in.co.madhur.vocabbuilder.Consts.SPINNER_ITEMS;
 
 
 public class MainActivity extends BaseActivity implements ActionBar.OnNavigationListener
@@ -103,8 +102,17 @@ public class MainActivity extends BaseActivity implements ActionBar.OnNavigation
                 alarms.Schedule();
         }
 
-        Intent intent = getIntent();
-        Log.d(App.TAG, intent.getAction());
+        //Intent intent = getIntent();
+
+        HandleIntent(getIntent());
+//        Log.d(App.TAG, intent.getAction());
+
+
+
+    }
+
+    private void HandleIntent(Intent intent)
+    {
 
         if (intent != null && intent.getAction().equalsIgnoreCase(Consts.ACTION_SHOW_RECENT))
         {
@@ -116,6 +124,7 @@ public class MainActivity extends BaseActivity implements ActionBar.OnNavigation
             Log.d(App.TAG, "loading main");
             LoadMainFragment();
         }
+
 
     }
 
@@ -130,16 +139,17 @@ public class MainActivity extends BaseActivity implements ActionBar.OnNavigation
     }
 
 
-    /* Called whenever we call invalidateOptionsMenu() */
-    @Override
-    public boolean onPrepareOptionsMenu(Menu menu)
-    {
-        // If the nav drawer is open, hide action items related to the content
-        // view
-        boolean drawerOpen = mDrawerLayout.isDrawerOpen(mDrawerList);
-        // menu.findItem(R.id.action_websearch).setVisible(!drawerOpen);
-        return super.onPrepareOptionsMenu(menu);
-    }
+//    /* Called whenever we call invalidateOptionsMenu() */
+//    @Override
+//    public boolean onPrepareOptionsMenu(Menu menu)
+//    {
+//        // If the nav drawer is open, hide action items related to the content
+//        // view
+//       // boolean drawerOpen = mDrawerLayout.isDrawerOpen(mDrawerList);
+//      //  menu.findItem(R.id.action_search).setVisible(!drawerOpen);
+//
+//        return super.onPrepareOptionsMenu(menu);
+//    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item)
@@ -153,14 +163,7 @@ public class MainActivity extends BaseActivity implements ActionBar.OnNavigation
             return true;
         }
 
-        int id = item.getItemId();
-        if (id == R.id.action_settings)
-        {
-            Intent i = new Intent();
-            i.setClass(this, SettingsActivity.class);
-            startActivity(i);
-            return true;
-        }
+
         return super.onOptionsItemSelected(item);
     }
 
@@ -170,7 +173,7 @@ public class MainActivity extends BaseActivity implements ActionBar.OnNavigation
         if (initializing)
         {
             initializing = false;
-            return false;
+          //  return false;
         }
 
         WordListFragment wordFragment;
@@ -194,21 +197,6 @@ public class MainActivity extends BaseActivity implements ActionBar.OnNavigation
             wordFragment = new WordListFragment();
             LoadMainFragment(wordFragment, item);
         }
-
-
-//            if(itemPosition== SPINNER_ITEMS.RECENT.ordinal())
-//            {
-//                wordsFragment.LoadRecents();
-//            }
-//            else if(itemPosition==SPINNER_ITEMS.ACTIVE.ordinal())
-//            {
-//                ((WordListFragment) wordFragment).LoadWord(1);
-//            }
-//            else if(itemPosition==SPINNER_ITEMS.HIDDEN.ordinal())
-//            {
-//                wordsFragment.LoadHiddenWords();
-//            }
-
 
         return true;
     }
@@ -251,6 +239,14 @@ public class MainActivity extends BaseActivity implements ActionBar.OnNavigation
 
     }
 
+    @Override
+    protected void onNewIntent(Intent intent)
+    {
+        super.onNewIntent(intent);
+
+        HandleIntent(intent);
+
+    }
 
     @Override
     protected void onDestroy()
@@ -283,10 +279,7 @@ public class MainActivity extends BaseActivity implements ActionBar.OnNavigation
         mDrawerLayout.closeDrawer(mDrawerList);
     }
 
-    public void setTitle(CharSequence title)
-    {
-        getActionBar().setTitle(title);
-    }
+
 
 
 }

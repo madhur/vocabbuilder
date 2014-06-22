@@ -7,7 +7,6 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
 import android.widget.BaseAdapter;
 import android.widget.Filter;
 import android.widget.Filterable;
@@ -98,6 +97,9 @@ public class WordsAdapter extends BaseAdapter implements Filterable
     @Override
     public View getView(int position, View convertView, ViewGroup parent)
     {
+        Word word = (Word) getItem(position);
+
+
 
         View view = null;
         final ViewHolder holder;
@@ -181,7 +183,7 @@ public class WordsAdapter extends BaseAdapter implements Filterable
         }
 
 
-        Word word = (Word) getItem(position);
+
 
         holder.word.setText(word.getName());
         holder.meaning.setText(word.getMeaning());
@@ -269,6 +271,13 @@ public class WordsAdapter extends BaseAdapter implements Filterable
         Sort(getActiveSortOrder());
 
     }
+
+    public void HideWord(int Id)
+    {
+        words.remove(Word.findById(words,Id));
+        notifyDataSetChanged();
+    }
+
 
     public void Sort(Consts.WORDS_SORT_ORDER sortOrder)
     {

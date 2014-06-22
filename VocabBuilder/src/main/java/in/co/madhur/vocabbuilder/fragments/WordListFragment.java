@@ -1,15 +1,13 @@
 package in.co.madhur.vocabbuilder.fragments;
 
-import android.app.ActionBar;
 import android.app.SearchManager;
 import android.app.SearchableInfo;
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Looper;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.MenuItemCompat;
-
 import android.support.v7.widget.SearchView;
 import android.text.TextUtils;
 import android.util.Log;
@@ -20,18 +18,12 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.Filter;
-import android.widget.LinearLayout;
-import android.widget.ListView;
-import android.widget.RelativeLayout;
 
 import com.fortysevendeg.swipelistview.BaseSwipeListViewListener;
 import com.fortysevendeg.swipelistview.SwipeListView;
-import com.fortysevendeg.swipelistview.SwipeListViewListener;
 
-import java.util.Comparator;
 import java.util.List;
 
 import de.keyboardsurfer.android.widget.crouton.Crouton;
@@ -40,6 +32,7 @@ import in.co.madhur.vocabbuilder.App;
 import in.co.madhur.vocabbuilder.AppPreferences;
 import in.co.madhur.vocabbuilder.Consts;
 import in.co.madhur.vocabbuilder.R;
+import in.co.madhur.vocabbuilder.SettingsActivity;
 import in.co.madhur.vocabbuilder.WordsAdapter;
 import in.co.madhur.vocabbuilder.db.VocabDB;
 import in.co.madhur.vocabbuilder.model.Word;
@@ -160,22 +153,40 @@ public class WordListFragment extends Fragment
     }
 
     @Override
+    public void onResume()
+    {
+        super.onResume();
+
+        getActivity().supportInvalidateOptionsMenu();
+    }
+
+    @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo)
     {
         super.onCreateContextMenu(menu, v, menuInfo);
 
         if (v.getId() == R.id.wordsListView)
         {
+
+            getActivity().getMenuInflater().inflate(R.menu.context_menu, menu);
+
+            if(appPreferences.IsProMode())
+            {
+                menu.setGroupVisible(R.id.group_pro_context, true);
+            }
+
             SwipeListView lv = (SwipeListView) v;
             AdapterView.AdapterContextMenuInfo acmi = (AdapterView.AdapterContextMenuInfo) menuInfo;
             Word word = (Word) lv.getItemAtPosition(acmi.position);
+            if(word!=null)
+            {
 
-            menu.add(0, R.id.action_synonyms, 0, getString(R.string.action_synonyms) + " " + word.getName());
-            menu.add(0, R.id.action_similar, 0, getString(R.string.action_similar) + " " + word.getName());
-            menu.add(0, R.id.action_hide, 0, getString(R.string.action_hide) + " " + word.getName());
+                menu.findItem(R.id.action_synonyms).setTitle(getString(R.string.action_synonyms) + " " + word.getName());
+                menu.findItem(R.id.action_similar).setTitle(getString(R.string.action_similar) + " " + word.getName());
+                menu.findItem(R.id.action_hide).setTitle(getString(R.string.action_hide) + " " + word.getName());
+                menu.findItem(R.id.action_edit).setTitle(getString(R.string.action_edit) + " " + word.getName());
+            }
 
-            //   MenuInflater inflater = getActivity().getMenuInflater();
-            //  inflater.inflate(R.menu.context_menu, menu);
         }
     }
 
@@ -183,8 +194,8 @@ public class WordListFragment extends Fragment
     public boolean onContextItemSelected(MenuItem item)
     {
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
-        SwipeListView lv = (SwipeListView) info.targetView;
-        Word word = (Word) lv.getItemAtPosition(info.position);
+
+        Word word = (Word) listView.getItemAtPosition(info.position);
 
 
         switch (item.getItemId())
@@ -195,6 +206,13 @@ public class WordListFragment extends Fragment
                 try
                 {
                     VocabDB.getInstance(getActivity()).HideWord(word.getId());
+
+                    //LoadWord(word.getName().charAt(0));
+
+                    WordsAdapter wordsAdapter = (WordsAdapter) listView.getAdapter();
+                    wordsAdapter.HideWord(word.getId());
+                    wordsAdapter.notifyDataSetChanged();
+
                 }
                 catch (Exception e)
                 {
@@ -202,10 +220,6 @@ public class WordListFragment extends Fragment
                 }
 
                 return true;
-
-
-
-
         }
         return super.onContextItemSelected(item);
     }
@@ -238,6 +252,15 @@ public class WordListFragment extends Fragment
     @Override
     public boolean onOptionsItemSelected(MenuItem item)
     {
+        int id = item.getItemId();
+
+        if (id == R.id.action_settings)
+        {
+            Intent i = new Intent();
+            i.setClass(getActivity(), SettingsActivity.class);
+            startActivity(i);
+            return true;
+        }
 
 
         if (item.getItemId() == R.id.action_sort)
@@ -249,6 +272,8 @@ public class WordListFragment extends Fragment
                 wordApater.ToggleSort();
             }
 
+            return true;
+
         }
 
         return super.onOptionsItemSelected(item);
@@ -258,6 +283,12 @@ public class WordListFragment extends Fragment
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater)
     {
         inflater.inflate(R.menu.main, menu);
+
+        if(appPreferences.IsProMode())
+        {
+
+            menu.setGroupVisible(R.id.group_pro, true);
+        }
 
         SearchManager searchManager = (SearchManager) getActivity().getSystemService(Context.SEARCH_SERVICE);
         MenuItem searchitem = menu.findItem(R.id.action_search);

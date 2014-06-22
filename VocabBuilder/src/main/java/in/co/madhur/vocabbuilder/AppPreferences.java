@@ -1,13 +1,8 @@
 package in.co.madhur.vocabbuilder;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
-import android.text.TextUtils;
-
-import java.util.ArrayList;
-import java.util.HashMap;
 
 /**
  * Created by madhur on 19-Jun-14.
@@ -55,6 +50,13 @@ public class AppPreferences
 
     }
 
+
+    public boolean IsProMode()
+    {
+
+        return sharedPreferences.getBoolean(Keys.ENABLE_PRO.key, context.getResources().getBoolean(R.bool.enable_pro_default));
+
+    }
 
     public boolean IsWakelockEnabled()
     {
