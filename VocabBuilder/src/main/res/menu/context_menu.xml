@@ -10,12 +10,14 @@
         android:title="@string/action_view"
         />
 
+    <item
+        android:id="@+id/action_hide"
+        android:orderInCategory="100"
+        android:title="@string/action_hide"
+        />
+
     <group android:id="@+id/group_pro_context" android:visible="false">
-        <item
-            android:id="@+id/action_hide"
-            android:orderInCategory="100"
-            android:title="@string/action_hide"
-            />
+
 
         <item
             android:id="@+id/action_edit"
