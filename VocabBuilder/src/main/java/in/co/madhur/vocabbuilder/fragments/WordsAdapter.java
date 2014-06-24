@@ -37,7 +37,7 @@ public class WordsAdapter extends BaseAdapter implements Filterable
     private Context context;
     private ItemsFilter itemsFilter;
     private Consts.WORDS_SORT_ORDER activeSortOrder;
-    private int displayedPosition;
+    private int displayedPosition=-1;
 
     public WordsAdapter(List<Word> words, Context context)
     {

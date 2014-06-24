@@ -115,12 +115,12 @@ public class MainActivity extends BaseActivity implements ActionBar.OnNavigation
     private void HandleIntent(Intent intent)
     {
 
-        if (intent != null && intent.getAction().equalsIgnoreCase(Consts.ACTION_SHOW_RECENT))
-        {
-            //LoadMainFragment(SPINNER_ITEMS.RECENT);
-            getSupportActionBar().setSelectedNavigationItem(SPINNER_ITEMS.RECENT.ordinal());
-        }
-        else
+//        if (intent != null && intent.getAction()!=null intent.getAction().equalsIgnoreCase(Consts.ACTION_SHOW_RECENT))
+//        {
+//            //LoadMainFragment(SPINNER_ITEMS.RECENT);
+//            getSupportActionBar().setSelectedNavigationItem(SPINNER_ITEMS.RECENT.ordinal());
+//        }
+//        else
         {
             Log.d(App.TAG, "loading main");
             LoadMainFragment();

@@ -41,11 +41,23 @@
         </activity>
         <activity
             android:name=".SettingsActivity"
-            android:parentActivityName=".MainActivity"/>
+            android:parentActivityName=".MainActivity">
+
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity"/>
+
+
+            </activity>
 
         <activity
             android:name=".ui.WordActivity"
             android:parentActivityName=".MainActivity">
+
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity"/>
+
             <intent-filter>
                 <action android:name="in.co.madhur.vocabbuilder.ACTION.EDIT_WORD"></action>
             </intent-filter>

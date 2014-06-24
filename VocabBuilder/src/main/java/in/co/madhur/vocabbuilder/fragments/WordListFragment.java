@@ -54,9 +54,11 @@ public class WordListFragment extends Fragment
 
         super.onCreate(savedInstanceState);
 
+        appPreferences = new AppPreferences(getActivity());
+
         setHasOptionsMenu(true);
 
-        appPreferences = new AppPreferences(getActivity());
+
     }
 
     @Override
@@ -359,41 +361,51 @@ public class WordListFragment extends Fragment
             @Override
             public boolean onQueryTextChange(String newText)
             {
-                WordsAdapter adapter = (WordsAdapter) listView.getAdapter();
-                if (adapter != null)
+                if(listView!=null)
                 {
-                    adapter.getFilter().filter(newText, new Filter.FilterListener()
+                    WordsAdapter adapter = (WordsAdapter) listView.getAdapter();
+                    if (adapter != null)
                     {
-
-                        @Override
-                        public void onFilterComplete(int count)
+                        adapter.getFilter().filter(newText, new Filter.FilterListener()
                         {
 
-                        }
-                    });
+                            @Override
+                            public void onFilterComplete(int count)
+                            {
+
+                            }
+                        });
+                    }
+                    return true;
                 }
 
-                return true;
+                return false;
+
             }
 
             @Override
             public boolean onQueryTextSubmit(String query)
             {
-                WordsAdapter adapter = (WordsAdapter) listView.getAdapter();
-                if (adapter != null)
+                if(listView!=null)
                 {
-                    adapter.getFilter().filter(query, new Filter.FilterListener()
+                    WordsAdapter adapter = (WordsAdapter) listView.getAdapter();
+                    if (adapter != null)
                     {
-
-                        @Override
-                        public void onFilterComplete(int count)
+                        adapter.getFilter().filter(query, new Filter.FilterListener()
                         {
 
-                        }
-                    });
+                            @Override
+                            public void onFilterComplete(int count)
+                            {
+
+                            }
+                        });
+                    }
+
+                    return true;
                 }
 
-                return true;
+                return false;
             }
 
         };

@@ -77,7 +77,7 @@
     <string name="action_save">Save</string>
     <string name="empty_word_error">Word meaning or name cannot be empty</string>
     <string name="action_view">View</string>
-    <string name="set"></string>
-    <string name="dismiss">Dismiss</string>
+    <string name="set">Set</string>
+    <string name="dismiss">Close</string>
 
 </resources>
