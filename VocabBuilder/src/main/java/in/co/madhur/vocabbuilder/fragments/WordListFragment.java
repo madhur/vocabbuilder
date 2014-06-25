@@ -49,7 +49,7 @@ public class WordListFragment extends Fragment
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
-        ;
+        Log.d(App.TAG, " WordListFragment: onCreate ");
 
 
         super.onCreate(savedInstanceState);
@@ -64,6 +64,8 @@ public class WordListFragment extends Fragment
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
+        Log.d(App.TAG, " WordListFragment: onCreateView ");
+
         View v = inflater.inflate(R.layout.word_fragment, container, false);
 
         listView = (SwipeListView) v.findViewById(R.id.wordsListView);
@@ -174,7 +176,7 @@ public class WordListFragment extends Fragment
     public void onResume()
     {
         super.onResume();
-
+        Log.d(App.TAG, " WordListFragment: onResume ");
         getActivity().supportInvalidateOptionsMenu();
     }
 
@@ -274,12 +276,15 @@ public class WordListFragment extends Fragment
     public void onActivityCreated(Bundle savedInstanceState)
     {
         super.onActivityCreated(savedInstanceState);
+        Log.d(App.TAG, " WordListFragment: onActivityCreated ");
 
         Bundle data=getArguments();
 
         if(data!=null)
         {
+            Log.d(App.TAG, " WordListFragment: onActivityCreated: data!=null ");
             Consts.SPINNER_ITEMS item= Consts.SPINNER_ITEMS.values()[data.getInt(Consts.SPINNER_ITEMS.class.getName())];
+            Log.d(App.TAG, item.name());
 
             if(item== Consts.SPINNER_ITEMS.ACTIVE)
                 LoadWord(0);
@@ -291,6 +296,7 @@ public class WordListFragment extends Fragment
         }
         else
         {
+            Log.d(App.TAG, " WordListFragment: onActivityCreated: data==null ");
             LoadWord(0);
         }
     }

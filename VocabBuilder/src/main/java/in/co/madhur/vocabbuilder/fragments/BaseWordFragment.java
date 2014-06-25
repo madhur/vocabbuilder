@@ -45,8 +45,6 @@ public abstract class BaseWordFragment extends Fragment
     }
 
 
-
-
     protected class GetWords extends AsyncTask<String, Integer, List<Word>>
     {
         private VocabDB vocabDB;

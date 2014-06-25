@@ -87,6 +87,8 @@ public class WordAddFragment extends BaseWordFragment
     @Override
     public boolean onOptionsItemSelected(MenuItem item)
     {
+        super.onOptionsItemSelected(item);
+
         if (item.getItemId() == R.id.action_save)
         {
 

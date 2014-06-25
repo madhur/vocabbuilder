@@ -10,6 +10,7 @@ import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 
 import in.co.madhur.vocabbuilder.service.MarkWordService;
 
@@ -18,10 +19,18 @@ import in.co.madhur.vocabbuilder.service.MarkWordService;
  */
 public class NotificationActivity extends Activity
 {
+    @Override
+    protected void onResume()
+    {
+        super.onResume();
+        Log.d(App.TAG, "NotificationActivity: onResume");
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
+        Log.d(App.TAG, "NotificationActivity: onCreate");
+
         super.onCreate(savedInstanceState);
 
         Intent intent = getIntent();
@@ -43,6 +52,7 @@ public class NotificationActivity extends Activity
         {
             // Finish activity.
             finish();
+            return;
         }
 
         Intent serviceIntent=new Intent();

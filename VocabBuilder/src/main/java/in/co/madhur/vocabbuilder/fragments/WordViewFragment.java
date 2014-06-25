@@ -8,6 +8,9 @@ package in.co.madhur.vocabbuilder.fragments;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.NavUtils;
+import android.support.v4.app.TaskStackBuilder;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -19,6 +22,7 @@ import android.widget.TextView;
 
 import de.keyboardsurfer.android.widget.crouton.Crouton;
 import de.keyboardsurfer.android.widget.crouton.Style;
+import in.co.madhur.vocabbuilder.App;
 import in.co.madhur.vocabbuilder.AppPreferences;
 import in.co.madhur.vocabbuilder.Consts;
 import in.co.madhur.vocabbuilder.R;
@@ -51,7 +55,7 @@ public class WordViewFragment extends Fragment
 
         inflater.inflate(R.menu.view_menu, menu);
 
-        if(new AppPreferences(getActivity()).IsProMode())
+        if (new AppPreferences(getActivity()).IsProMode())
         {
             menu.setGroupVisible(R.id.group_pro, true);
         }
@@ -66,8 +70,8 @@ public class WordViewFragment extends Fragment
 
         word_name = (TextView) v.findViewById(R.id.word);
         word_meaning = (TextView) v.findViewById(R.id.meaning);
-        synonymsListView= (ListView) v.findViewById(R.id.synonymsListView);
-        similarListView= (ListView) v.findViewById(R.id.similarListView);
+        synonymsListView = (ListView) v.findViewById(R.id.synonymsListView);
+        similarListView = (ListView) v.findViewById(R.id.similarListView);
 
 
         return v;
@@ -97,40 +101,39 @@ public class WordViewFragment extends Fragment
         word_name.setText(word.getName());
         word_meaning.setText(word.getMeaning());
 
-        WordTokenAdapter synonymsAdapter=new WordTokenAdapter(word.getSynonyms(), getActivity());
-        WordTokenAdapter similarAdapter=new WordTokenAdapter(word.getSimilar(), getActivity());
+        WordTokenAdapter synonymsAdapter = new WordTokenAdapter(word.getSynonyms(), getActivity());
+        WordTokenAdapter similarAdapter = new WordTokenAdapter(word.getSimilar(), getActivity());
 
         synonymsListView.setAdapter(synonymsAdapter);
         similarListView.setAdapter(similarAdapter);
 
 
-
     }
-
 
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item)
     {
+
+
         if (item.getItemId() == R.id.action_edit)
         {
 
-            Intent wordIntent=new Intent();
+            Intent wordIntent = new Intent();
             wordIntent.setClass(getActivity(), WordActivity.class);
             wordIntent.setAction(Consts.ACTION_EDIT_WORD);
 
-            Bundle data=new Bundle();
+            Bundle data = new Bundle();
             data.putInt("id", WordId);
             wordIntent.putExtras(data);
 
             startActivity(wordIntent);
 
-
+            return true;
         }
 
         return super.onOptionsItemSelected(item);
     }
-
 
 
 }

@@ -32,11 +32,18 @@ public class MainActivity extends BaseActivity implements ActionBar.OnNavigation
     private ActionBarDrawerToggle mDrawerToggle;
     private boolean initializing = true;
 
+    @Override
+    protected void onResume()
+    {
+        super.onResume();
+        Log.d(App.TAG, "MainActivity: onResume");
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
 
+        Log.d(App.TAG, "MainActivity: onCreate");
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -103,31 +110,12 @@ public class MainActivity extends BaseActivity implements ActionBar.OnNavigation
                 alarms.Schedule();
         }
 
-        //Intent intent = getIntent();
 
-        HandleIntent(getIntent());
-//        Log.d(App.TAG, intent.getAction());
 
 
 
     }
 
-    private void HandleIntent(Intent intent)
-    {
-
-//        if (intent != null && intent.getAction()!=null intent.getAction().equalsIgnoreCase(Consts.ACTION_SHOW_RECENT))
-//        {
-//            //LoadMainFragment(SPINNER_ITEMS.RECENT);
-//            getSupportActionBar().setSelectedNavigationItem(SPINNER_ITEMS.RECENT.ordinal());
-//        }
-//        else
-        {
-            Log.d(App.TAG, "loading main");
-            LoadMainFragment();
-        }
-
-
-    }
 
 
     @Override
@@ -246,14 +234,6 @@ public class MainActivity extends BaseActivity implements ActionBar.OnNavigation
 
     }
 
-    @Override
-    protected void onNewIntent(Intent intent)
-    {
-        super.onNewIntent(intent);
-
-        HandleIntent(intent);
-
-    }
 
     @Override
     protected void onDestroy()

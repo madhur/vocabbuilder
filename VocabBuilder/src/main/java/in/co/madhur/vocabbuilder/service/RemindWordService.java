@@ -37,10 +37,10 @@ public class RemindWordService extends WakefulIntentService
          appPreferences = new AppPreferences(this);
 
         if (!CheckLastSync())
-        {
-            Log.d(App.TAG, "Successful notification within time interval. aborting");
-            return;
-        }
+    {
+        Log.d(App.TAG, "Successful notification within time interval. aborting");
+        return;
+    }
 
 
 

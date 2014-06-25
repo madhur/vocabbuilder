@@ -22,6 +22,7 @@ public class Alarms
 
     //lowest recur in seconds
     int LOWEST_RECUR_INTERVAL=300;
+//    int LOWEST_RECUR_INTERVAL=60;
 
     public Alarms(Context context, AppPreferences appPreferences)
     {
