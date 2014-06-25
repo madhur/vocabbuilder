@@ -307,7 +307,7 @@ public class MainActivity extends BaseActivity implements ActionBar.OnNavigation
     private void selectItem(int position)
     {
         // An alphabet list is selected, return
-        if (position > 0 && position < 27)
+        if (position >= 0 && position < 27)
         {
             Fragment wordFragment = getSupportFragmentManager().getFragments().get(0);
             if (wordFragment instanceof WordListFragment)

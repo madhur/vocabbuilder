@@ -9,6 +9,7 @@ import android.app.SearchManager;
 import android.app.SearchableInfo;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -38,6 +39,7 @@ import de.keyboardsurfer.android.widget.crouton.Style;
 import in.co.madhur.vocabbuilder.App;
 import in.co.madhur.vocabbuilder.AppPreferences;
 import in.co.madhur.vocabbuilder.Consts;
+import in.co.madhur.vocabbuilder.MainActivity;
 import in.co.madhur.vocabbuilder.R;
 import in.co.madhur.vocabbuilder.SettingsActivity;
 import in.co.madhur.vocabbuilder.db.VocabDB;
@@ -53,6 +55,8 @@ public abstract class BaseWordListFragment extends Fragment
     private SwipeListView listView;
     private AppPreferences appPreferences;
     private ProgressBar progressBar;
+//    private Parcelable mListState = null;
+//    private static final String LIST_STATE = "listState";
 
     @Override
     public void onCreate(Bundle savedInstanceState)
@@ -66,7 +70,30 @@ public abstract class BaseWordListFragment extends Fragment
 
         setHasOptionsMenu(true);
 
+        MainActivity activity= (MainActivity) getActivity();
 
+        if(appPreferences.GetTheme()== Consts.THEME.DARK)
+            activity.getSupportActionBar().setBackgroundDrawable(new ColorDrawable(android.R.color.transparent));
+
+
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState)
+    {
+        super.onSaveInstanceState(outState);
+//        mListState = listView.onSaveInstanceState();
+//        outState.putParcelable(LIST_STATE, mListState);
+    }
+
+    @Override
+    public void onViewStateRestored(Bundle savedInstanceState)
+    {
+        super.onViewStateRestored(savedInstanceState);
+
+//        if(savedInstanceState!=null)
+//            if(savedInstanceState.containsKey(LIST_STATE))
+//                mListState = savedInstanceState.getParcelable(LIST_STATE);
     }
 
 
@@ -219,6 +246,10 @@ public abstract class BaseWordListFragment extends Fragment
         super.onResume();
         Log.d(App.TAG, " WordListFragment: onResume ");
         getActivity().supportInvalidateOptionsMenu();
+
+//        if (mListState != null)
+//            listView.onRestoreInstanceState(mListState);
+//        mListState = null;
     }
 
     @Override
