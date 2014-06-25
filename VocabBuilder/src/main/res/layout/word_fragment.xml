@@ -1,35 +1,53 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/mainlinearlayout"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:paddingLeft="5dp"
-    android:paddingRight="5dp" >
+    android:orientation="vertical">
 
-    <com.fortysevendeg.swipelistview.SwipeListView
-        xmlns:swipe="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/wordsListView"
-
-        android:layout_width="fill_parent"
-        android:layout_height="match_parent"
-        swipe:swipeFrontView="@+id/frontview"
-        swipe:swipeBackView="@+id/backview"
-        swipe:swipeActionLeft="reveal"
-        swipe:swipeActionRight="reveal"
-        android:focusable="false"
-        swipe:swipeMode="right"
-        swipe:swipeCloseAllItemsWhenMoveList="true"
-        swipe:swipeOpenOnLongPress="false"
-
-        swipe:swipeOffsetLeft="0dp"
-        swipe:swipeOffsetRight="0dp"
-        />
 
     <ProgressBar
-        android:visibility="gone"
-        android:layout_gravity="center_vertical"
-        android:id="@+id/progressBar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:id="@+id/scroll_progressbar" android:progressDrawable="@drawable/progress_drawable"
+        style="@android:style/Widget.ProgressBar.Horizontal"
+        android:layout_width="match_parent" android:max="100"
+        android:layout_height="2dp" android:background="@android:color/black"
+        android:indeterminate="false"/>
 
-</FrameLayout>
+    <FrameLayout
+        android:id="@+id/mainlinearlayout"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp">
+
+
+        <com.fortysevendeg.swipelistview.SwipeListView
+            android:id="@+id/wordsListView"
+            xmlns:swipe="http://schemas.android.com/apk/res-auto"
+
+            android:layout_width="fill_parent"
+            android:layout_height="match_parent"
+            android:focusable="false"
+            swipe:swipeActionLeft="reveal"
+            swipe:swipeActionRight="reveal"
+            swipe:swipeBackView="@+id/backview"
+            swipe:swipeCloseAllItemsWhenMoveList="true"
+            swipe:swipeFrontView="@+id/frontview"
+            swipe:swipeMode="right"
+            swipe:swipeOffsetLeft="0dp"
+
+            swipe:swipeOffsetRight="0dp"
+            swipe:swipeOpenOnLongPress="false"
+            />
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:visibility="gone"/>
+
+    </FrameLayout>
+
+</LinearLayout>

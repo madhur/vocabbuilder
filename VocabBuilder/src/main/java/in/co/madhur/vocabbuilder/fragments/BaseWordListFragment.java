@@ -23,8 +23,10 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.Filter;
+import android.widget.ProgressBar;
 
 import com.fortysevendeg.swipelistview.BaseSwipeListViewListener;
 import com.fortysevendeg.swipelistview.SwipeListView;
@@ -50,6 +52,7 @@ public abstract class BaseWordListFragment extends Fragment
 
     private SwipeListView listView;
     private AppPreferences appPreferences;
+    private ProgressBar progressBar;
 
     @Override
     public void onCreate(Bundle savedInstanceState)
@@ -76,6 +79,7 @@ public abstract class BaseWordListFragment extends Fragment
         View v = inflater.inflate(R.layout.word_fragment, container, false);
 
         listView = (SwipeListView) v.findViewById(R.id.wordsListView);
+        progressBar=(ProgressBar)v.findViewById(R.id.scroll_progressbar);
 
 
         listView.setSwipeListViewListener(new BaseSwipeListViewListener()
@@ -170,7 +174,37 @@ public abstract class BaseWordListFragment extends Fragment
         });
 
 
+        listView.setOnScrollListener(new AbsListView.OnScrollListener()
+        {
+            @Override
+            public void onScrollStateChanged(AbsListView view, int scrollState)
+            {
 
+            }
+
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount)
+            {
+                Log.d(App.TAG, String.valueOf(firstVisibleItem));
+                Log.d(App.TAG, String.valueOf(visibleItemCount));
+                Log.d(App.TAG, String.valueOf(totalItemCount));
+
+                if (totalItemCount != 0)
+                {
+                    if(firstVisibleItem==0)
+                    {
+                        progressBar.setProgress(0);
+                        return;
+                    }
+
+                    int progress =((firstVisibleItem+visibleItemCount)*100) / totalItemCount;
+                    Log.d(App.TAG, "Progress " + progress );
+
+                    progressBar.setProgress(progress);
+                }
+
+            }
+        });
 
 
         registerForContextMenu(listView);
@@ -307,6 +341,8 @@ public abstract class BaseWordListFragment extends Fragment
 //            LoadWord(0);
 //        }
 //    }
+
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item)
