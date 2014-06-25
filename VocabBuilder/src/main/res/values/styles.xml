@@ -13,7 +13,8 @@
 
         <!--<item name="android:listViewStyle">@style/ListViewDark</item>-->
         <item name="listBackgroundColor">@android:color/black</item>
-
+        <item name="drawerlistBackgroundColor">@drawable/activated_background</item>
+        <item name="android:activatedBackgroundIndicator">@drawable/activated_background</item>
         <!--<item name="android:actionBarWidgetTheme">@style/Theme.AppCompat</item>-->
         <!--<item name="actionBarWidgetTheme">@style/Theme.AppCompat</item>-->
         <!--<item name="android:spinnerDropDownItemStyle">@style/Dark.Widget.DropDownItem.Spinner</item>-->
@@ -24,6 +25,8 @@
     <style name="Light" parent="@style/Theme.AppCompat.Light.DarkActionBar">
         <!--<item name="android:listViewStyle">@style/ListViewLight</item>-->
         <item name="listBackgroundColor">@android:color/white</item>
+        <item name="drawerlistBackgroundColor">@drawable/activated_background_light</item>
+        <item name="android:activatedBackgroundIndicator">@drawable/activated_background</item>
         <!--<item name="android:actionBarWidgetTheme">@style/Theme.AppCompat.Light.DarkActionBar</item>-->
         <!--<item name="actionBarWidgetTheme">@style/Theme.AppCompat.Light.DarkActionBar</item>-->
         <!--<item name="android:spinnerDropDownItemStyle">@style/Light.Widget.DropDownItem.Spinner</item>-->

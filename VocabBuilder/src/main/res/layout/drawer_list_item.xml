@@ -6,6 +6,6 @@
     android:gravity="center_vertical"
     android:paddingLeft="16dp"
 
-    android:background="?attr/listBackgroundColor"
+    android:background="?attr/drawerlistBackgroundColor"
 
     android:minHeight="?android:attr/listPreferredItemHeightSmall"/>

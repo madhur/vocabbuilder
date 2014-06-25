@@ -16,6 +16,7 @@
 
     <declare-styleable name="customAttrs">
         <attr name="listBackgroundColor" format="reference" />
+        <attr name="drawerlistBackgroundColor" format="reference" />
     </declare-styleable>
 
 
