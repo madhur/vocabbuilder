@@ -1,6 +1,5 @@
 package in.co.madhur.vocabbuilder;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.ActionBarDrawerToggle;
@@ -14,9 +13,9 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-import java.util.List;
-
 import de.keyboardsurfer.android.widget.crouton.Crouton;
+import in.co.madhur.vocabbuilder.fragments.HiddenWordListFragment;
+import in.co.madhur.vocabbuilder.fragments.RecentWordListFragment;
 import in.co.madhur.vocabbuilder.fragments.WordListFragment;
 import in.co.madhur.vocabbuilder.service.Alarms;
 
@@ -89,6 +88,22 @@ public class MainActivity extends BaseActivity implements ActionBar.OnNavigation
 
         getSupportActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
 
+//        getSupportFragmentManager().addOnBackStackChangedListener(new FragmentManager.OnBackStackChangedListener()
+//        {
+//            @Override
+//            public void onBackStackChanged()
+//            {
+//
+//                int backStackEntryCount =
+//                        getSupportFragmentManager().getBackStackEntryCount();
+//                Log.d(App.TAG, "onBackStackChanged" + String.valueOf(backStackEntryCount));
+//                mDrawerToggle.setDrawerIndicatorEnabled(backStackEntryCount ==0);
+//                getSupportActionBar().setDisplayHomeAsUpEnabled(backStackEntryCount ==0);
+//
+//
+//            }
+//        });
+
         ArrayAdapter<CharSequence> someAdapter = new
                 ArrayAdapter<CharSequence>(getSupportActionBar().getThemedContext(), R.layout.support_simple_spinner_dropdown_item,
                 android.R.id.text1, getResources().getStringArray(R.array.spinner_items));
@@ -115,6 +130,7 @@ public class MainActivity extends BaseActivity implements ActionBar.OnNavigation
 
 
     }
+
 
 
 
@@ -156,6 +172,15 @@ public class MainActivity extends BaseActivity implements ActionBar.OnNavigation
         return super.onOptionsItemSelected(item);
     }
 
+//    @Override
+//    public void onBackPressed()
+//    {
+//        super.onBackPressed();
+//
+//        mDrawerToggle.setDrawerIndicatorEnabled(true);
+//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+//    }
+
     @Override
     public boolean onNavigationItemSelected(int itemPosition, long itemId)
     {
@@ -165,27 +190,61 @@ public class MainActivity extends BaseActivity implements ActionBar.OnNavigation
           //  return false;
         }
 
-        WordListFragment wordFragment;
+
+
+
+
         SPINNER_ITEMS item = SPINNER_ITEMS.values()[itemPosition];
 
-        List<Fragment> fragments = getSupportFragmentManager().getFragments();
-        if (fragments != null && fragments.size() > 0)
+        if(item==SPINNER_ITEMS.RECENT)
         {
-            wordFragment = (WordListFragment) getSupportFragmentManager().getFragments().get(0);
 
-            if (item == SPINNER_ITEMS.ACTIVE)
-                wordFragment.LoadWord(0);
-            else if (item == SPINNER_ITEMS.HIDDEN)
-                wordFragment.LoadHiddenWords();
-            else if (item == SPINNER_ITEMS.RECENT)
-                wordFragment.LoadRecents();
+            mDrawerToggle.setDrawerIndicatorEnabled(false);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+            mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+            getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, new RecentWordListFragment()).commit();
 
         }
-        else
+        else if(item==SPINNER_ITEMS.HIDDEN)
         {
-            wordFragment = new WordListFragment();
-            LoadMainFragment(wordFragment, item);
+            mDrawerToggle.setDrawerIndicatorEnabled(false);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+            mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+            getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, new HiddenWordListFragment()).commit();
+
         }
+        else if(item==SPINNER_ITEMS.ACTIVE)
+        {
+            mDrawerToggle.setDrawerIndicatorEnabled(true);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+            getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, new WordListFragment()).commit();
+
+        }
+
+
+
+//        List<Fragment> fragments = getSupporuragmentManager().getFragments();
+//        if (fragments != null && fragments.size() > 0)
+//        {
+//            wordFragment = (WordListFragment) getSupportFragmentManager().getFragments().get(0);
+//
+//            if (item == SPINNER_ITEMS.ACTIVE)
+//                wordFragment.LoadWord(0);
+//            else if (item == SPINNER_ITEMS.HIDDEN)
+//                wordFragment.LoadHiddenWords();
+//            else if (item == SPINNER_ITEMS.RECENT)
+//            {
+//                mDrawerToggle.setDrawerIndicatorEnabled(false);
+//                wordFragment.LoadRecents();
+//            }
+//
+//        }
+//        else
+//        {
+//            wordFragment = new WordListFragment();
+//            LoadMainFragment(wordFragment, item);
+//        }
 
         return true;
     }
@@ -201,11 +260,11 @@ public class MainActivity extends BaseActivity implements ActionBar.OnNavigation
         }
     }
 
-    public void LoadMainFragment()
-    {
-        LoadMainFragment(SPINNER_ITEMS.ACTIVE);
-
-    }
+//    public void LoadMainFragment()
+//    {
+//        LoadMainFragment(SPINNER_ITEMS.ACTIVE);
+//
+//    }
 
     public void LoadMainFragment(SPINNER_ITEMS item)
     {

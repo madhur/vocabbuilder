@@ -1,0 +1,36 @@
+<!--
+  ~ Author: Madhur Ahuja
+  ~ Copyright (c) 2014.
+  -->
+
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:app="http://schemas.android.com/apk/res-auto"
+      xmlns:tools="http://schemas.android.com/tools"
+      tools:context="in.co.madhur.vocabbuilder.MainActivity">
+
+    <item
+        android:id="@+id/action_settings"
+        android:orderInCategory="100"
+        android:title="@string/action_settings"
+        app:showAsAction="never"/>
+
+    <item
+        android:id="@+id/action_search"
+        android:icon="@drawable/ic_action_search"
+        android:orderInCategory="100"
+        android:title="@string/action_search"
+        app:actionViewClass="android.support.v7.widget.SearchView"
+        app:showAsAction="collapseActionView|always"/>
+
+    <item
+        android:id="@+id/action_sort"
+        android:icon="@drawable/ic_action_sort_by_size"
+        android:orderInCategory="100"
+        android:title="@string/action_sort"
+
+        app:showAsAction="ifRoom"/>
+
+    <group android:id="@+id/group_pro" android:visible="false">
+
+    </group>
+</menu>
