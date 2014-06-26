@@ -37,6 +37,7 @@ public class AppPreferences
         ALLOW_MULTIPLE_NOTIFICATIONS("allow_multiple_notifications"),
         NOTIFICATION_SCREEN_ON("notification_screen_on"),
         FOLLOW_TWITTER("follow_twitter"),
+        LIST_POSITION("list_position_"),
         ACTION_ABOUT("action_about");
 
 
@@ -57,6 +58,19 @@ public class AppPreferences
         return sharedPreferences.getBoolean(Keys.ENABLE_PRO.key, context.getResources().getBoolean(R.bool.enable_pro_default));
 
     }
+
+    public void SaveListPosition(int letter, int position)
+    {
+        SharedPreferences.Editor edit = sharedPreferences.edit();
+        edit.putInt(Keys.LIST_POSITION.key+String.valueOf(letter), position);
+        edit.commit();
+    }
+
+    public int GetListPosition(int letter)
+    {
+        return sharedPreferences.getInt(Keys.LIST_POSITION.key+String.valueOf(letter), -1);
+    }
+
 
     public boolean IsWakelockEnabled()
     {

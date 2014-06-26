@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="tokenautocomplete-1.2">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/VocabBuilder/libs/tokenautocomplete-1.2.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

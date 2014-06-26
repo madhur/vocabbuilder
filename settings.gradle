@@ -1,2 +1,3 @@
-include ':VocabBuilder'
+include ':VocabBuilder', ':android-swipelistview'
 include ':libraries:android-support-v4-preferencefragment'
+project(':android-swipelistview').projectDir = new File('libraries/android-swipelistview')
