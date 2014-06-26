@@ -17,6 +17,10 @@ public class WordListFragment extends BaseWordListFragment
         super.onActivityCreated(savedInstanceState);
 
         LoadWord(0);
+
+        setCurrentLetter(0);
+
+        RestoreListPosition();
     }
 
 //    public void LoadWord(String startLetter)
@@ -29,8 +33,12 @@ public class WordListFragment extends BaseWordListFragment
     public void LoadWord(int position)
     {
 
+        if(getCurrentLetter()!=-1)
+            SaveListPosition();
+
         new GetWords(Consts.SPINNER_ITEMS.ACTIVE).execute(String.valueOf(Consts.LISTS.values()[position]));
 
+        setCurrentLetter(position);
     }
 
 

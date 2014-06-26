@@ -55,6 +55,7 @@ public abstract class BaseWordListFragment extends Fragment
     private SwipeListView listView;
     private AppPreferences appPreferences;
     private ProgressBar progressBar;
+    private int currentLetter=-1;
 //    private Parcelable mListState = null;
 //    private static final String LIST_STATE = "listState";
 
@@ -212,9 +213,9 @@ public abstract class BaseWordListFragment extends Fragment
             @Override
             public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount)
             {
-                Log.d(App.TAG, String.valueOf(firstVisibleItem));
-                Log.d(App.TAG, String.valueOf(visibleItemCount));
-                Log.d(App.TAG, String.valueOf(totalItemCount));
+//                Log.d(App.TAG, String.valueOf(firstVisibleItem));
+//                Log.d(App.TAG, String.valueOf(visibleItemCount));
+//                Log.d(App.TAG, String.valueOf(totalItemCount));
 
                 if (totalItemCount != 0)
                 {
@@ -225,7 +226,7 @@ public abstract class BaseWordListFragment extends Fragment
                     }
 
                     int progress =((firstVisibleItem+visibleItemCount)*100) / totalItemCount;
-                    Log.d(App.TAG, "Progress " + progress );
+//                    Log.d(App.TAG, "Progress " + progress );
 
                     progressBar.setProgress(progress);
                 }
@@ -247,15 +248,40 @@ public abstract class BaseWordListFragment extends Fragment
         Log.d(App.TAG, " WordListFragment: onResume ");
         getActivity().supportInvalidateOptionsMenu();
 
+
+        RestoreListPosition();
+
+
 //        if (mListState != null)
 //            listView.onRestoreInstanceState(mListState);
 //        mListState = null;
+    }
+
+    protected  void RestoreListPosition()
+    {
+        if (listView != null && appPreferences != null)
+        {
+            int pos=appPreferences.GetListPosition(currentLetter);
+
+            if(listView.getCount() > pos)
+                listView.setSelectionFromTop(pos, 0);
+        }
+        else
+            Log.d(App.TAG, "is null");
     }
 
     @Override
     public void onPause()
     {
         super.onPause();
+        SaveListPosition();
+    }
+
+    protected  void SaveListPosition()
+    {
+
+        if(listView!=null &&  appPreferences!=null)
+            appPreferences.SaveListPosition(currentLetter, listView.getFirstVisiblePosition());
     }
 
     @Override
@@ -504,7 +530,15 @@ public abstract class BaseWordListFragment extends Fragment
 
     }
 
+    protected int getCurrentLetter()
+    {
+        return currentLetter;
+    }
 
+    protected void setCurrentLetter(int currentLetter)
+    {
+        this.currentLetter = currentLetter;
+    }
 
 
     protected class GetWords extends AsyncTask<String, Integer, List<Word>>
@@ -576,6 +610,8 @@ public abstract class BaseWordListFragment extends Fragment
                     adapter.Sort(Consts.WORDS_SORT_ORDER.DATE);
 
                 listView.setAdapter(adapter);
+
+                RestoreListPosition();
             }
 
 
