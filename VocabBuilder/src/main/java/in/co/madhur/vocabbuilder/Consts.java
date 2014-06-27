@@ -48,7 +48,7 @@ public class Consts {
 
     public enum SPINNER_ITEMS
     {
-        ACTIVE,RECENT,HIDDEN
+        ACTIVE,RECENT, STARRED, UNSTARRED, HIDDEN
     }
 
 

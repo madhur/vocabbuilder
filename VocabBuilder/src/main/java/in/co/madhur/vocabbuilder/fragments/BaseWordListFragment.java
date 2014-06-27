@@ -569,6 +569,10 @@ public abstract class BaseWordListFragment extends Fragment
 
                 if(item== Consts.SPINNER_ITEMS.HIDDEN)
                     words = vocabDB.GetHiddenWords();
+                else if(item==Consts.SPINNER_ITEMS.STARRED)
+                    words = vocabDB.GetFilteredWords(Consts.SELECT_NOTIFICATION_WORDS.BOTH);
+                else if(item==Consts.SPINNER_ITEMS.UNSTARRED)
+                    words=vocabDB.GetFilteredWords(Consts.SELECT_NOTIFICATION_WORDS.UNSTARRED);
                 else if (params.length > 0 && !TextUtils.isEmpty(params[0]))
                 {
                     words = vocabDB.GetWords(params[0]);

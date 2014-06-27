@@ -52,16 +52,17 @@
                 android:summary="@string/enable_notifications_desc"
                 android:title="@string/enable_notifications"></CheckBoxPreference>
 
-            <CheckBoxPreference
-                android:defaultValue="@bool/allow_multiple_notifications_default"
-                android:key="allow_multiple_notifications"
-                android:summary="@string/allow_multiple_notifications_desc"
-                android:title="@string/allow_multiple_notifications">
+            <!--<CheckBoxPreference-->
+                <!--android:defaultValue="@bool/allow_multiple_notifications_default"-->
+                <!--android:key="allow_multiple_notifications"-->
+                <!--android:summary="@string/allow_multiple_notifications_desc"-->
+                <!--android:title="@string/allow_multiple_notifications">-->
 
-            </CheckBoxPreference>
+            <!--</CheckBoxPreference>-->
 
             <CheckBoxPreference
                 android:defaultValue="@bool/notification_screen_on_default"
+                android:dependency="enable_notifications"
                 android:key="notification_screen_on"
                 android:summary="@string/notification_screen_on_desc"
                 android:title="@string/notification_screen_on"></CheckBoxPreference>
@@ -77,6 +78,7 @@
 
             <ListPreference
                 android:defaultValue="@string/select_notification_words_default"
+                android:dependency="enable_notifications"
                 android:entries="@array/select_notification_words"
                 android:entryValues="@array/select_notification_words_values"
                 android:key="select_notification_words"

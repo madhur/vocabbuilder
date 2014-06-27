@@ -74,6 +74,8 @@
     <string-array name="spinner_items">
         <item>@string/active_words</item>
         <item>@string/recent_words</item>
+        <item>@string/starred</item>
+        <item>@string/unstarred</item>
         <item>@string/hidden_words</item>
 
     </string-array>
@@ -98,5 +100,6 @@
     <string name="active_words">Active Words</string>
     <string name="recent_words">Recent Words</string>
     <string name="hidden_words">Hidden Words</string>
+    <string name="starred">Starred Words</string>
 
 </resources>

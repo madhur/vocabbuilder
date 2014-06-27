@@ -11,25 +11,26 @@ import in.co.madhur.vocabbuilder.Consts;
 import in.co.madhur.vocabbuilder.R;
 
 /**
- * Created by madhur on 25-Jun-14.
+ * Created by madhur on 27-Jun-14.
  */
-public class RecentWordListFragment extends BaseWordListFragment
+public class UnStarredWordFragment extends BaseWordListFragment
 {
+
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState)
     {
         super.onActivityCreated(savedInstanceState);
-        LoadRecents();
+        LoadStarred();
 
     }
 
 
 
-    private void LoadRecents()
+    private void LoadStarred()
     {
 
-        new GetWords(Consts.SPINNER_ITEMS.RECENT).execute("");
+        new GetWords(Consts.SPINNER_ITEMS.UNSTARRED).execute("");
 
 
     }
@@ -37,7 +38,7 @@ public class RecentWordListFragment extends BaseWordListFragment
 
     @Override
     int GetMenu()
-        {
-            return R.menu.recent_menu;
+    {
+        return R.menu.recent_menu;
     }
 }

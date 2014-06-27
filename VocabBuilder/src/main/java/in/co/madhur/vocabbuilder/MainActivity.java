@@ -16,6 +16,8 @@ import android.widget.ListView;
 import de.keyboardsurfer.android.widget.crouton.Crouton;
 import in.co.madhur.vocabbuilder.fragments.HiddenWordListFragment;
 import in.co.madhur.vocabbuilder.fragments.RecentWordListFragment;
+import in.co.madhur.vocabbuilder.fragments.StarredWordFragment;
+import in.co.madhur.vocabbuilder.fragments.UnStarredWordFragment;
 import in.co.madhur.vocabbuilder.fragments.WordListFragment;
 import in.co.madhur.vocabbuilder.service.Alarms;
 
@@ -199,26 +201,33 @@ public class MainActivity extends BaseActivity implements ActionBar.OnNavigation
         if(item==SPINNER_ITEMS.RECENT)
         {
 
-            mDrawerToggle.setDrawerIndicatorEnabled(false);
-            getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-            mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+            LockDrawer(true);
             getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, new RecentWordListFragment()).commit();
 
         }
         else if(item==SPINNER_ITEMS.HIDDEN)
         {
-            mDrawerToggle.setDrawerIndicatorEnabled(false);
-            getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-            mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+            LockDrawer(true);
             getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, new HiddenWordListFragment()).commit();
 
         }
         else if(item==SPINNER_ITEMS.ACTIVE)
         {
-            mDrawerToggle.setDrawerIndicatorEnabled(true);
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+            LockDrawer(false);
             getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, new WordListFragment()).commit();
+
+        }
+        else if(item==SPINNER_ITEMS.STARRED)
+        {
+            LockDrawer(true);
+            getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, new StarredWordFragment()).commit();
+
+
+        }
+        else if(item==SPINNER_ITEMS.UNSTARRED)
+        {
+            LockDrawer(true);
+            getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, new UnStarredWordFragment()).commit();
 
         }
 
@@ -248,6 +257,24 @@ public class MainActivity extends BaseActivity implements ActionBar.OnNavigation
 
         return true;
     }
+
+
+    private void LockDrawer(boolean isLock)
+    {
+        mDrawerToggle.setDrawerIndicatorEnabled(!isLock);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(!isLock);
+
+        if(isLock)
+        {
+            mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+        }
+        else
+        {
+            mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+        }
+
+    }
+
 
 
     private class DrawerItemClickListener implements
