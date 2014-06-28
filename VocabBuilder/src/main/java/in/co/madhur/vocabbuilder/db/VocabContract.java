@@ -19,8 +19,10 @@ public class VocabContract
         public static final String MEANING="meaning";
         public static final String IS_HIDDEN="hidden";
         public static final String DIFFICULTY="difficulty";
-        public static final String SYNONYMS="synonyms";
-        public static final String SIMILAR="similar";
+        public static final String IS_USER="isUser";
+        public static final String SYN_GROUP="syn_group";
+        public static final String SIM_GROUP="sim_group";
+
 
     }
 
@@ -31,4 +33,6 @@ public class VocabContract
         public static final String DATE="date";
 
     }
+
+
 }

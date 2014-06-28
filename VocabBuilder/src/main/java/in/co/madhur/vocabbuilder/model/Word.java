@@ -19,6 +19,9 @@ public class Word implements Serializable
     private List<Word> synonyms;
     private List<Word> similar;
 
+    private int synGroup;
+    private int simGroup;
+
     public Word(String word, String meaning)
     {
         this.name = word;
@@ -32,9 +35,9 @@ public class Word implements Serializable
 
     public static Word findById(List<Word> words, int id)
     {
-        for(Word word: words )
+        for (Word word : words)
         {
-            if(word.getId()==id)
+            if (word.getId() == id)
             {
                 return word;
             }
@@ -129,11 +132,32 @@ public class Word implements Serializable
         this.similar = similar;
     }
 
+    public int getSynGroup()
+    {
+        return synGroup;
+    }
+
+    public void setSynGroup(int synGroup)
+    {
+        this.synGroup = synGroup;
+    }
+
+    public int getSimGroup()
+    {
+        return simGroup;
+    }
+
+    public void setSimGroup(int simGroup)
+    {
+        this.simGroup = simGroup;
+    }
+
     public static class NameSorter implements Comparator<Word>
     {
 
         @Override
-        public int compare(Word lhs, Word rhs) {
+        public int compare(Word lhs, Word rhs)
+        {
 
             return lhs.getName().compareTo(rhs.getName());
         }
@@ -147,9 +171,9 @@ public class Word implements Serializable
         @Override
         public int compare(Word lhs, Word rhs)
         {
-            if(lhs.getRating()< rhs.getRating())
+            if (lhs.getRating() < rhs.getRating())
                 return -1;
-            else if(lhs.getRating() > rhs.getRating())
+            else if (lhs.getRating() > rhs.getRating())
                 return 1;
             else
                 return 0;
@@ -163,12 +187,29 @@ public class Word implements Serializable
         @Override
         public int compare(Word lhs, Word rhs)
         {
-            if(lhs.getDate() < rhs.getDate())
+            if (lhs.getDate() < rhs.getDate())
                 return -1;
-            else if(lhs.getDate() > rhs.getDate())
+            else if (lhs.getDate() > rhs.getDate())
                 return 1;
             else
                 return 0;
         }
+    }
+
+    public static String join(Iterable<Word> elements)
+    {
+        return join(elements, ",");
+    }
+
+    private static String join(Iterable<Word> elements, String delimiter)
+    {
+        StringBuilder sb = new StringBuilder();
+        for (Word e : elements)
+        {
+            if (sb.length() > 0)
+                sb.append(delimiter);
+            sb.append(e.getId());
+        }
+        return sb.toString();
     }
 }
