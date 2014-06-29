@@ -79,5 +79,9 @@
     <string name="action_view">View</string>
     <string name="set">Set</string>
     <string name="dismiss">Close</string>
+    <string name="action_sortalpha_asc">Alphabetical (Asc)</string>
+    <string name="action_sortalpha_desc">Alphabetical (Desc)</string>
+    <string name="action_sortstar_asc">Starred (Asc)</string>
+    <string name="action_sortstar_desc">Starred (Desc)</string>
 
 </resources>

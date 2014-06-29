@@ -410,6 +410,8 @@ public abstract class BaseWordListFragment extends Fragment
     @Override
     public boolean onOptionsItemSelected(MenuItem item)
     {
+        Log.d(App.TAG, (String)item.getTitle());
+
         int id = item.getItemId();
 
         if (id == R.id.action_settings)
@@ -421,18 +423,18 @@ public abstract class BaseWordListFragment extends Fragment
         }
 
 
-        if (item.getItemId() == R.id.action_sort)
-        {
-
-            WordsAdapter wordApater = (WordsAdapter) listView.getAdapter();
-            if (wordApater != null)
-            {
-                wordApater.ToggleSort();
-            }
-
-            return true;
-
-        }
+//        if (item.getItemId() == R.id.action_sort)
+//        {
+//
+//            WordsAdapter wordApater = (WordsAdapter) listView.getAdapter();
+//            if (wordApater != null)
+//            {
+//                wordApater.ToggleSort();
+//            }
+//
+//            return true;
+//
+//        }
 
         if(item.getItemId() == R.id.action_add)
         {
@@ -455,7 +457,8 @@ public abstract class BaseWordListFragment extends Fragment
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater)
-    {
+   {
+
 
         inflater.inflate(GetMenu(), menu);
 

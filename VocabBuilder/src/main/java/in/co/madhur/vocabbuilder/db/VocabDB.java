@@ -402,7 +402,7 @@ public class VocabDB
     public Word GetSingleWord(int Id, boolean getRelatedwords) throws Exception
     {
         SQLiteDatabase database = db.getReadableDatabase();
-
+        Word word = null;
 
         try
         {
@@ -420,11 +420,13 @@ public class VocabDB
             if (c.moveToFirst())
             {
 
-                return GetWordFromCursor(database,  c, getRelatedwords, Id);
+                word= GetWordFromCursor(database,  c, getRelatedwords, Id);
 
             }
 
             c.close();
+
+
         }
         catch (Exception e)
         {
@@ -433,7 +435,7 @@ public class VocabDB
         }
 
 
-        return null;
+        return word;
     }
 
     private List<Word> GetSynonyms(SQLiteDatabase database, int WordId, int groupId) throws Exception
@@ -451,6 +453,8 @@ public class VocabDB
     private List<Word> GetSynonymsOrSimilar(SQLiteDatabase database, String colName, int WordId, int groupId) throws Exception
     {
         List<Word> words = new ArrayList<Word>();
+        if(groupId==-1)
+            return words;
 
         try
         {
@@ -521,7 +525,7 @@ public class VocabDB
 
         if (syonyms.size() == 0)
         {
-            groupId = 0;
+            groupId = -1;
 
         }
         else
