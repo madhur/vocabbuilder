@@ -259,12 +259,25 @@ public abstract class BaseWordListFragment extends Fragment
 
     protected  void RestoreListPosition()
     {
+        Log.d(App.TAG, "Restoring list position" + String.valueOf(currentLetter));
+
         if (listView != null && appPreferences != null)
         {
+
+            WordsAdapter adapter=(WordsAdapter)listView.getAdapter();
+
+            if(adapter!=null)
+            {
+                Log.d(App.TAG, appPreferences.GetSortOrder(currentLetter).name());
+                adapter.Sort(appPreferences.GetSortOrder(currentLetter));
+
+            }
+
             int pos=appPreferences.GetListPosition(currentLetter);
 
             if(listView.getCount() > pos)
                 listView.setSelectionFromTop(pos, 0);
+
         }
         else
             Log.d(App.TAG, "is null");
@@ -279,9 +292,19 @@ public abstract class BaseWordListFragment extends Fragment
 
     protected  void SaveListPosition()
     {
+        Log.d(App.TAG, "Saving list position" + String.valueOf(currentLetter));
 
         if(listView!=null &&  appPreferences!=null)
+        {
             appPreferences.SaveListPosition(currentLetter, listView.getFirstVisiblePosition());
+            WordsAdapter adapter=(WordsAdapter)listView.getAdapter();
+            if(adapter!=null)
+            {
+                Log.d(App.TAG, adapter.getActiveSortOrder().name());
+                appPreferences.SetSortOrder(currentLetter, adapter.getActiveSortOrder());
+            }
+
+        }
     }
 
     @Override
@@ -422,6 +445,52 @@ public abstract class BaseWordListFragment extends Fragment
             return true;
         }
 
+        if(id==R.id.action_sortalpha_asc)
+        {
+            WordsAdapter wordApater = (WordsAdapter) listView.getAdapter();
+            if (wordApater != null)
+            {
+                wordApater.Sort(Consts.WORDS_SORT_ORDER.ALPHABETICAL_ASC);
+            }
+
+            return true;
+        }
+         if(id==R.id.action_sortalpha_desc)
+        {
+            WordsAdapter wordApater = (WordsAdapter) listView.getAdapter();
+            if (wordApater != null)
+            {
+                wordApater.Sort(Consts.WORDS_SORT_ORDER.ALPHABETICAL_DESC);
+            }
+
+            return true;
+
+        }
+
+        if(id==R.id.action_sortstar_asc)
+        {
+
+            WordsAdapter wordApater = (WordsAdapter) listView.getAdapter();
+            if (wordApater != null)
+            {
+                wordApater.Sort(Consts.WORDS_SORT_ORDER.STARRED_ASC);
+            }
+
+            return true;
+        }
+
+        if(id==R.id.action_sortstar_desc)
+        {
+
+            WordsAdapter wordApater = (WordsAdapter) listView.getAdapter();
+            if (wordApater != null)
+            {
+                wordApater.Sort(Consts.WORDS_SORT_ORDER.STARRED_DESC);
+            }
+
+            return true;
+        }
+
 
 //        if (item.getItemId() == R.id.action_sort)
 //        {
@@ -453,7 +522,10 @@ public abstract class BaseWordListFragment extends Fragment
         return super.onOptionsItemSelected(item);
     }
 
-    abstract int GetMenu();
+    int GetMenu()
+    {
+        return R.menu.main;
+    }
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater)

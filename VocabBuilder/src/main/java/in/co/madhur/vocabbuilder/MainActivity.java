@@ -293,14 +293,14 @@ public class MainActivity extends BaseActivity implements ActionBar.OnNavigation
 //
 //    }
 
-    public void LoadMainFragment(SPINNER_ITEMS item)
-    {
-        WordListFragment wordFragment = new WordListFragment();
-
-        LoadMainFragment(wordFragment, item);
-
-
-    }
+//    public void LoadMainFragment(SPINNER_ITEMS item)
+//    {
+//        WordListFragment wordFragment = new WordListFragment();
+//
+//        LoadMainFragment(wordFragment, item);
+//
+//
+//    }
 
 //    public void LoadWordFragment()
 //    {
@@ -308,17 +308,17 @@ public class MainActivity extends BaseActivity implements ActionBar.OnNavigation
 //        getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, fragment).commit();
 //    }
 
-    public void LoadMainFragment(Fragment wordFragment, SPINNER_ITEMS item)
-    {
-
-        Bundle data = new Bundle();
-        data.putInt(Consts.SPINNER_ITEMS.class.getName(), item.ordinal());
-        wordFragment.setArguments(data);
-
-        getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, wordFragment).commit();
-
-
-    }
+//    public void LoadMainFragment(Fragment wordFragment, SPINNER_ITEMS item)
+//    {
+//
+//        Bundle data = new Bundle();
+//        data.putInt(Consts.SPINNER_ITEMS.class.getName(), item.ordinal());
+//        wordFragment.setArguments(data);
+//
+//        getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, wordFragment).commit();
+//
+//
+//    }
 
 
     @Override

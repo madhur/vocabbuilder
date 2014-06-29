@@ -3,6 +3,7 @@ package in.co.madhur.vocabbuilder;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.util.Log;
 
 /**
  * Created by madhur on 19-Jun-14.
@@ -24,7 +25,7 @@ public class AppPreferences
     {
         ENABLE_PRO("enable_pro"),
 
-        WORDS_SORT_ORDER("words_sort_order"),
+        WORDS_SORT_ORDER("words_sort_order_"),
         WORDS_MODE("words_mode"),
         ENABLE_NOTIFICATIONS("enable_notifications"),
         ENABLE_LED("enable_led"),
@@ -34,7 +35,7 @@ public class AppPreferences
         SELECT_NOTIFICATION_WORDS("select_notification_words"),
         PICK_THEME("pick_theme"),
         LAST_NOTIFICATION_TIME("last_notification_time"),
-        ALLOW_MULTIPLE_NOTIFICATIONS("allow_multiple_notifications"),
+//        ALLOW_MULTIPLE_NOTIFICATIONS("allow_multiple_notifications"),
         NOTIFICATION_SCREEN_ON("notification_screen_on"),
         FOLLOW_TWITTER("follow_twitter"),
         LIST_POSITION("list_position_"),
@@ -78,11 +79,11 @@ public class AppPreferences
         return sharedPreferences.getBoolean(Keys.NOTIFICATION_SCREEN_ON.key, context.getResources().getBoolean(R.bool.notification_screen_on_default));
     }
 
-    public boolean IsMultipleNotifications()
-    {
-        return sharedPreferences.getBoolean(Keys.ALLOW_MULTIPLE_NOTIFICATIONS.key, context.getResources().getBoolean(R.bool.allow_multiple_notifications_default));
-
-    }
+//    public boolean IsMultipleNotifications()
+//    {
+//        return sharedPreferences.getBoolean(Keys.ALLOW_MULTIPLE_NOTIFICATIONS.key, context.getResources().getBoolean(R.bool.allow_multiple_notifications_default));
+//
+//    }
 
 
     public Consts.THEME GetTheme()
@@ -92,12 +93,20 @@ public class AppPreferences
 
     }
 
-    public Consts.WORDS_SORT_ORDER GetSortOrder()
+    public Consts.WORDS_SORT_ORDER GetSortOrder(int letter)
     {
-        int sortOrder = Integer.parseInt(sharedPreferences.getString(Keys.WORDS_SORT_ORDER.key, context.getResources().getString(R.string.words_sort_order_default)));
+
+        int sortOrder = sharedPreferences.getInt(Keys.WORDS_SORT_ORDER.key+String.valueOf(letter), Integer.parseInt(context.getResources().getString(R.string.words_sort_order_default)));
 
         return Consts.WORDS_SORT_ORDER.values()[sortOrder];
 
+    }
+
+    public void SetSortOrder(int letter, Consts.WORDS_SORT_ORDER order)
+    {
+        SharedPreferences.Editor edit = sharedPreferences.edit();
+        edit.putInt(Keys.WORDS_SORT_ORDER.key+String.valueOf(letter), order.ordinal());
+        edit.commit();
     }
 
     public boolean IsNotificationEnabled()

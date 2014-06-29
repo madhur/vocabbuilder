@@ -35,9 +35,4 @@ public class RecentWordListFragment extends BaseWordListFragment
     }
 
 
-    @Override
-    int GetMenu()
-        {
-            return R.menu.recent_menu;
-    }
 }

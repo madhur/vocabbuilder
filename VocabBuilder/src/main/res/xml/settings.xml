@@ -11,13 +11,13 @@
 
         </CheckBoxPreference>
 
-        <ListPreference
-            android:defaultValue="@string/words_sort_order_default"
-            android:entries="@array/words_sort_order"
-            android:entryValues="@array/words_sort_order_values"
-            android:key="words_sort_order"
-            android:summary="@string/words_sort_order_desc"
-            android:title="@string/words_sort_order"></ListPreference>
+        <!--<ListPreference-->
+            <!--android:defaultValue="@string/words_sort_order_default"-->
+            <!--android:entries="@array/words_sort_order"-->
+            <!--android:entryValues="@array/words_sort_order_values"-->
+            <!--android:key="words_sort_order"-->
+            <!--android:summary="@string/words_sort_order_desc"-->
+            <!--android:title="@string/words_sort_order"></ListPreference>-->
 
         <ListPreference
             android:defaultValue="@string/pick_theme_default"

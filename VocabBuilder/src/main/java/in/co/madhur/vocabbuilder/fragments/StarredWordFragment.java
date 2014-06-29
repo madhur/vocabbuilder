@@ -36,9 +36,4 @@ public class StarredWordFragment extends BaseWordListFragment
     }
 
 
-    @Override
-    int GetMenu()
-    {
-        return R.menu.recent_menu;
-    }
 }

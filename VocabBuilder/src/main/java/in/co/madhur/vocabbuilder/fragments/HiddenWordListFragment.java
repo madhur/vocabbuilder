@@ -24,11 +24,6 @@ public class HiddenWordListFragment extends BaseWordListFragment
 
     }
 
-    @Override
-    int GetMenu()
-    {
-        return R.menu.hidden_menu;
-    }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState)
@@ -40,6 +35,6 @@ public class HiddenWordListFragment extends BaseWordListFragment
 
     public void LoadHiddenWords()
     {
-        new GetWords(Consts.SPINNER_ITEMS.HIDDEN).execute("hidden");
+        new GetWords(Consts.SPINNER_ITEMS.HIDDEN).execute();
     }
 }

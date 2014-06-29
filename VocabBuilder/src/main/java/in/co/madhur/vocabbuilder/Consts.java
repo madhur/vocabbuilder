@@ -33,7 +33,7 @@ public class Consts {
 
     public enum WORDS_SORT_ORDER
     {
-        ALPHABETICAL, DIFFICULTY, DATE
+        ALPHABETICAL_ASC, ALPHABETICAL_DESC, STARRED_ASC, STARRED_DESC, DATE
     }
 
     public enum THEME

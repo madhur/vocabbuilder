@@ -36,7 +36,7 @@ public class WordsAdapter extends BaseAdapter implements Filterable
     private List<Word> words, originalWords;
     private Context context;
     private ItemsFilter itemsFilter;
-    private Consts.WORDS_SORT_ORDER activeSortOrder;
+    private Consts.WORDS_SORT_ORDER activeSortOrder= Consts.WORDS_SORT_ORDER.ALPHABETICAL_ASC;
     private int displayedPosition=-1;
 
     public WordsAdapter(List<Word> words, Context context)
@@ -45,33 +45,9 @@ public class WordsAdapter extends BaseAdapter implements Filterable
         this.context = context;
         originalWords = new ArrayList<Word>();
 
-        setActiveSortOrder(new AppPreferences(context).GetSortOrder());
-
-        Sort();
-
-        for (Word word : words)
-        {
-            originalWords.add(word);
-        }
-
-    }
-
-    public WordsAdapter(List<Word> words, Context context, SPINNER_ITEMS item)
-    {
-        this.words = words;
-        this.context = context;
-        originalWords = new ArrayList<Word>();
-
-        if(item==SPINNER_ITEMS.RECENT)
-        {
-            setActiveSortOrder(Consts.WORDS_SORT_ORDER.DATE);
-        }
-        else
-        {
-            setActiveSortOrder(new AppPreferences(context).GetSortOrder());
-        }
-
-        Sort();
+//        setActiveSortOrder(new AppPreferences(context).GetSortOrder());
+//
+//        Sort();
 
         for (Word word : words)
         {
@@ -79,6 +55,30 @@ public class WordsAdapter extends BaseAdapter implements Filterable
         }
 
     }
+//
+//    public WordsAdapter(List<Word> words, Context context, SPINNER_ITEMS item)
+//    {
+//        this.words = words;
+//        this.context = context;
+//        originalWords = new ArrayList<Word>();
+//
+//        if(item==SPINNER_ITEMS.RECENT)
+//        {
+//            setActiveSortOrder(Consts.WORDS_SORT_ORDER.DATE);
+//        }
+//        else
+//        {
+//            setActiveSortOrder(new AppPreferences(context).GetSortOrder());
+//        }
+//
+//        Sort();
+//
+//        for (Word word : words)
+//        {
+//            originalWords.add(word);
+//        }
+//
+//    }
 
     @Override
     public long getItemId(int position)
@@ -106,7 +106,7 @@ public class WordsAdapter extends BaseAdapter implements Filterable
 
 
 
-        View view = null;
+        View view;
         final ViewHolder holder;
         if (convertView == null)
         {
@@ -251,31 +251,31 @@ public class WordsAdapter extends BaseAdapter implements Filterable
 
     }
 
-    public void ToggleSort()
-    {
+//    public void ToggleSort()
+//    {
+//
+//        if (getActiveSortOrder() == Consts.WORDS_SORT_ORDER.ALPHABETICAL)
+//        {
+//            Collections.sort(words, Collections.reverseOrder(new Word.RatingSorter()));
+//            setActiveSortOrder(Consts.WORDS_SORT_ORDER.DIFFICULTY);
+//        }
+//        else
+//        {
+//
+//            Collections.sort(words, new Word.NameSorter());
+//            setActiveSortOrder(Consts.WORDS_SORT_ORDER.ALPHABETICAL);
+//        }
+//
+//        notifyDataSetChanged();
+//
+//    }
 
-        if (getActiveSortOrder() == Consts.WORDS_SORT_ORDER.ALPHABETICAL)
-        {
-            Collections.sort(words, Collections.reverseOrder(new Word.RatingSorter()));
-            setActiveSortOrder(Consts.WORDS_SORT_ORDER.DIFFICULTY);
-        }
-        else
-        {
-
-            Collections.sort(words, new Word.NameSorter());
-            setActiveSortOrder(Consts.WORDS_SORT_ORDER.ALPHABETICAL);
-        }
-
-        notifyDataSetChanged();
-
-    }
-
-    public void Sort()
-    {
-
-        Sort(getActiveSortOrder());
-
-    }
+//    public void Sort()
+//    {
+//
+//        Sort(getActiveSortOrder());
+//
+//    }
 
     public void HideWord(int Id)
     {
@@ -287,18 +287,35 @@ public class WordsAdapter extends BaseAdapter implements Filterable
     public void Sort(Consts.WORDS_SORT_ORDER sortOrder)
     {
 
-        if (sortOrder == Consts.WORDS_SORT_ORDER.ALPHABETICAL)
+        if (sortOrder == Consts.WORDS_SORT_ORDER.ALPHABETICAL_ASC)
         {
             Collections.sort(words, new Word.NameSorter());
+            Collections.sort(originalWords, new Word.NameSorter());
+        }
+        else if(sortOrder== Consts.WORDS_SORT_ORDER.ALPHABETICAL_DESC)
+        {
+            Collections.sort(words, Collections.reverseOrder(new Word.NameSorter()));
+            Collections.sort(originalWords, Collections.reverseOrder(new Word.NameSorter()));
+        }
+        else if(sortOrder==Consts.WORDS_SORT_ORDER.STARRED_ASC)
+        {
+            Collections.sort(words, new Word.RatingSorter());
+            Collections.sort(originalWords, new Word.RatingSorter());
+        }
+        else if(sortOrder==Consts.WORDS_SORT_ORDER.STARRED_DESC)
+        {
+            Collections.sort(words, Collections.reverseOrder(new Word.RatingSorter()));
+            Collections.sort(originalWords, Collections.reverseOrder(new Word.RatingSorter()));
         }
         else if(sortOrder== Consts.WORDS_SORT_ORDER.DATE)
         {
             Collections.sort(words, Collections.reverseOrder(new Word.DateSorter()));
+            Collections.sort(originalWords, Collections.reverseOrder(new Word.DateSorter()));
         }
-        else
-        {
-            Collections.sort(words, Collections.reverseOrder(new Word.RatingSorter()));
-        }
+
+        setActiveSortOrder(sortOrder);
+
+        notifyDataSetChanged();
 
     }
 

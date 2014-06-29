@@ -36,9 +36,11 @@ public class WordListFragment extends BaseWordListFragment
         if(getCurrentLetter()!=-1)
             SaveListPosition();
 
-        new GetWords(Consts.SPINNER_ITEMS.ACTIVE).execute(String.valueOf(Consts.LISTS.values()[position]));
-
         setCurrentLetter(position);
+
+        new GetWords(Consts.SPINNER_ITEMS.ACTIVE).execute(String.valueOf(Consts.LISTS.values()[position]).toLowerCase());
+
+
     }
 
 

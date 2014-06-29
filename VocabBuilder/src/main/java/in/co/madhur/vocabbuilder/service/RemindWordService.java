@@ -120,8 +120,8 @@ public class RemindWordService extends WakefulIntentService
 
         Notifications notifications = new Notifications(this);
 
-        if(appPreferences.IsMultipleNotifications())
-            NOTIFICATION_ID++;
+//        if(appPreferences.IsMultipleNotifications())
+//            NOTIFICATION_ID++;
 
         NotificationCompat.Builder noti = notifications.GetNotificationBuilder(NOTIFICATION_ID, selectedWord.getId(), selectedWord.getName(), selectedWord.getMeaning(), selectedWord.getRating());
 
