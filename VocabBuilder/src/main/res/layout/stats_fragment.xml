@@ -1,0 +1,288 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+ android:background="?attr/listBackgroundColor"
+                android:layout_width="match_parent"
+                android:paddingTop="@dimen/padding_4x"
+                android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/statistics"
+        android:layout_width="wrap_content"
+        android:text="@string/statistics"
+
+        android:layout_centerHorizontal="true"
+        android:textSize="22sp"
+        android:layout_height="wrap_content"/>
+
+    <TableLayout
+        android:layout_below="@id/statistics"
+        android:id="@+id/wordsTable"
+        android:layout_centerHorizontal="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <TableRow
+            android:id="@+id/headerRow"
+            style="@style/BodyRow"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content">
+
+            <TextView
+                android:id="@+id/countTextView"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"></TextView>
+
+        </TableRow>
+
+        <TableRow
+            style="@style/BodyRow"
+            android:id="@+id/row1"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content">
+
+            <TextView
+                android:id="@+id/original_words"
+                android:text="@string/original_words"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"/>
+
+            <TextView
+                android:id="@+id/original_words_count"
+                style="@style/LastColumn"
+                android:text="123"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"/>
+
+        </TableRow>
+
+        <TableRow
+            style="@style/BodyRow"
+            android:id="@+id/row2"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content">
+
+            <TextView
+                android:id="@+id/custom_words"
+                android:text="@string/your_words"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"/>
+
+            <TextView
+                android:id="@+id/custom_words_count"
+                style="@style/LastColumn"
+                android:text="123"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"/>
+
+        </TableRow>
+
+        <TableRow
+            style="@style/BodyRow"
+            android:id="@+id/row3"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content">
+
+            <TextView
+                android:id="@+id/total_words"
+                android:text="@string/total_words"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"/>
+
+            <TextView
+                android:id="@+id/total_words_count"
+                style="@style/LastColumn"
+                android:text="123"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"/>
+
+        </TableRow>
+
+
+    </TableLayout>
+
+
+    <TableLayout
+        android:layout_below="@id/wordsTable"
+        android:id="@+id/statsTable"
+        android:layout_centerHorizontal="true"
+        android:paddingTop="@dimen/padding_4x"
+        android:layout_marginTop="@dimen/padding_4x"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <TableRow
+            android:id="@+id/headerRow1"
+            style="@style/BodyRow"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content">
+
+            <TextView
+                android:id="@+id/countTextView1" android:text="@string/word"
+                android:layout_height="wrap_content" android:textStyle="bold"
+                android:layout_width="wrap_content"></TextView>
+
+            <TextView
+                android:id="@+id/countTextView2" android:text="@string/count"
+                android:layout_height="wrap_content" android:textStyle="bold"
+                android:layout_width="wrap_content"
+                android:layout_marginLeft="@dimen/padding_4x"></TextView>
+
+            <TextView
+                android:id="@+id/countTextView3" android:text="@string/percent"
+                android:layout_height="wrap_content" android:textStyle="bold"
+                android:layout_width="wrap_content"
+                android:layout_marginLeft="@dimen/padding_4x"></TextView>
+
+
+        </TableRow>
+
+        <TableRow
+            style="@style/BodyRow"
+            android:id="@+id/row11"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content">
+
+            <TextView
+                android:id="@+id/starred_words"
+                android:drawableStart="@drawable/full_star"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"/>
+
+            <TextView
+                android:id="@+id/starred_words_count"
+                style="@style/LastColumn"
+                android:text="123"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"/>
+
+            <TextView
+                android:id="@+id/starred_words_percent"
+                style="@style/LastColumn"
+                android:text="123"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:paddingLeft="@dimen/padding_4x"/>
+
+        </TableRow>
+
+        <TableRow
+            style="@style/BodyRow"
+            android:id="@+id/row51"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content">
+
+            <TextView
+                android:id="@+id/halfstarred_words" android:drawableStart="@drawable/half_star"
+
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"/>
+
+            <TextView
+                android:id="@+id/halfstarred_words_count"
+                style="@style/LastColumn"
+                android:text="123"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"/>
+
+            <TextView
+                android:id="@+id/halfstarred_words_percent"
+                style="@style/LastColumn"
+                android:text="123"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:paddingLeft="@dimen/padding_4x"
+                />
+
+        </TableRow>
+
+        <TableRow
+            style="@style/BodyRow"
+            android:id="@+id/row21"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content">
+
+            <TextView
+                android:id="@+id/unstarred_words" android:drawableStart="@drawable/no_star"
+
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"/>
+
+            <TextView
+                android:id="@+id/unstarred_words_count"
+                style="@style/LastColumn"
+                android:text="123"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"/>
+
+            <TextView
+                android:id="@+id/unstarred_words_percent"
+                style="@style/LastColumn"
+                android:text="123"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"/>
+
+        </TableRow>
+
+        <TableRow
+            style="@style/BodyRow"
+            android:id="@+id/row31"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content">
+
+            <TextView
+                android:id="@+id/hidden_words"
+                android:text="@string/hidden_words"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"/>
+
+            <TextView
+                android:id="@+id/hidden_words_count"
+                style="@style/LastColumn"
+                android:text="123"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"/>
+
+            <TextView
+                android:id="@+id/hidden_words_percent"
+                style="@style/LastColumn"
+                android:text="123"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"/>
+
+        </TableRow>
+
+        <TableRow
+            style="@style/BodyRow"
+            android:id="@+id/row41"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content">
+
+            <TextView
+                android:id="@+id/notified_words"
+                android:text="@string/notified_words"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"/>
+
+            <TextView
+                android:id="@+id/notified_words_count"
+                style="@style/LastColumn"
+                android:text="123"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"/>
+
+            <TextView
+                android:id="@+id/notified_words_percent"
+                style="@style/LastColumn"
+                android:text="123"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"/>
+
+        </TableRow>
+
+
+
+    </TableLayout>
+
+
+</RelativeLayout>

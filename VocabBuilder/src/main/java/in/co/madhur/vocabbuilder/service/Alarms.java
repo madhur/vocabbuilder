@@ -16,7 +16,7 @@ import in.co.madhur.vocabbuilder.Consts;
 public class Alarms
 {
 
-    int REQUEST_CODE_WIDGET=0, REQUEST_CODE_ALARM=1;
+    int REQUEST_CODE_ALARM=1;
     private Context context;
     private AppPreferences appPreferences;
 
@@ -24,12 +24,12 @@ public class Alarms
     int LOWEST_RECUR_INTERVAL=300;
 //    int LOWEST_RECUR_INTERVAL=60;
 
-    public Alarms(Context context, AppPreferences appPreferences)
-    {
-
-        this.context=context;
-        this.appPreferences=appPreferences;
-    }
+//    public Alarms(Context context, AppPreferences appPreferences)
+//    {
+//
+//        this.context=context;
+//        this.appPreferences=appPreferences;
+//    }
 
     public Alarms(Context context)
     {
@@ -46,7 +46,7 @@ public class Alarms
 
         long recurInterval=LOWEST_RECUR_INTERVAL*1000;
 
-        alarmManager.setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, 0, recurInterval, GetPendingIntentAlarm(context) );
+        alarmManager.setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, recurInterval , recurInterval, GetPendingIntentAlarm(context) );
     }
 
     public boolean DoesAlarmExist()

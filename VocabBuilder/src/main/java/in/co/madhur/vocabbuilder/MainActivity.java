@@ -17,6 +17,7 @@ import de.keyboardsurfer.android.widget.crouton.Crouton;
 import in.co.madhur.vocabbuilder.fragments.HiddenWordListFragment;
 import in.co.madhur.vocabbuilder.fragments.RecentWordListFragment;
 import in.co.madhur.vocabbuilder.fragments.StarredWordFragment;
+import in.co.madhur.vocabbuilder.fragments.StatsFragment;
 import in.co.madhur.vocabbuilder.fragments.UnStarredWordFragment;
 import in.co.madhur.vocabbuilder.fragments.WordListFragment;
 import in.co.madhur.vocabbuilder.service.Alarms;
@@ -229,6 +230,11 @@ public class MainActivity extends BaseActivity implements ActionBar.OnNavigation
             LockDrawer(true);
             getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, new UnStarredWordFragment()).commit();
 
+        }
+        else if(item==SPINNER_ITEMS.STATS)
+        {
+            LockDrawer(true);
+            getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, new StatsFragment()).commit();
         }
 
 

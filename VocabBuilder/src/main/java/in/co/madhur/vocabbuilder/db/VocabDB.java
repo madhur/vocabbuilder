@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import in.co.madhur.vocabbuilder.App;
+import in.co.madhur.vocabbuilder.Consts;
 import in.co.madhur.vocabbuilder.model.Word;
 
 import static in.co.madhur.vocabbuilder.Consts.SELECT_NOTIFICATION_WORDS;
@@ -229,6 +230,43 @@ public class VocabDB
         return wordList;
     }
 
+    public int GetRecentWordCount() throws Exception
+    {
+        SQLiteDatabase database = db.getReadableDatabase();
+        int count;
+
+        //    String viewName = startLetter + "_VIEW";
+
+        try
+        {
+            Cursor c = database.query(VocabContract.RECENTS_VIEW, // The table to
+                    // query
+                    null, // The columns to return
+                    null, // The columns for the WHERE clause
+                    null, // The values for the WHERE clause
+                    null, // don't group the rows
+                    null, // don't filter by row groups
+                    null // The sort order
+            );
+
+            count=c.getCount();
+
+            if (c.moveToFirst())
+            {
+
+            }
+
+            c.close();
+        }
+        catch (Exception e)
+        {
+            Log.e(App.TAG, e.getMessage());
+            throw e;
+        }
+
+        return count;
+    }
+
 
     public List<Word> GetAllWords() throws Exception
     {
@@ -267,6 +305,74 @@ public class VocabDB
         }
 
         return wordList;
+    }
+
+    public int GetWordsCount(int wordType) throws Exception
+    {
+        SQLiteDatabase database = db.getReadableDatabase();
+        int count=0;
+
+
+        try
+
+        {
+            Cursor c = database.query(VocabContract.Words.TABLE_NAME, // The table to
+                    // query
+                    null, // The columns to return
+                    VocabContract.Words.IS_USER+"="+ String.valueOf(wordType), // The columns for the WHERE clause
+                    null, // The values for the WHERE clause
+                    null, // don't group the rows
+                    null, // don't filter by row groups
+                    null // The sort order
+            );
+
+           count= c.getCount();
+
+
+
+            c.close();
+        }
+        catch (Exception e)
+        {
+            Log.e(App.TAG, e.getMessage());
+            throw e;
+        }
+
+        return count;
+    }
+
+    public int GetStarredWordsCount(Consts.STAR star) throws Exception
+    {
+        SQLiteDatabase database = db.getReadableDatabase();
+        int count=0;
+
+
+        try
+
+        {
+            Cursor c = database.query(VocabContract.Words.TABLE_NAME, // The table to
+                    // query
+                    null, // The columns to return
+                    VocabContract.Words.DIFFICULTY+"="+ String.valueOf(star.ordinal()), // The columns for the WHERE clause
+                    null, // The values for the WHERE clause
+                    null, // don't group the rows
+                    null, // don't filter by row groups
+                    null // The sort order
+            );
+
+            count= c.getCount();
+
+
+
+            c.close();
+        }
+        catch (Exception e)
+        {
+            Log.e(App.TAG, e.getMessage());
+            throw e;
+        }
+
+        return count;
     }
 
 
@@ -401,6 +507,39 @@ public class VocabDB
 
         return wordList;
     }
+
+    public int GetHiddenWordCount() throws Exception
+    {
+        SQLiteDatabase database = db.getReadableDatabase();
+        int count;
+
+        try
+        {
+
+            Cursor c = database.query(VocabContract.Words.TABLE_NAME, // The table to
+                    // query
+                    null, // The columns to return
+                    VocabContract.Words.IS_HIDDEN + "=1",
+                    null, // The values for the WHERE clause
+                    null, // don't group the rows
+                    null, // don't filter by row groups
+                    null // The sort order
+            );
+
+            count=c.getCount();
+
+            c.close();
+        }
+        catch (Exception e)
+        {
+            Log.e(App.TAG, e.getMessage());
+            throw e;
+        }
+
+
+        return count;
+    }
+
 
     public Word GetSingleWord(int Id) throws Exception
     {
@@ -772,6 +911,12 @@ public class VocabDB
 
         singleWord.setSynGroup(c.getInt(c.getColumnIndexOrThrow(VocabContract.Words.SYN_GROUP)));
         singleWord.setSimGroup(c.getInt(c.getColumnIndexOrThrow(VocabContract.Words.SIM_GROUP)));
+
+        // Will throw on recents_View
+        if (c.getInt(c.getColumnIndex(VocabContract.Words.IS_USER)) == 1)
+            singleWord.setUserWord(true);
+        else
+            singleWord.setUserWord(false);
 
 
         return singleWord;

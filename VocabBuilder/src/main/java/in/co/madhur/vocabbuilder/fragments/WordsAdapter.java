@@ -40,19 +40,6 @@ public class WordsAdapter extends BaseAdapter implements Filterable
     private int displayedPosition=-1;
     private Consts.WORDS_MODE wordMode;
 
-    public WordsAdapter(List<Word> words, Context context)
-    {
-        this.words = words;
-        this.context = context;
-        originalWords = new ArrayList<Word>();
-
-
-        for (Word word : words)
-        {
-            originalWords.add(word);
-        }
-
-    }
 
     public WordsAdapter(List<Word> words, Context context, Consts.WORDS_MODE wordMode)
     {
@@ -69,30 +56,7 @@ public class WordsAdapter extends BaseAdapter implements Filterable
         this.wordMode=wordMode;
 
     }
-//
-//    public WordsAdapter(List<Word> words, Context context, SPINNER_ITEMS item)
-//    {
-//        this.words = words;
-//        this.context = context;
-//        originalWords = new ArrayList<Word>();
-//
-//        if(item==SPINNER_ITEMS.RECENT)
-//        {
-//            setActiveSortOrder(Consts.WORDS_SORT_ORDER.DATE);
-//        }
-//        else
-//        {
-//            setActiveSortOrder(new AppPreferences(context).GetSortOrder());
-//        }
-//
-//        Sort();
-//
-//        for (Word word : words)
-//        {
-//            originalWords.add(word);
-//        }
-//
-//    }
+
 
     @Override
     public long getItemId(int position)

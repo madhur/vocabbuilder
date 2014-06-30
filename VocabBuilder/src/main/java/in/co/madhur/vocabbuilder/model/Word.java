@@ -18,6 +18,7 @@ public class Word implements Serializable
     private long date;
     private List<Word> synonyms;
     private List<Word> similar;
+    private boolean isUserWord;
 
     private int synGroup;
     private int simGroup;
@@ -150,6 +151,16 @@ public class Word implements Serializable
     public void setSimGroup(int simGroup)
     {
         this.simGroup = simGroup;
+    }
+
+    public boolean isUserWord()
+    {
+        return isUserWord;
+    }
+
+    public void setUserWord(boolean isUserWord)
+    {
+        this.isUserWord = isUserWord;
     }
 
     public static class NameSorter implements Comparator<Word>

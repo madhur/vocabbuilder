@@ -77,6 +77,7 @@
         <item>@string/starred</item>
         <item>@string/unstarred</item>
         <item>@string/hidden_words</item>
+        <item>@string/statistics</item>
 
     </string-array>
 
