@@ -5,6 +5,7 @@
 
 package in.co.madhur.vocabbuilder.fragments;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -41,6 +42,7 @@ public class WordViewFragment extends Fragment
     private TextView word_meaning;
     private ListView synonymsListView, similarListView;
     protected int WordId;
+    private int EDIT_REQUEST_CODE=1;
 
     @Override
     public void onCreate(Bundle savedInstanceState)
@@ -82,10 +84,38 @@ public class WordViewFragment extends Fragment
     public void onActivityCreated(Bundle savedInstanceState)
     {
         super.onActivityCreated(savedInstanceState);
-        Word word = null;
+
 
         WordId = getArguments().getInt("id");
 
+        LoadWord(WordId);
+
+        synonymsListView.setOnItemClickListener(new AdapterView.OnItemClickListener()
+        {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id)
+            {
+                LaunchWord(synonymsListView, position);
+
+            }
+        });
+
+        similarListView.setOnItemClickListener(new AdapterView.OnItemClickListener()
+        {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id)
+            {
+                LaunchWord(similarListView, position);
+
+            }
+        });
+
+
+    }
+
+    private void LoadWord(int id)
+    {
+        Word word;
         VocabDB vocabDB = VocabDB.getInstance(getActivity());
 
         try
@@ -107,26 +137,6 @@ public class WordViewFragment extends Fragment
 
         synonymsListView.setAdapter(synonymsAdapter);
         similarListView.setAdapter(similarAdapter);
-
-        synonymsListView.setOnItemClickListener(new AdapterView.OnItemClickListener()
-        {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id)
-            {
-                LaunchWord(synonymsListView, position);
-
-            }
-        });
-
-        similarListView.setOnItemClickListener(new AdapterView.OnItemClickListener()
-        {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id)
-            {
-                LaunchWord(similarListView, position);
-
-            }
-        });
 
 
     }
@@ -167,7 +177,7 @@ public class WordViewFragment extends Fragment
             data.putInt("id", WordId);
             wordIntent.putExtras(data);
 
-            startActivity(wordIntent);
+            startActivityForResult(wordIntent, EDIT_REQUEST_CODE);
 
             return true;
         }
@@ -175,5 +185,23 @@ public class WordViewFragment extends Fragment
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        super.onActivityResult(requestCode, resultCode, data);
 
+        if(requestCode==EDIT_REQUEST_CODE && resultCode== Activity.RESULT_OK)
+        {
+            if(data!=null)
+            {
+                int WordId = data.getIntExtra("id", -1);
+                if (WordId != -1)
+                {
+                    LoadWord(WordId);
+
+                }
+            }
+
+        }
+    }
 }

@@ -5,6 +5,8 @@
 
 package in.co.madhur.vocabbuilder.fragments;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -20,6 +22,7 @@ import java.util.ArrayList;
 
 import de.keyboardsurfer.android.widget.crouton.Crouton;
 import de.keyboardsurfer.android.widget.crouton.Style;
+import in.co.madhur.vocabbuilder.Consts;
 import in.co.madhur.vocabbuilder.R;
 import in.co.madhur.vocabbuilder.controls.WordCompletionTextView;
 import in.co.madhur.vocabbuilder.db.VocabDB;
@@ -146,6 +149,10 @@ public class WordEditFragment extends BaseWordFragment
             {
                 e.printStackTrace();
             }
+
+            Intent resultIntent=new Intent();
+            resultIntent.putExtra("id", WordId);
+            getActivity().setResult(Activity.RESULT_OK, resultIntent);
 
             getActivity().finish();
 

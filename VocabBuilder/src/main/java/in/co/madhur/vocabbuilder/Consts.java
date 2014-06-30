@@ -25,6 +25,7 @@ public class Consts {
     public static final String TARGET_RATING="target_rating";
     public static final String TARGET_WORD="target_word";
 
+    public static final int UPDATE_RESULT_CODE=0;
 
     public enum STAR
     {
