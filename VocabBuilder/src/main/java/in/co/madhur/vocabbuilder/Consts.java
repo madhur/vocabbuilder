@@ -53,6 +53,12 @@ public class Consts {
     }
 
 
+    public enum WORDS_MODE
+    {
+
+        FLASHCARDS, DICTIONARY
+    }
+
 
     public enum LISTS
     {

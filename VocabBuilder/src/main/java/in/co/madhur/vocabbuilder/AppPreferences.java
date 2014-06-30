@@ -139,6 +139,14 @@ public class AppPreferences
 
     }
 
+    public Consts.WORDS_MODE GetLearningMode()
+    {
+
+        int setting = Integer.parseInt(sharedPreferences.getString(Keys.WORDS_MODE.key, context.getResources().getString(R.string.words_mode_default)));
+
+        return Consts.WORDS_MODE.values()[setting];
+    }
+
     public boolean getBoolMetadata(Keys key)
     {
         return sharedPreferences.getBoolean(key.key, true);

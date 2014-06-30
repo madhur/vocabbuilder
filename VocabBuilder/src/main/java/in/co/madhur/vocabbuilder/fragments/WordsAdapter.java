@@ -38,6 +38,7 @@ public class WordsAdapter extends BaseAdapter implements Filterable
     private ItemsFilter itemsFilter;
     private Consts.WORDS_SORT_ORDER activeSortOrder= Consts.WORDS_SORT_ORDER.ALPHABETICAL_ASC;
     private int displayedPosition=-1;
+    private Consts.WORDS_MODE wordMode;
 
     public WordsAdapter(List<Word> words, Context context)
     {
@@ -45,14 +46,27 @@ public class WordsAdapter extends BaseAdapter implements Filterable
         this.context = context;
         originalWords = new ArrayList<Word>();
 
-//        setActiveSortOrder(new AppPreferences(context).GetSortOrder());
-//
-//        Sort();
 
         for (Word word : words)
         {
             originalWords.add(word);
         }
+
+    }
+
+    public WordsAdapter(List<Word> words, Context context, Consts.WORDS_MODE wordMode)
+    {
+        this.words = words;
+        this.context = context;
+        originalWords = new ArrayList<Word>();
+
+
+        for (Word word : words)
+        {
+            originalWords.add(word);
+        }
+
+        this.wordMode=wordMode;
 
     }
 //
@@ -106,12 +120,16 @@ public class WordsAdapter extends BaseAdapter implements Filterable
 
 
 
-        View view;
+        View view=null;
+
         final ViewHolder holder;
         if (convertView == null)
         {
             LayoutInflater li = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            view = li.inflate(R.layout.word_item, parent, false);
+            if(wordMode== Consts.WORDS_MODE.FLASHCARDS)
+                view = li.inflate(R.layout.word_item, parent, false);
+            else if(wordMode==Consts.WORDS_MODE.DICTIONARY)
+                view = li.inflate(R.layout.word_item_dict, parent, false);
 
             holder = new ViewHolder();
             holder.word = (TextView) view.findViewById(R.id.word);
@@ -127,65 +145,6 @@ public class WordsAdapter extends BaseAdapter implements Filterable
             holder = (ViewHolder) view.getTag();
         }
 
-        LayoutedTextView ltTextview = (LayoutedTextView) holder.meaning;
-        ltTextview.setOnLayoutListener(new LayoutedTextView.OnLayoutListener()
-        {
-            @Override
-            public void onLayouted(TextView view)
-            {
-                int lineCount = view.getLineCount();
-
-                view.setTag(lineCount);
-            }
-        });
-
-        RelativeLayout rl = (RelativeLayout) view.findViewById(R.id.backview);
-        if (position == getDisplayedPosition())
-        {
-
-
-            if (rl != null)
-            {
-//                Log.d(App.TAG, "rl original height " + String.valueOf(rl.getHeight()));
-
-                LayoutedTextView tv = (LayoutedTextView) rl.findViewById(R.id.meaning);
-
-                if (tv != null)
-                {
-                    if (tv.getTag() != null)
-                    {
-                        int lineCount = (Integer) tv.getTag();
-//                        Log.d(App.TAG, "Lines " + String.valueOf(lineCount));
-
-
-                        if (lineCount > 1)
-                        {
-                            int desiredHeight = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 60 + 15 * lineCount, context.getResources().getDisplayMetrics());
-                            rl.getLayoutParams().height = desiredHeight;
-                        }
-                    }
-                }
-
-
-            }
-
-
-        }
-        else
-        {
-
-            if (rl != null)
-            {
-//                Log.d(App.TAG, "rl original height " + String.valueOf(rl.getHeight()));
-                int desiredHeight = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 60, context.getResources().getDisplayMetrics());
-
-
-                rl.getLayoutParams().height = desiredHeight;
-
-
-            }
-
-        }
 
 
 
@@ -195,6 +154,15 @@ public class WordsAdapter extends BaseAdapter implements Filterable
         holder.ratingBar.setTag(word.getId());
 
         holder.ratingBar.setRating((float) word.getRating() / 2);
+
+        holder.ratingBar.setOnFocusChangeListener(new View.OnFocusChangeListener()
+        {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus)
+            {
+
+            }
+        });
 
         holder.ratingBar.setOnTouchListener(new View.OnTouchListener()
         {
@@ -236,6 +204,70 @@ public class WordsAdapter extends BaseAdapter implements Filterable
         });
 
 
+        LayoutedTextView ltTextview = (LayoutedTextView) holder.meaning;
+        ltTextview.setOnLayoutListener(new LayoutedTextView.OnLayoutListener()
+        {
+            @Override
+            public void onLayouted(TextView view)
+            {
+                int lineCount = view.getLineCount();
+
+                view.setTag(lineCount);
+            }
+        });
+
+        if(wordMode== Consts.WORDS_MODE.FLASHCARDS)
+        {
+            RelativeLayout rl = (RelativeLayout) view.findViewById(R.id.backview);
+            if (position == getDisplayedPosition())
+            {
+
+
+                if (rl != null)
+                {
+
+
+                    LayoutedTextView tv = (LayoutedTextView) rl.findViewById(R.id.meaning);
+
+                    if (tv != null)
+                    {
+                        if (tv.getTag() != null)
+                        {
+                            int lineCount = (Integer) tv.getTag();
+
+
+                            if (lineCount > 1)
+                            {
+                                int desiredHeight = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 60 + 15 * lineCount, context.getResources().getDisplayMetrics());
+                                rl.getLayoutParams().height = desiredHeight;
+                            }
+                        }
+                    }
+
+
+                }
+
+
+            }
+            else
+            {
+
+                if (rl != null)
+                {
+
+                    int desiredHeight = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 60, context.getResources().getDisplayMetrics());
+
+
+                    rl.getLayoutParams().height = desiredHeight;
+
+
+                }
+
+            }
+        }
+
+
+
         return view;
     }
 
@@ -251,31 +283,7 @@ public class WordsAdapter extends BaseAdapter implements Filterable
 
     }
 
-//    public void ToggleSort()
-//    {
-//
-//        if (getActiveSortOrder() == Consts.WORDS_SORT_ORDER.ALPHABETICAL)
-//        {
-//            Collections.sort(words, Collections.reverseOrder(new Word.RatingSorter()));
-//            setActiveSortOrder(Consts.WORDS_SORT_ORDER.DIFFICULTY);
-//        }
-//        else
-//        {
-//
-//            Collections.sort(words, new Word.NameSorter());
-//            setActiveSortOrder(Consts.WORDS_SORT_ORDER.ALPHABETICAL);
-//        }
-//
-//        notifyDataSetChanged();
-//
-//    }
 
-//    public void Sort()
-//    {
-//
-//        Sort(getActiveSortOrder());
-//
-//    }
 
     public void HideWord(int Id)
     {

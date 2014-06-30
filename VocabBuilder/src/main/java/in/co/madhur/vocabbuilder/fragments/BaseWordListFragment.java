@@ -27,6 +27,7 @@ import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.Filter;
+import android.widget.ListView;
 import android.widget.ProgressBar;
 
 import com.fortysevendeg.swipelistview.BaseSwipeListViewListener;
@@ -52,10 +53,12 @@ import in.co.madhur.vocabbuilder.ui.WordActivity;
 public abstract class BaseWordListFragment extends Fragment
 {
 
-    private SwipeListView listView;
+    private ListView listView;
+
     private AppPreferences appPreferences;
     private ProgressBar progressBar;
     private int currentLetter=-1;
+    private Consts.WORDS_MODE wordMode;
 //    private Parcelable mListState = null;
 //    private static final String LIST_STATE = "listState";
 
@@ -68,6 +71,7 @@ public abstract class BaseWordListFragment extends Fragment
         super.onCreate(savedInstanceState);
 
         appPreferences = new AppPreferences(getActivity());
+        wordMode=appPreferences.GetLearningMode();
 
         setHasOptionsMenu(true);
 
@@ -79,25 +83,6 @@ public abstract class BaseWordListFragment extends Fragment
 
     }
 
-    @Override
-    public void onSaveInstanceState(Bundle outState)
-    {
-        super.onSaveInstanceState(outState);
-//        mListState = listView.onSaveInstanceState();
-//        outState.putParcelable(LIST_STATE, mListState);
-    }
-
-    @Override
-    public void onViewStateRestored(Bundle savedInstanceState)
-    {
-        super.onViewStateRestored(savedInstanceState);
-
-//        if(savedInstanceState!=null)
-//            if(savedInstanceState.containsKey(LIST_STATE))
-//                mListState = savedInstanceState.getParcelable(LIST_STATE);
-    }
-
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
@@ -106,100 +91,112 @@ public abstract class BaseWordListFragment extends Fragment
 
         View v = inflater.inflate(R.layout.word_fragment, container, false);
 
-        listView = (SwipeListView) v.findViewById(R.id.wordsListView);
+        if(wordMode== Consts.WORDS_MODE.FLASHCARDS)
+        {
+            listView = (SwipeListView) v.findViewById(R.id.wordsListView);
+
+        }
+        else if(wordMode==Consts.WORDS_MODE.DICTIONARY)
+        {
+            listView = (ListView) v.findViewById(R.id.wordsPlainListView);
+        }
+
+        listView.setVisibility(View.VISIBLE);
+
         progressBar=(ProgressBar)v.findViewById(R.id.scroll_progressbar);
 
 
-        listView.setSwipeListViewListener(new BaseSwipeListViewListener()
+        if(listView instanceof SwipeListView)
         {
-            @Override
-            public void onOpened(int position, boolean toRight)
+            ((SwipeListView) (listView)).setSwipeListViewListener(new BaseSwipeListViewListener()
             {
-                super.onOpened(position, toRight);
+                @Override
+                public void onOpened(int position, boolean toRight)
+                {
+                    super.onOpened(position, toRight);
 
-                WordsAdapter wordsAdapter = (WordsAdapter) listView.getAdapter();
-                wordsAdapter.setDisplayedPosition(position);
-                wordsAdapter.notifyDataSetChanged();
+                    WordsAdapter wordsAdapter = (WordsAdapter) listView.getAdapter();
+                    wordsAdapter.setDisplayedPosition(position);
+                    wordsAdapter.notifyDataSetChanged();
 
 
-            }
+                }
 
-            @Override
-            public void onClosed(int position, boolean fromRight)
+                @Override
+                public void onClosed(int position, boolean fromRight)
+                {
+                    super.onOpened(position, fromRight);
+
+                    WordsAdapter wordsAdapter = (WordsAdapter) listView.getAdapter();
+                    wordsAdapter.setDisplayedPosition(-1);
+                    wordsAdapter.notifyDataSetChanged();
+                }
+
+                @Override
+                public void onListChanged()
+                {
+                    super.onListChanged();
+                }
+
+                @Override
+                public void onMove(int position, float x)
+                {
+                    super.onMove(position, x);
+                }
+
+                @Override
+                public void onStartOpen(int position, int action, boolean right)
+                {
+                    Log.d("swipe", String.format("onStartOpen %d - action %d", position, action));
+                    super.onStartOpen(position, action, right);
+                }
+
+                @Override
+                public void onStartClose(int position, boolean right)
+                {
+                    Log.d("swipe", String.format("onStartClose %d", position));
+                    super.onStartClose(position, right);
+                }
+
+                @Override
+                public void onClickFrontView(int position)
+                {
+                    Log.d("swipe", String.format("onClickFrontView %d", position));
+                    super.onClickFrontView(position);
+                    LaunchWord(position);
+
+
+                }
+
+                @Override
+                public void onClickBackView(int position)
+                {
+                    Log.d("swipe", String.format("onClickBackView %d", position));
+
+                    //listView.closeAnimate(position);//when you touch back view it will close
+                    super.onClickFrontView(position);
+                }
+
+                @Override
+                public void onDismiss(int[] reverseSortedPositions)
+                {
+                    super.onDismiss(reverseSortedPositions);
+
+                }
+
+            });
+        }
+        else
+        {
+            listView.setOnItemClickListener(new AdapterView.OnItemClickListener()
             {
-                super.onOpened(position, fromRight);
-
-                WordsAdapter wordsAdapter = (WordsAdapter) listView.getAdapter();
-                wordsAdapter.setDisplayedPosition(-1);
-                wordsAdapter.notifyDataSetChanged();
-            }
-
-            @Override
-            public void onListChanged()
-            {
-                super.onListChanged();
-            }
-
-            @Override
-            public void onMove(int position, float x)
-            {
-                super.onMove(position, x);
-            }
-
-            @Override
-            public void onStartOpen(int position, int action, boolean right)
-            {
-                Log.d("swipe", String.format("onStartOpen %d - action %d", position, action));
-                super.onStartOpen(position, action, right);
-            }
-
-            @Override
-            public void onStartClose(int position, boolean right)
-            {
-                Log.d("swipe", String.format("onStartClose %d", position));
-                super.onStartClose(position, right);
-            }
-
-            @Override
-            public void onClickFrontView(int position)
-            {
-                Log.d("swipe", String.format("onClickFrontView %d", position));
-                WordsAdapter wordsAdapter = (WordsAdapter) listView.getAdapter();
-
-                Word word= (Word) wordsAdapter.getItem(position);
-
-
-                super.onClickFrontView(position);
-
-                Intent wordIntent=new Intent();
-                wordIntent.setClass(getActivity(), WordActivity.class);
-                wordIntent.setAction(Consts.ACTION_VIEW_WORD);
-
-                Bundle data=new Bundle();
-                data.putInt("id",word.getId());
-                wordIntent.putExtras(data);
-
-                startActivity(wordIntent);
-
-            }
-
-            @Override
-            public void onClickBackView(int position)
-            {
-                Log.d("swipe", String.format("onClickBackView %d", position));
-
-                //listView.closeAnimate(position);//when you touch back view it will close
-                super.onClickFrontView(position);
-            }
-
-            @Override
-            public void onDismiss(int[] reverseSortedPositions)
-            {
-                super.onDismiss(reverseSortedPositions);
-
-            }
-
-        });
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id)
+                {
+                    LaunchWord(position);
+                }
+            });
+        }
 
 
         listView.setOnScrollListener(new AbsListView.OnScrollListener()
@@ -213,9 +210,7 @@ public abstract class BaseWordListFragment extends Fragment
             @Override
             public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount)
             {
-//                Log.d(App.TAG, String.valueOf(firstVisibleItem));
-//                Log.d(App.TAG, String.valueOf(visibleItemCount));
-//                Log.d(App.TAG, String.valueOf(totalItemCount));
+
 
                 if (totalItemCount != 0)
                 {
@@ -226,7 +221,7 @@ public abstract class BaseWordListFragment extends Fragment
                     }
 
                     int progress =((firstVisibleItem+visibleItemCount)*100) / totalItemCount;
-//                    Log.d(App.TAG, "Progress " + progress );
+
 
                     progressBar.setProgress(progress);
                 }
@@ -241,20 +236,36 @@ public abstract class BaseWordListFragment extends Fragment
         return v;
     }
 
+    private void LaunchWord(int position)
+    {
+        WordsAdapter wordsAdapter = (WordsAdapter) listView.getAdapter();
+
+        Word word = (Word) wordsAdapter.getItem(position);
+
+
+
+
+        Intent wordIntent = new Intent();
+        wordIntent.setClass(getActivity(), WordActivity.class);
+        wordIntent.setAction(Consts.ACTION_VIEW_WORD);
+
+        Bundle data = new Bundle();
+        data.putInt("id", word.getId());
+        wordIntent.putExtras(data);
+
+        startActivity(wordIntent);
+    }
+
     @Override
     public void onResume()
     {
         super.onResume();
-        Log.d(App.TAG, " WordListFragment: onResume ");
+
         getActivity().supportInvalidateOptionsMenu();
 
 
         RestoreListPosition();
 
-
-//        if (mListState != null)
-//            listView.onRestoreInstanceState(mListState);
-//        mListState = null;
     }
 
     protected  void RestoreListPosition()
@@ -328,8 +339,7 @@ public abstract class BaseWordListFragment extends Fragment
             if(word!=null)
             {
 
-                //      menu.findItem(R.id.action_synonyms).setTitle(getString(R.string.action_synonyms) + " " + word.getName());
-                //     menu.findItem(R.id.action_similar).setTitle(getString(R.string.action_similar) + " " + word.getName());
+
                 menu.findItem(R.id.action_hide).setTitle(getString(R.string.action_hide) + " " + word.getName());
                 menu.findItem(R.id.action_edit).setTitle(getString(R.string.action_edit) + " " + word.getName());
                 menu.findItem(R.id.action_view).setTitle(getString(R.string.action_view) + " " + word.getName());
@@ -357,7 +367,7 @@ public abstract class BaseWordListFragment extends Fragment
                 {
                     VocabDB.getInstance(getActivity()).HideWord(word.getId());
 
-                    //LoadWord(word.getName().charAt(0));
+
 
                     WordsAdapter wordsAdapter = (WordsAdapter) listView.getAdapter();
                     wordsAdapter.HideWord(word.getId());
@@ -399,34 +409,6 @@ public abstract class BaseWordListFragment extends Fragment
         return super.onContextItemSelected(item);
     }
 
-//    @Override
-//    public void onActivityCreated(Bundle savedInstanceState)
-//    {
-//        super.onActivityCreated(savedInstanceState);
-//        Log.d(App.TAG, " WordListFragment: onActivityCreated ");
-//
-//        Bundle data=getArguments();
-//
-//        if(data!=null)
-//        {
-//            Log.d(App.TAG, " WordListFragment: onActivityCreated: data!=null ");
-//            Consts.SPINNER_ITEMS item= Consts.SPINNER_ITEMS.values()[data.getInt(Consts.SPINNER_ITEMS.class.getName())];
-//            Log.d(App.TAG, item.name());
-//
-//            if(item== Consts.SPINNER_ITEMS.ACTIVE)
-//
-//            else if(item== Consts.SPINNER_ITEMS.RECENT)
-//                LoadRecents();
-//            else if(item== Consts.SPINNER_ITEMS.HIDDEN)
-//                LoadHiddenWords();
-//
-//        }
-//        else
-//        {
-//            Log.d(App.TAG, " WordListFragment: onActivityCreated: data==null ");
-//            LoadWord(0);
-//        }
-//    }
 
 
 
@@ -492,28 +474,12 @@ public abstract class BaseWordListFragment extends Fragment
         }
 
 
-//        if (item.getItemId() == R.id.action_sort)
-//        {
-//
-//            WordsAdapter wordApater = (WordsAdapter) listView.getAdapter();
-//            if (wordApater != null)
-//            {
-//                wordApater.ToggleSort();
-//            }
-//
-//            return true;
-//
-//        }
-
         if(item.getItemId() == R.id.action_add)
         {
             Intent wordIntent = new Intent();
             wordIntent.setClass(getActivity(), WordActivity.class);
             wordIntent.setAction(Consts.ACTION_ADD_WORD);
 
-            //data=new Bundle();
-            // data.putInt("id", word.getId());
-            //wordIntent.putExtras(data);
 
             startActivity(wordIntent);
             return true;
@@ -683,7 +649,7 @@ public abstract class BaseWordListFragment extends Fragment
             super.onPostExecute(result);
             if (result != null)
             {
-                WordsAdapter adapter = new WordsAdapter(result, getActivity());
+                WordsAdapter adapter = new WordsAdapter(result, getActivity(), wordMode);
 
                 if(item== Consts.SPINNER_ITEMS.RECENT)
                     adapter.Sort(Consts.WORDS_SORT_ORDER.DATE);
