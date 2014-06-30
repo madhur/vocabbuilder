@@ -17,6 +17,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -107,7 +108,46 @@ public class WordViewFragment extends Fragment
         synonymsListView.setAdapter(synonymsAdapter);
         similarListView.setAdapter(similarAdapter);
 
+        synonymsListView.setOnItemClickListener(new AdapterView.OnItemClickListener()
+        {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id)
+            {
+                LaunchWord(synonymsListView, position);
 
+            }
+        });
+
+        similarListView.setOnItemClickListener(new AdapterView.OnItemClickListener()
+        {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id)
+            {
+                LaunchWord(similarListView, position);
+
+            }
+        });
+
+
+    }
+
+    private void LaunchWord(ListView listView, int position)
+    {
+
+        WordTokenAdapter wordsAdapter = (WordTokenAdapter) listView.getAdapter();
+
+        Word word= (Word) wordsAdapter.getItem(position);
+
+
+        Intent wordIntent=new Intent();
+        wordIntent.setClass(getActivity(), WordActivity.class);
+        wordIntent.setAction(Consts.ACTION_VIEW_WORD);
+
+        Bundle data=new Bundle();
+        data.putInt("id",word.getId());
+        wordIntent.putExtras(data);
+
+        startActivity(wordIntent);
     }
 
 

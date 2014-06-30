@@ -16,7 +16,7 @@
 
             <TabWidget
                 android:id="@android:id/tabs"
-                android:layout_width="fill_parent"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content" >
             </TabWidget>
 
@@ -28,26 +28,26 @@
                 <LinearLayout
                     android:id="@+id/tab1"
                     android:layout_width="match_parent"
-                    android:layout_height="fill_parent"
+                    android:layout_height="match_parent"
                     android:orientation="vertical" >
 
                   
 
                     <WebView
                         android:id="@+id/about_webview"
-                        android:layout_width="fill_parent"
-                        android:layout_height="fill_parent" />
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" />
                 </LinearLayout>
 
                 <LinearLayout
                     android:id="@+id/tab2"
                     android:layout_width="match_parent"
-                    android:layout_height="600dp"
+                    android:layout_height="match_parent"
                     android:orientation="vertical" >
                       <WebView
                         android:id="@+id/whatsnew_webview"
-                        android:layout_width="fill_parent"
-                        android:layout_height="fill_parent" />
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" />
                 </LinearLayout>
 
             </FrameLayout>

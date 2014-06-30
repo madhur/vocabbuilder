@@ -168,7 +168,7 @@ public abstract class BaseWordListFragment extends Fragment
 
                 Word word= (Word) wordsAdapter.getItem(position);
 
-                //listView.openAnimate(position); //when you touch front view it will open
+
                 super.onClickFrontView(position);
 
                 Intent wordIntent=new Intent();
