@@ -59,7 +59,10 @@ public class VocabDB
         try
 
         {
-            return database.update(VocabContract.Words.TABLE_NAME, values, VocabContract.Words.ID + "=" + Id, null);
+            if(Id!=-1)
+                return database.update(VocabContract.Words.TABLE_NAME, values, VocabContract.Words.ID + "=" + Id, null);
+            else
+                return database.update(VocabContract.Words.TABLE_NAME, values, null, null);
 
         }
         catch (Exception e)
@@ -75,6 +78,11 @@ public class VocabDB
         }
 
 
+    }
+
+    public int SetRating(int rating) throws Exception
+    {
+        return SetRating(-1, rating);
     }
 
     public int PutRecentWord(int Id) throws Exception

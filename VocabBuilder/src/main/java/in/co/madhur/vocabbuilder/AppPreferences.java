@@ -39,7 +39,10 @@ public class AppPreferences
         NOTIFICATION_SCREEN_ON("notification_screen_on"),
         FOLLOW_TWITTER("follow_twitter"),
         LIST_POSITION("list_position_"),
-        ACTION_ABOUT("action_about");
+        ACTION_ABOUT("action_about"),
+        REVERT_DATABASE("revert_database"),
+        STAR_ALL("star_all"),
+        UNSTAR_ALL("unstar_all");
 
 
         public final String key;

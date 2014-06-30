@@ -47,15 +47,16 @@ public class DbHelper extends SQLiteOpenHelper
     /**
      * Creates a empty database on the system and rewrites it with your own database.
      */
-    public void createDataBase() throws IOException
+    public void createDataBase(boolean forceCopy) throws IOException
     {
 
         boolean dbExist = checkDataBase();
 
-        if (dbExist)
+        if (dbExist && !forceCopy)
         {
             //do nothing - database already exist
-        } else
+        }
+        else
         {
             Log.v(App.TAG, "Creating database");
             //By calling this method and empty database will be created into the default system path
@@ -67,7 +68,8 @@ public class DbHelper extends SQLiteOpenHelper
 
                 copyDataBase();
 
-            } catch (IOException e)
+            }
+            catch (IOException e)
             {
 
                 throw new Error("Error copying database");
@@ -76,6 +78,12 @@ public class DbHelper extends SQLiteOpenHelper
         }
 
     }
+
+    public void createDataBase() throws IOException
+    {
+        createDataBase(false);
+    }
+
 
     /**
      * Check if the database already exist to avoid re-copying the file each time you open the application.
@@ -92,7 +100,8 @@ public class DbHelper extends SQLiteOpenHelper
             String myPath = DB_PATH + DB_NAME;
             checkDB = SQLiteDatabase.openDatabase(myPath, null, SQLiteDatabase.OPEN_READONLY);
 
-        } catch (SQLiteException e)
+        }
+        catch (SQLiteException e)
         {
 
             Log.e(App.TAG, "DB Doesn't exist yet");
@@ -155,7 +164,9 @@ public class DbHelper extends SQLiteOpenHelper
     {
 
         if (myDataBase != null)
+        {
             myDataBase.close();
+        }
 
         super.close();
 

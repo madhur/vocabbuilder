@@ -2,7 +2,7 @@
 <resources>
 
     <string name="app_name">Vocab Builder</string>
-    <string name="hello_world">Hello world!</string>
+
     <string name="action_settings">Settings</string>
     <string name="action_search">Search</string>
     <string name="action_sort">Sort</string>
@@ -11,7 +11,7 @@
     <string name="search_hint">Search</string>
 
     <string name="action_synonyms">Synonyms</string>
-    <string name="action_similar">Similar</string>
+    <string name="action_similar">Tagged</string>
     <string name="action_hide">Hide</string>
     <string name="enable_pro">Enable Pro Mode</string>
 
@@ -83,5 +83,16 @@
     <string name="action_sortalpha_desc">Alphabetical (Desc)</string>
     <string name="action_sortstar_asc">Starred (Asc)</string>
     <string name="action_sortstar_desc">Starred (Desc)</string>
+    <string name="misc">Miscellaneous</string>
+    <string name="misc_desc">Miscelleaneous Preferences</string>
+    <string name="revert_database">Revert Word database</string>
+    <string name="revert_database_desc">Revert word database to its original state. Caution: You will loose your added words, any customizations.</string>
+    <string name="star_all">Star All Words</string>
+    <string name="star_all_desc">Mark all words as starred</string>
+    <string name="unstar_all">Unstar all Words</string>
+    <string name="unstar_all_desc">Mark all words as unstarred</string>
+    <string name="star_all_msg">Are you sure you want to star all words ?</string>
+    <string name="unstar_all_msg">Are you sure you want to unstar all words?</string>
+    <string name="revert_database_msg">Are you sure you want to restore original word list?</string>
 
 </resources>

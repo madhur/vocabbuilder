@@ -12,12 +12,12 @@
         </CheckBoxPreference>
 
         <!--<ListPreference-->
-            <!--android:defaultValue="@string/words_sort_order_default"-->
-            <!--android:entries="@array/words_sort_order"-->
-            <!--android:entryValues="@array/words_sort_order_values"-->
-            <!--android:key="words_sort_order"-->
-            <!--android:summary="@string/words_sort_order_desc"-->
-            <!--android:title="@string/words_sort_order"></ListPreference>-->
+        <!--android:defaultValue="@string/words_sort_order_default"-->
+        <!--android:entries="@array/words_sort_order"-->
+        <!--android:entryValues="@array/words_sort_order_values"-->
+        <!--android:key="words_sort_order"-->
+        <!--android:summary="@string/words_sort_order_desc"-->
+        <!--android:title="@string/words_sort_order"></ListPreference>-->
 
         <ListPreference
             android:defaultValue="@string/pick_theme_default"
@@ -53,10 +53,10 @@
                 android:title="@string/enable_notifications"></CheckBoxPreference>
 
             <!--<CheckBoxPreference-->
-                <!--android:defaultValue="@bool/allow_multiple_notifications_default"-->
-                <!--android:key="allow_multiple_notifications"-->
-                <!--android:summary="@string/allow_multiple_notifications_desc"-->
-                <!--android:title="@string/allow_multiple_notifications">-->
+            <!--android:defaultValue="@bool/allow_multiple_notifications_default"-->
+            <!--android:key="allow_multiple_notifications"-->
+            <!--android:summary="@string/allow_multiple_notifications_desc"-->
+            <!--android:title="@string/allow_multiple_notifications">-->
 
             <!--</CheckBoxPreference>-->
 
@@ -108,6 +108,35 @@
 
         </PreferenceScreen>
 
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/misc"
+        android:summary="@string/misc_desc">
+        <PreferenceScreen
+            android:title="@string/misc"
+            android:summary="@string/misc_desc"
+            android:key="misc">
+
+
+            <Preference
+                android:title="@string/star_all"
+                android:summary="@string/star_all_desc"
+                android:key="star_all"></Preference>
+            <Preference
+                android:title="@string/unstar_all"
+                android:summary="@string/unstar_all_desc"
+                android:key="unstar_all"></Preference>
+
+            <Preference
+                android:title="@string/revert_database"
+                android:summary="@string/revert_database_desc"
+                android:key="revert_database">
+
+            </Preference>
+
+        </PreferenceScreen>
 
     </PreferenceCategory>
 
