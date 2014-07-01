@@ -39,6 +39,7 @@ public class AppPreferences
         NOTIFICATION_SCREEN_ON("notification_screen_on"),
         FOLLOW_TWITTER("follow_twitter"),
         LIST_POSITION("list_position_"),
+        CURRENT_LETTER("current_letter"),
         ACTION_ABOUT("action_about"),
         REVERT_DATABASE("revert_database"),
         STAR_ALL("star_all"),
@@ -63,11 +64,18 @@ public class AppPreferences
 
     }
 
-    public void SaveListPosition(int letter, int position)
+    public void SaveListPosition(int letter, int position, Consts.WORDS_SORT_ORDER order)
     {
         SharedPreferences.Editor edit = sharedPreferences.edit();
         edit.putInt(Keys.LIST_POSITION.key+String.valueOf(letter), position);
+        edit.putInt(Keys.WORDS_SORT_ORDER.key+String.valueOf(letter), order.ordinal());
+        edit.putInt(Keys.CURRENT_LETTER.key, letter);
         edit.commit();
+    }
+
+    public int GetCurrentLetter()
+    {
+        return sharedPreferences.getInt(Keys.CURRENT_LETTER.key, 0);
     }
 
     public int GetListPosition(int letter)
@@ -105,12 +113,12 @@ public class AppPreferences
 
     }
 
-    public void SetSortOrder(int letter, Consts.WORDS_SORT_ORDER order)
-    {
-        SharedPreferences.Editor edit = sharedPreferences.edit();
-        edit.putInt(Keys.WORDS_SORT_ORDER.key+String.valueOf(letter), order.ordinal());
-        edit.commit();
-    }
+//    public void SetSortOrder(int letter, Consts.WORDS_SORT_ORDER order)
+//    {
+//        SharedPreferences.Editor edit = sharedPreferences.edit();
+//
+//        edit.commit();
+//    }
 
     public boolean IsNotificationEnabled()
     {

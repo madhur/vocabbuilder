@@ -210,7 +210,11 @@ public class BaseWordListFragment extends Fragment
             @Override
             public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount)
             {
-
+                if(totalItemCount==0)
+                {
+                    progressBar.setProgress(0);
+                    return;
+                }
 
                 if (totalItemCount != 0)
                 {
@@ -254,41 +258,62 @@ public class BaseWordListFragment extends Fragment
                 LoadData(item);
             }
         }
+        else
+        {
+           // LoadWord(0);
 
-        LoadWord(0);
+          //  setCurrentLetter(0);
 
-        setCurrentLetter(0);
-
-        RestoreListPosition();
+            // will be called on resume
+         //   RestoreListPosition();
+        }
     }
 
     public void LoadData(Consts.SPINNER_ITEMS item )
     {
 
+
         switch (item)
         {
             case RECENT:
+                if(getCurrentLetter()!=-1)
+                    SaveListPosition();
+
                 new GetWords(Consts.SPINNER_ITEMS.RECENT).execute("");
+
+                setCurrentLetter(-1);
                 break;
 
             case ACTIVE:
-                LoadWord(0);
 
-                setCurrentLetter(0);
-
-                RestoreListPosition();
+                LoadWord(appPreferences.GetCurrentLetter());
                 break;
 
             case HIDDEN:
+
+                if(getCurrentLetter()!=-1)
+                    SaveListPosition();
+
                 new GetWords(Consts.SPINNER_ITEMS.HIDDEN).execute();
+                setCurrentLetter(-1);
                 break;
 
             case STARRED:
+
+                if(getCurrentLetter()!=-1)
+                    SaveListPosition();
+
                 new GetWords(Consts.SPINNER_ITEMS.STARRED).execute("");
+                setCurrentLetter(-1);
                 break;
 
             case UNSTARRED:
+
+                if(getCurrentLetter()!=-1)
+                    SaveListPosition();
+
                 new GetWords(Consts.SPINNER_ITEMS.UNSTARRED).execute("");
+                setCurrentLetter(-1);
                 break;
 
 
@@ -339,9 +364,6 @@ public class BaseWordListFragment extends Fragment
 
         getActivity().supportInvalidateOptionsMenu();
 
-
-        RestoreListPosition();
-
     }
 
     protected  void RestoreListPosition()
@@ -350,6 +372,7 @@ public class BaseWordListFragment extends Fragment
 
         if (listView != null && appPreferences != null)
         {
+
 
             WordsAdapter adapter=(WordsAdapter)listView.getAdapter();
 
@@ -383,12 +406,12 @@ public class BaseWordListFragment extends Fragment
 
         if(listView!=null &&  appPreferences!=null)
         {
-            appPreferences.SaveListPosition(currentLetter, listView.getFirstVisiblePosition());
+            int listPos=listView.getFirstVisiblePosition(); //appPreferences.SaveListPosition(currentLetter, listView.getFirstVisiblePosition());
             WordsAdapter adapter=(WordsAdapter)listView.getAdapter();
             if(adapter!=null)
             {
-                Log.d(App.TAG, adapter.getActiveSortOrder().name());
-                appPreferences.SetSortOrder(currentLetter, adapter.getActiveSortOrder());
+                //appPreferences.SetSortOrder(currentLetter, adapter.getActiveSortOrder());
+                appPreferences.SaveListPosition(currentLetter, listPos, adapter.getActiveSortOrder());
             }
 
         }

@@ -153,6 +153,12 @@ public class MainActivity extends BaseActivity implements ActionBar.OnNavigation
 
         if(item==SPINNER_ITEMS.ACTIVE || item==SPINNER_ITEMS.RECENT || item==SPINNER_ITEMS.STARRED || item == SPINNER_ITEMS.UNSTARRED || item==SPINNER_ITEMS.HIDDEN)
         {
+            if(item==SPINNER_ITEMS.ACTIVE)
+                LockDrawer(false);
+            else
+                LockDrawer(true);
+
+
             if(getSupportFragmentManager().getFragments()!=null && getSupportFragmentManager().getFragments().size()>0)
             {
                 Fragment fragment = getSupportFragmentManager().getFragments().get(0);
