@@ -123,14 +123,17 @@ public class VocabDB
         return 0;
     }
 
-    public int HideWord(int Id) throws Exception
+    public int HideWord(int Id, boolean isHide) throws Exception
     {
 
         SQLiteDatabase database = db.getWritableDatabase();
 
         ContentValues values = new ContentValues();
         values.put(VocabContract.Words.ID, Id);
-        values.put(VocabContract.Words.IS_HIDDEN, 1);
+        if(isHide)
+            values.put(VocabContract.Words.IS_HIDDEN, 1);
+        else
+            values.put(VocabContract.Words.IS_HIDDEN, 0);
 
 
         try
@@ -154,6 +157,40 @@ public class VocabDB
         }
 
         return 0;
+    }
+
+    public int DeleteWord(int Id) throws Exception
+    {
+
+        SQLiteDatabase database = db.getWritableDatabase();
+
+
+        try
+
+        {
+
+            int rowsAffected = database.delete(VocabContract.Words.TABLE_NAME,  VocabContract.Words.ID + "=" + Id, null);
+
+
+        }
+        catch (Exception e)
+        {
+            Log.e(App.TAG, e.getMessage());
+            throw e;
+
+        }
+        finally
+        {
+
+            database.close();
+        }
+
+        return 0;
+    }
+
+    public int HideWord(int Id) throws Exception
+    {
+        return HideWord(Id, true);
     }
 
     public int UpdateRating(int Id, int targetRating) throws Exception
@@ -912,8 +949,8 @@ public class VocabDB
         singleWord.setSynGroup(c.getInt(c.getColumnIndexOrThrow(VocabContract.Words.SYN_GROUP)));
         singleWord.setSimGroup(c.getInt(c.getColumnIndexOrThrow(VocabContract.Words.SIM_GROUP)));
 
-        // Will throw on recents_View
-        if (c.getInt(c.getColumnIndex(VocabContract.Words.IS_USER)) == 1)
+
+        if (c.getInt(c.getColumnIndexOrThrow(VocabContract.Words.IS_USER)) == 1)
             singleWord.setUserWord(true);
         else
             singleWord.setUserWord(false);

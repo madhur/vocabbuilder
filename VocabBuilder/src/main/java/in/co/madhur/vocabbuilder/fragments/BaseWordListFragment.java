@@ -322,13 +322,14 @@ public abstract class BaseWordListFragment extends Fragment
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo)
     {
         super.onCreateContextMenu(menu, v, menuInfo);
+        boolean isPro=appPreferences.IsProMode();
 
         if (v.getId() == R.id.wordsListView)
         {
 
             getActivity().getMenuInflater().inflate(R.menu.context_menu, menu);
 
-            if(appPreferences.IsProMode())
+            if(isPro)
             {
                 menu.setGroupVisible(R.id.group_pro_context, true);
             }
@@ -339,14 +340,26 @@ public abstract class BaseWordListFragment extends Fragment
             if(word!=null)
             {
 
+                if(!word.isHidden())
+                    menu.findItem(R.id.action_hide).setTitle(getString(R.string.action_hide) + " " + word.getName());
+                else
+                    menu.findItem(R.id.action_hide).setTitle(getString(R.string.action_unhide) + " " + word.getName());
 
-                menu.findItem(R.id.action_hide).setTitle(getString(R.string.action_hide) + " " + word.getName());
+                if(word.isUserWord() && isPro)
+                {
+                    menu.findItem(R.id.action_delete).setTitle(getString(R.string.action_delete) + " " + word.getName());
+                    menu.findItem(R.id.action_delete).setVisible(true);
+                }
+                else
+                    menu.findItem(R.id.action_delete).setVisible(false);
+
                 menu.findItem(R.id.action_edit).setTitle(getString(R.string.action_edit) + " " + word.getName());
                 menu.findItem(R.id.action_view).setTitle(getString(R.string.action_view) + " " + word.getName());
             }
 
         }
     }
+
 
     @Override
     public boolean onContextItemSelected(MenuItem item)
@@ -365,7 +378,10 @@ public abstract class BaseWordListFragment extends Fragment
 
                 try
                 {
-                    VocabDB.getInstance(getActivity()).HideWord(word.getId());
+                    if(!word.isHidden())
+                        VocabDB.getInstance(getActivity()).HideWord(word.getId());
+                    else
+                        VocabDB.getInstance(getActivity()).HideWord(word.getId(), false);
 
 
 
@@ -404,6 +420,23 @@ public abstract class BaseWordListFragment extends Fragment
                 wordIntent.putExtras(data);
 
                 startActivity(wordIntent);
+                return true;
+
+            case R.id.action_delete:
+                try
+                {
+                    VocabDB.getInstance(getActivity()).DeleteWord(word.getId());
+
+                    WordsAdapter wordsAdapter = (WordsAdapter) listView.getAdapter();
+                    wordsAdapter.HideWord(word.getId());
+                    wordsAdapter.notifyDataSetChanged();
+                }
+                catch (Exception e)
+                {
+                    e.printStackTrace();
+                }
+
+                return true;
 
         }
         return super.onContextItemSelected(item);

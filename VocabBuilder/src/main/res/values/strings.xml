@@ -95,7 +95,7 @@
     <string name="unstar_all_msg">Are you sure you want to unstar all words?</string>
     <string name="revert_database_msg">Are you sure you want to restore original word list?</string>
     <string name="original_words">Original Words</string>
-    <string name="your_words">Custom Words</string>
+    <string name="your_words">Your Words</string>
     <string name="total_words">Total Words</string>
     <string name="statistics">Statistics</string>
     <string name="starred_words">Starred</string>
@@ -104,5 +104,8 @@
     <string name="count">Count</string>
     <string name="percent">Percent</string>
     <string name="halfstarred_words">HalfStarred</string>
+    <string name="hidden">Hidden</string>
+    <string name="action_unhide">Unhide</string>
+    <string name="action_delete">Delete</string>
 
 </resources>

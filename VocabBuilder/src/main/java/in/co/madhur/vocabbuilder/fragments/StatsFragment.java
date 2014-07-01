@@ -1,5 +1,6 @@
 package in.co.madhur.vocabbuilder.fragments;
 
+import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -7,6 +8,9 @@ import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -21,6 +25,7 @@ import in.co.madhur.vocabbuilder.AppPreferences;
 import in.co.madhur.vocabbuilder.Consts;
 import in.co.madhur.vocabbuilder.MainActivity;
 import in.co.madhur.vocabbuilder.R;
+import in.co.madhur.vocabbuilder.SettingsActivity;
 import in.co.madhur.vocabbuilder.db.VocabDB;
 import in.co.madhur.vocabbuilder.model.Word;
 
@@ -74,8 +79,30 @@ public class StatsFragment extends Fragment
         if(appPreferences.GetTheme()== Consts.THEME.DARK)
             activity.getSupportActionBar().setBackgroundDrawable(getActivity().getResources().getDrawable(android.support.v7.appcompat.R.drawable.abc_ab_transparent_dark_holo));
 
+        setHasOptionsMenu(true);
+
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater)
+    {
+        inflater.inflate(R.menu.stat_menu, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
+        if(item.getItemId()==R.id.action_settings)
+        {
+            Intent i = new Intent();
+            i.setClass(getActivity(), SettingsActivity.class);
+            startActivity(i);
+            return true;
 
 
+        }
+
+        return false;
     }
 
     private class GetWords extends AsyncTask<String, Integer, Void>
