@@ -51,7 +51,7 @@ import in.co.madhur.vocabbuilder.ui.WordsAdapter;
 /**
  * Created by madhur on 25-Jun-14.
  */
-public abstract class BaseWordListFragment extends Fragment
+public class BaseWordListFragment extends Fragment
 {
 
     private ListView listView;
@@ -60,8 +60,7 @@ public abstract class BaseWordListFragment extends Fragment
     private ProgressBar progressBar;
     private int currentLetter=-1;
     private Consts.WORDS_MODE wordMode;
-//    private Parcelable mListState = null;
-//    private static final String LIST_STATE = "listState";
+
 
     @Override
     public void onCreate(Bundle savedInstanceState)
@@ -255,6 +254,12 @@ public abstract class BaseWordListFragment extends Fragment
                 LoadData(item);
             }
         }
+
+        LoadWord(0);
+
+        setCurrentLetter(0);
+
+        RestoreListPosition();
     }
 
     public void LoadData(Consts.SPINNER_ITEMS item )
@@ -293,7 +298,7 @@ public abstract class BaseWordListFragment extends Fragment
 
     }
 
-    private void LoadWord(int position)
+    public void LoadWord(int position)
     {
 
         if(getCurrentLetter()!=-1)

@@ -14,12 +14,10 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import de.keyboardsurfer.android.widget.crouton.Crouton;
-import in.co.madhur.vocabbuilder.fragments.HiddenWordListFragment;
-import in.co.madhur.vocabbuilder.fragments.RecentWordListFragment;
-import in.co.madhur.vocabbuilder.fragments.StarredWordFragment;
+import in.co.madhur.vocabbuilder.fragments.BaseWordListFragment;
+
 import in.co.madhur.vocabbuilder.fragments.StatsFragment;
-import in.co.madhur.vocabbuilder.fragments.UnStarredWordFragment;
-import in.co.madhur.vocabbuilder.fragments.WordListFragment;
+
 import in.co.madhur.vocabbuilder.service.Alarms;
 
 import static in.co.madhur.vocabbuilder.Consts.LISTS;
@@ -158,9 +156,9 @@ public class MainActivity extends BaseActivity implements ActionBar.OnNavigation
             if(getSupportFragmentManager().getFragments()!=null && getSupportFragmentManager().getFragments().size()>0)
             {
                 Fragment fragment = getSupportFragmentManager().getFragments().get(0);
-                if (fragment instanceof WordListFragment)
+                if (fragment instanceof BaseWordListFragment)
                 {
-                    ((WordListFragment) (fragment)).LoadData(item);
+                    ((BaseWordListFragment) (fragment)).LoadData(item);
 
                 }
                 else
@@ -172,39 +170,7 @@ public class MainActivity extends BaseActivity implements ActionBar.OnNavigation
             }
 
         }
-//
-//        if(item==SPINNER_ITEMS.RECENT)
-//        {
-//
-//            LockDrawer(true);
-//            getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, new RecentWordListFragment()).commit();
-//
-//        }
-//        else if(item==SPINNER_ITEMS.HIDDEN)
-//        {
-//            LockDrawer(true);
-//            getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, new HiddenWordListFragment()).commit();
-//
-//        }
-//        else if(item==SPINNER_ITEMS.ACTIVE)
-//        {
-//            LockDrawer(false);
-//            getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, new WordListFragment()).commit();
-//
-//        }
-//        else if(item==SPINNER_ITEMS.STARRED)
-//        {
-//            LockDrawer(true);
-//            getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, new StarredWordFragment()).commit();
-//
-//
-//        }
-//        else if(item==SPINNER_ITEMS.UNSTARRED)
-//        {
-//            LockDrawer(true);
-//            getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, new UnStarredWordFragment()).commit();
-//
-//        }
+
         else if(item==SPINNER_ITEMS.STATS)
         {
             LockDrawer(true);
@@ -216,7 +182,7 @@ public class MainActivity extends BaseActivity implements ActionBar.OnNavigation
 
     private void LoadMainFragment(int itemPosition)
     {
-        Fragment fragment = new WordListFragment();
+        Fragment fragment = new BaseWordListFragment();
         Bundle data = new Bundle();
         data.putLong(Consts.SPINNER_ITEMS.class.getName(), itemPosition);
         fragment.setArguments(data);
@@ -271,9 +237,9 @@ public class MainActivity extends BaseActivity implements ActionBar.OnNavigation
         if (position >= 0 && position < 27)
         {
             Fragment wordFragment = getSupportFragmentManager().getFragments().get(0);
-            if (wordFragment instanceof WordListFragment)
+            if (wordFragment instanceof BaseWordListFragment)
             {
-                WordListFragment wordsFragment = (WordListFragment) wordFragment;
+                BaseWordListFragment wordsFragment = (BaseWordListFragment) wordFragment;
                 wordsFragment.LoadWord(position);
 
             }
