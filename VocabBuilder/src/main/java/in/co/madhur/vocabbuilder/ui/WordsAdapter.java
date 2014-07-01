@@ -1,4 +1,4 @@
-package in.co.madhur.vocabbuilder.fragments;
+package in.co.madhur.vocabbuilder.ui;
 
 import android.content.Context;
 import android.util.Log;

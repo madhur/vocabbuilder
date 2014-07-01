@@ -46,6 +46,7 @@ import in.co.madhur.vocabbuilder.SettingsActivity;
 import in.co.madhur.vocabbuilder.db.VocabDB;
 import in.co.madhur.vocabbuilder.model.Word;
 import in.co.madhur.vocabbuilder.ui.WordActivity;
+import in.co.madhur.vocabbuilder.ui.WordsAdapter;
 
 /**
  * Created by madhur on 25-Jun-14.
@@ -235,6 +236,76 @@ public abstract class BaseWordListFragment extends Fragment
 
         return v;
     }
+
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState)
+    {
+        super.onActivityCreated(savedInstanceState);
+
+        Bundle data=getArguments();
+        if(data!=null)
+        {
+            if(data.containsKey(Consts.SPINNER_ITEMS.class.getName()))
+            {
+                long itemPosition = data.getLong(Consts.SPINNER_ITEMS.class.getName());
+
+                Consts.SPINNER_ITEMS item = Consts.SPINNER_ITEMS.values()[((int) itemPosition)];
+
+                LoadData(item);
+            }
+        }
+    }
+
+    public void LoadData(Consts.SPINNER_ITEMS item )
+    {
+
+        switch (item)
+        {
+            case RECENT:
+                new GetWords(Consts.SPINNER_ITEMS.RECENT).execute("");
+                break;
+
+            case ACTIVE:
+                LoadWord(0);
+
+                setCurrentLetter(0);
+
+                RestoreListPosition();
+                break;
+
+            case HIDDEN:
+                new GetWords(Consts.SPINNER_ITEMS.HIDDEN).execute();
+                break;
+
+            case STARRED:
+                new GetWords(Consts.SPINNER_ITEMS.STARRED).execute("");
+                break;
+
+            case UNSTARRED:
+                new GetWords(Consts.SPINNER_ITEMS.UNSTARRED).execute("");
+                break;
+
+
+        }
+
+
+
+    }
+
+    private void LoadWord(int position)
+    {
+
+        if(getCurrentLetter()!=-1)
+            SaveListPosition();
+
+        setCurrentLetter(position);
+
+        new GetWords(Consts.SPINNER_ITEMS.ACTIVE).execute(String.valueOf(Consts.LISTS.values()[position]).toLowerCase());
+
+
+    }
+
 
     private void LaunchWord(int position)
     {

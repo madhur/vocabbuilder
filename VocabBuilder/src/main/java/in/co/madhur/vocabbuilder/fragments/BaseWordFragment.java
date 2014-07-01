@@ -21,6 +21,7 @@ import in.co.madhur.vocabbuilder.R;
 import in.co.madhur.vocabbuilder.controls.WordCompletionTextView;
 import in.co.madhur.vocabbuilder.db.VocabDB;
 import in.co.madhur.vocabbuilder.model.Word;
+import in.co.madhur.vocabbuilder.ui.WordTokenAdapter;
 
 /**
  * Created by madhur on 22-Jun-14.

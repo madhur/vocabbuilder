@@ -91,22 +91,6 @@ public class MainActivity extends BaseActivity implements ActionBar.OnNavigation
 
         getSupportActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
 
-//        getSupportFragmentManager().addOnBackStackChangedListener(new FragmentManager.OnBackStackChangedListener()
-//        {
-//            @Override
-//            public void onBackStackChanged()
-//            {
-//
-//                int backStackEntryCount =
-//                        getSupportFragmentManager().getBackStackEntryCount();
-//                Log.d(App.TAG, "onBackStackChanged" + String.valueOf(backStackEntryCount));
-//                mDrawerToggle.setDrawerIndicatorEnabled(backStackEntryCount ==0);
-//                getSupportActionBar().setDisplayHomeAsUpEnabled(backStackEntryCount ==0);
-//
-//
-//            }
-//        });
-
         ArrayAdapter<CharSequence> someAdapter = new
                 ArrayAdapter<CharSequence>(getSupportActionBar().getThemedContext(), R.layout.support_simple_spinner_dropdown_item,
                 android.R.id.text1, getResources().getStringArray(R.array.spinner_items));
@@ -128,10 +112,6 @@ public class MainActivity extends BaseActivity implements ActionBar.OnNavigation
                 alarms.Schedule();
         }
 
-
-
-
-
     }
 
 
@@ -147,17 +127,6 @@ public class MainActivity extends BaseActivity implements ActionBar.OnNavigation
     }
 
 
-//    /* Called whenever we call invalidateOptionsMenu() */
-//    @Override
-//    public boolean onPrepareOptionsMenu(Menu menu)
-//    {
-//        // If the nav drawer is open, hide action items related to the content
-//        // view
-//       // boolean drawerOpen = mDrawerLayout.isDrawerOpen(mDrawerList);
-//      //  menu.findItem(R.id.action_search).setVisible(!drawerOpen);
-//
-//        return super.onPrepareOptionsMenu(menu);
-//    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item)
@@ -175,93 +144,84 @@ public class MainActivity extends BaseActivity implements ActionBar.OnNavigation
         return super.onOptionsItemSelected(item);
     }
 
-//    @Override
-//    public void onBackPressed()
-//    {
-//        super.onBackPressed();
-//
-//        mDrawerToggle.setDrawerIndicatorEnabled(true);
-//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-//    }
 
     @Override
     public boolean onNavigationItemSelected(int itemPosition, long itemId)
     {
-        if (initializing)
-        {
-            initializing = false;
-          //  return false;
-        }
-
-
-
-
 
         SPINNER_ITEMS item = SPINNER_ITEMS.values()[itemPosition];
 
-        if(item==SPINNER_ITEMS.RECENT)
-        {
 
-            LockDrawer(true);
-            getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, new RecentWordListFragment()).commit();
+
+        if(item==SPINNER_ITEMS.ACTIVE || item==SPINNER_ITEMS.RECENT || item==SPINNER_ITEMS.STARRED || item == SPINNER_ITEMS.UNSTARRED || item==SPINNER_ITEMS.HIDDEN)
+        {
+            if(getSupportFragmentManager().getFragments()!=null && getSupportFragmentManager().getFragments().size()>0)
+            {
+                Fragment fragment = getSupportFragmentManager().getFragments().get(0);
+                if (fragment instanceof WordListFragment)
+                {
+                    ((WordListFragment) (fragment)).LoadData(item);
+
+                }
+                else
+                    LoadMainFragment(itemPosition);
+            }
+            else
+            {
+                LoadMainFragment(itemPosition);
+            }
 
         }
-        else if(item==SPINNER_ITEMS.HIDDEN)
-        {
-            LockDrawer(true);
-            getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, new HiddenWordListFragment()).commit();
-
-        }
-        else if(item==SPINNER_ITEMS.ACTIVE)
-        {
-            LockDrawer(false);
-            getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, new WordListFragment()).commit();
-
-        }
-        else if(item==SPINNER_ITEMS.STARRED)
-        {
-            LockDrawer(true);
-            getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, new StarredWordFragment()).commit();
-
-
-        }
-        else if(item==SPINNER_ITEMS.UNSTARRED)
-        {
-            LockDrawer(true);
-            getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, new UnStarredWordFragment()).commit();
-
-        }
+//
+//        if(item==SPINNER_ITEMS.RECENT)
+//        {
+//
+//            LockDrawer(true);
+//            getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, new RecentWordListFragment()).commit();
+//
+//        }
+//        else if(item==SPINNER_ITEMS.HIDDEN)
+//        {
+//            LockDrawer(true);
+//            getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, new HiddenWordListFragment()).commit();
+//
+//        }
+//        else if(item==SPINNER_ITEMS.ACTIVE)
+//        {
+//            LockDrawer(false);
+//            getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, new WordListFragment()).commit();
+//
+//        }
+//        else if(item==SPINNER_ITEMS.STARRED)
+//        {
+//            LockDrawer(true);
+//            getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, new StarredWordFragment()).commit();
+//
+//
+//        }
+//        else if(item==SPINNER_ITEMS.UNSTARRED)
+//        {
+//            LockDrawer(true);
+//            getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, new UnStarredWordFragment()).commit();
+//
+//        }
         else if(item==SPINNER_ITEMS.STATS)
         {
             LockDrawer(true);
             getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, new StatsFragment()).commit();
         }
 
-
-
-//        List<Fragment> fragments = getSupporuragmentManager().getFragments();
-//        if (fragments != null && fragments.size() > 0)
-//        {
-//            wordFragment = (WordListFragment) getSupportFragmentManager().getFragments().get(0);
-//
-//            if (item == SPINNER_ITEMS.ACTIVE)
-//                wordFragment.LoadWord(0);
-//            else if (item == SPINNER_ITEMS.HIDDEN)
-//                wordFragment.LoadHiddenWords();
-//            else if (item == SPINNER_ITEMS.RECENT)
-//            {
-//                mDrawerToggle.setDrawerIndicatorEnabled(false);
-//                wordFragment.LoadRecents();
-//            }
-//
-//        }
-//        else
-//        {
-//            wordFragment = new WordListFragment();
-//            LoadMainFragment(wordFragment, item);
-//        }
-
         return true;
+    }
+
+    private void LoadMainFragment(int itemPosition)
+    {
+        Fragment fragment = new WordListFragment();
+        Bundle data = new Bundle();
+        data.putLong(Consts.SPINNER_ITEMS.class.getName(), itemPosition);
+        fragment.setArguments(data);
+
+        getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, fragment).commit();
     }
 
 
@@ -293,38 +253,6 @@ public class MainActivity extends BaseActivity implements ActionBar.OnNavigation
         }
     }
 
-//    public void LoadMainFragment()
-//    {
-//        LoadMainFragment(SPINNER_ITEMS.ACTIVE);
-//
-//    }
-
-//    public void LoadMainFragment(SPINNER_ITEMS item)
-//    {
-//        WordListFragment wordFragment = new WordListFragment();
-//
-//        LoadMainFragment(wordFragment, item);
-//
-//
-//    }
-
-//    public void LoadWordFragment()
-//    {
-//        WordFragment fragment=new WordFragment();
-//        getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, fragment).commit();
-//    }
-
-//    public void LoadMainFragment(Fragment wordFragment, SPINNER_ITEMS item)
-//    {
-//
-//        Bundle data = new Bundle();
-//        data.putInt(Consts.SPINNER_ITEMS.class.getName(), item.ordinal());
-//        wordFragment.setArguments(data);
-//
-//        getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, wordFragment).commit();
-//
-//
-//    }
 
 
     @Override

@@ -3,7 +3,7 @@
  * Copyright (c) 2014.
  */
 
-package in.co.madhur.vocabbuilder.fragments;
+package in.co.madhur.vocabbuilder.ui;
 
 import android.content.Context;
 import android.view.LayoutInflater;

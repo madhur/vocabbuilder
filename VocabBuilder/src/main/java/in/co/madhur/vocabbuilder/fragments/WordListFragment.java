@@ -24,14 +24,6 @@ public class WordListFragment extends BaseWordListFragment
         RestoreListPosition();
     }
 
-//    public void LoadWord(String startLetter)
-//    {
-//
-//        new GetWords(Consts.SPINNER_ITEMS.ACTIVE).execute(startLetter);
-//
-//    }
-
-
 
 
     public void LoadWord(int position)
