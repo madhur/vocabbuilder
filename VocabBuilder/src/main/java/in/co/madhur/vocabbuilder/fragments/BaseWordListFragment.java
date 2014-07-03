@@ -95,29 +95,35 @@ public class BaseWordListFragment extends Fragment
             {
                 WordsAdapter oldAdapter = null;
 
-
-                // Get the udpated learning mode
-                wordMode=appPreferences.GetLearningMode();
-
-                if(listView!=null)
-                    oldAdapter=(WordsAdapter)listView.getAdapter();
-
-                if(getView()!=null)
-                    SetListMode(getView());
-
-                if(oldAdapter!=null)
+                try
                 {
-                    oldAdapter.setWordMode(wordMode);
-                    listView.setAdapter(oldAdapter);
-                    RestoreListPosition();
+                    // Get the udpated learning mode
+                    wordMode = appPreferences.GetLearningMode();
+
+                    if (listView != null)
+                        oldAdapter = (WordsAdapter) listView.getAdapter();
+
+                    if (getView() != null)
+                        SetListMode(getView());
+
+                    if (oldAdapter != null)
+                    {
+                        oldAdapter.setWordMode(wordMode);
+                        listView.setAdapter(oldAdapter);
+                        RestoreListPosition();
+                    }
+                    else
+                    {
+                        Log.d(App.TAG, "wordsAdapter view is null");
+
+                        int index = ((MainActivity) getActivity()).getSupportActionBar().getSelectedNavigationIndex();
+                        Consts.SPINNER_ITEMS item = Consts.SPINNER_ITEMS.values()[index];
+                        LoadData(item);
+                    }
                 }
-                else
+                catch(Exception e)
                 {
-                    Log.d(App.TAG, "wordsAdapter view is null");
-
-                    int index=((MainActivity)getActivity()).getSupportActionBar().getSelectedNavigationIndex();
-                    Consts.SPINNER_ITEMS item = Consts.SPINNER_ITEMS.values()[index];
-                    LoadData(item);
+                    e.printStackTrace();
                 }
 
             }
@@ -132,9 +138,16 @@ public class BaseWordListFragment extends Fragment
 
 
 
+                try
+                {
                     int index = ((MainActivity) getActivity()).getSupportActionBar().getSelectedNavigationIndex();
                     Consts.SPINNER_ITEMS item = Consts.SPINNER_ITEMS.values()[index];
                     LoadData(item);
+                }
+                catch(Exception e)
+                {
+                    e.printStackTrace();
+                }
 
 
 
@@ -516,7 +529,7 @@ public class BaseWordListFragment extends Fragment
         super.onCreateContextMenu(menu, v, menuInfo);
         boolean isPro = appPreferences.IsProMode();
 
-        if (v.getId() == R.id.wordsListView)
+        if (v.getId() == R.id.wordsListView || v.getId()==R.id.wordsPlainListView)
         {
 
             getActivity().getMenuInflater().inflate(R.menu.context_menu, menu);
@@ -526,7 +539,7 @@ public class BaseWordListFragment extends Fragment
                 menu.setGroupVisible(R.id.group_pro_context, true);
             }
 
-            SwipeListView lv = (SwipeListView) v;
+            ListView lv = (ListView) v;
             AdapterView.AdapterContextMenuInfo acmi = (AdapterView.AdapterContextMenuInfo) menuInfo;
             Word word = (Word) lv.getItemAtPosition(acmi.position);
             if (word != null)
