@@ -69,8 +69,16 @@ public class AppPreferences
         SharedPreferences.Editor edit = sharedPreferences.edit();
         edit.putInt(Keys.LIST_POSITION.key+String.valueOf(letter), position);
         edit.putInt(Keys.WORDS_SORT_ORDER.key+String.valueOf(letter), order.ordinal());
+
+        edit.commit();
+    }
+
+    public void SaveCurrentLetter(int letter)
+    {
+        SharedPreferences.Editor edit = sharedPreferences.edit();
         edit.putInt(Keys.CURRENT_LETTER.key, letter);
         edit.commit();
+
     }
 
     public int GetCurrentLetter()

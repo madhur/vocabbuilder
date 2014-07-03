@@ -19,14 +19,11 @@ import java.util.Collections;
 import java.util.List;
 
 import in.co.madhur.vocabbuilder.App;
-import in.co.madhur.vocabbuilder.AppPreferences;
 import in.co.madhur.vocabbuilder.Consts;
 import in.co.madhur.vocabbuilder.R;
 import in.co.madhur.vocabbuilder.controls.LayoutedTextView;
 import in.co.madhur.vocabbuilder.db.VocabDB;
 import in.co.madhur.vocabbuilder.model.Word;
-
-import static in.co.madhur.vocabbuilder.Consts.SPINNER_ITEMS;
 
 /**
  * Created by madhur on 19-Jun-14.
@@ -53,7 +50,7 @@ public class WordsAdapter extends BaseAdapter implements Filterable
             originalWords.add(word);
         }
 
-        this.wordMode=wordMode;
+        this.setWordMode(wordMode);
 
     }
 
@@ -90,9 +87,9 @@ public class WordsAdapter extends BaseAdapter implements Filterable
         if (convertView == null)
         {
             LayoutInflater li = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            if(wordMode== Consts.WORDS_MODE.FLASHCARDS)
+            if(getWordMode() == Consts.WORDS_MODE.FLASHCARDS)
                 view = li.inflate(R.layout.word_item, parent, false);
-            else if(wordMode==Consts.WORDS_MODE.DICTIONARY)
+            else if(getWordMode() ==Consts.WORDS_MODE.DICTIONARY)
                 view = li.inflate(R.layout.word_item_dict, parent, false);
 
             holder = new ViewHolder();
@@ -180,7 +177,7 @@ public class WordsAdapter extends BaseAdapter implements Filterable
             }
         });
 
-        if(wordMode== Consts.WORDS_MODE.FLASHCARDS)
+        if(getWordMode() == Consts.WORDS_MODE.FLASHCARDS)
         {
             RelativeLayout rl = (RelativeLayout) view.findViewById(R.id.backview);
             if (position == getDisplayedPosition())
@@ -251,7 +248,9 @@ public class WordsAdapter extends BaseAdapter implements Filterable
 
     public void HideWord(int Id)
     {
+
         words.remove(Word.findById(words,Id));
+        originalWords.remove(Word.findById(originalWords,Id));
         notifyDataSetChanged();
     }
 
@@ -311,6 +310,16 @@ public class WordsAdapter extends BaseAdapter implements Filterable
         this.displayedPosition = displayedPosition;
     }
 
+    public Consts.WORDS_MODE getWordMode()
+    {
+        return wordMode;
+    }
+
+    public void setWordMode(Consts.WORDS_MODE wordMode)
+    {
+        this.wordMode = wordMode;
+    }
+
 
     private static class ViewHolder
     {
@@ -351,7 +360,7 @@ public class WordsAdapter extends BaseAdapter implements Filterable
 
                 for (Word word : originalWords)
                 {
-                    if (word.getName().startsWith((String) constraint))
+                    if (word.getName().toLowerCase().startsWith(((String) constraint).toLowerCase()))
                     {
                         filteredWords.add(word);
 

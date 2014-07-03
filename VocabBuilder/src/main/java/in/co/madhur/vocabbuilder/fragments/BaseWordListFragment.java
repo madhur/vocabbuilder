@@ -7,12 +7,15 @@ package in.co.madhur.vocabbuilder.fragments;
 
 import android.app.SearchManager;
 import android.app.SearchableInfo;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.SearchView;
 import android.text.TextUtils;
@@ -58,7 +61,7 @@ public class BaseWordListFragment extends Fragment
 
     private AppPreferences appPreferences;
     private ProgressBar progressBar;
-    private int currentLetter=-1;
+    private int currentLetter = -1;
     private Consts.WORDS_MODE wordMode;
 
 
@@ -71,15 +74,62 @@ public class BaseWordListFragment extends Fragment
         super.onCreate(savedInstanceState);
 
         appPreferences = new AppPreferences(getActivity());
-        wordMode=appPreferences.GetLearningMode();
+        setWordMode(appPreferences.GetLearningMode());
 
         setHasOptionsMenu(true);
 
-        MainActivity activity= (MainActivity) getActivity();
+        MainActivity activity = (MainActivity) getActivity();
 
-        if(appPreferences.GetTheme()== Consts.THEME.DARK)
+        if (appPreferences.GetTheme() == Consts.THEME.DARK)
+        {
             activity.getSupportActionBar().setBackgroundDrawable(new ColorDrawable(android.R.color.transparent));
-        
+        }
+
+
+
+        LocalBroadcastManager.getInstance(getActivity()).registerReceiver(new BroadcastReceiver()
+        {
+            @Override
+            public void onReceive(Context context, Intent intent)
+            {
+                WordsAdapter oldAdapter = null;
+                Log.d(App.TAG, "message recieved");
+
+                // Get the udpated learning mode
+                wordMode=appPreferences.GetLearningMode();
+                Log.d(App.TAG, String.valueOf(wordMode));
+
+                if(listView!=null)
+                    oldAdapter=(WordsAdapter)listView.getAdapter();
+
+                if(getView()!=null)
+                    SetListMode(getView());
+                else
+                Log.d(App.TAG, "get view is null");
+
+               // WordsAdapter wordsAdapter = (WordsAdapter) listView.getAdapter();
+
+                if(oldAdapter!=null)
+                {
+
+                    oldAdapter.setWordMode(wordMode);
+                    listView.setAdapter(oldAdapter);
+                    RestoreListPosition();
+                    //wordsAdapter.notifyDataSetChanged();
+
+                }
+                else
+                {
+                    Log.d(App.TAG, "wordsAdapter view is null");
+
+                    int index=((MainActivity)getActivity()).getSupportActionBar().getSelectedNavigationIndex();
+                    Consts.SPINNER_ITEMS item = Consts.SPINNER_ITEMS.values()[index];
+                    LoadData(item);
+                }
+
+            }
+        }, new IntentFilter(Consts.ACTION_LIST_SETTINGS_CHANGED));
+
 
     }
 
@@ -91,22 +141,38 @@ public class BaseWordListFragment extends Fragment
 
         View v = inflater.inflate(R.layout.word_fragment, container, false);
 
-        if(wordMode== Consts.WORDS_MODE.FLASHCARDS)
+
+
+        setWordMode(appPreferences.GetLearningMode());
+
+        SetListMode(v);
+
+        return v;
+    }
+
+    private void SetListMode(View v)
+    {
+        // Hide the existing listview
+        if(listView!=null)
+            listView.setVisibility(View.GONE);
+
+        if (getWordMode() == Consts.WORDS_MODE.FLASHCARDS)
         {
-            listView = (SwipeListView) v.findViewById(R.id.wordsListView);
+            listView = (SwipeListView)v.findViewById(R.id.wordsListView);
 
         }
-        else if(wordMode==Consts.WORDS_MODE.DICTIONARY)
+        else if (getWordMode() == Consts.WORDS_MODE.DICTIONARY)
         {
             listView = (ListView) v.findViewById(R.id.wordsPlainListView);
         }
 
+        Log.d(App.TAG, listView.toString());
         listView.setVisibility(View.VISIBLE);
 
-        progressBar=(ProgressBar)v.findViewById(R.id.scroll_progressbar);
+        progressBar = (ProgressBar)v.findViewById(R.id.scroll_progressbar);
 
 
-        if(listView instanceof SwipeListView)
+        if (listView instanceof SwipeListView)
         {
             ((SwipeListView) (listView)).setSwipeListViewListener(new BaseSwipeListViewListener()
             {
@@ -210,7 +276,7 @@ public class BaseWordListFragment extends Fragment
             @Override
             public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount)
             {
-                if(totalItemCount==0)
+                if (totalItemCount == 0)
                 {
                     progressBar.setProgress(0);
                     return;
@@ -218,13 +284,13 @@ public class BaseWordListFragment extends Fragment
 
                 if (totalItemCount != 0)
                 {
-                    if(firstVisibleItem==0)
+                    if (firstVisibleItem == 0)
                     {
                         progressBar.setProgress(0);
                         return;
                     }
 
-                    int progress =((firstVisibleItem+visibleItemCount)*100) / totalItemCount;
+                    int progress = ((firstVisibleItem + visibleItemCount) * 100) / totalItemCount;
 
 
                     progressBar.setProgress(progress);
@@ -233,11 +299,13 @@ public class BaseWordListFragment extends Fragment
             }
         });
 
+        getActivity().supportInvalidateOptionsMenu();
 
         registerForContextMenu(listView);
 
 
-        return v;
+
+
     }
 
 
@@ -246,10 +314,10 @@ public class BaseWordListFragment extends Fragment
     {
         super.onActivityCreated(savedInstanceState);
 
-        Bundle data=getArguments();
-        if(data!=null)
+        Bundle data = getArguments();
+        if (data != null)
         {
-            if(data.containsKey(Consts.SPINNER_ITEMS.class.getName()))
+            if (data.containsKey(Consts.SPINNER_ITEMS.class.getName()))
             {
                 long itemPosition = data.getLong(Consts.SPINNER_ITEMS.class.getName());
 
@@ -258,26 +326,18 @@ public class BaseWordListFragment extends Fragment
                 LoadData(item);
             }
         }
-        else
-        {
-           // LoadWord(0);
 
-          //  setCurrentLetter(0);
-
-            // will be called on resume
-         //   RestoreListPosition();
-        }
     }
 
-    public void LoadData(Consts.SPINNER_ITEMS item )
+    public void LoadData(Consts.SPINNER_ITEMS item)
     {
 
 
         switch (item)
         {
             case RECENT:
-                if(getCurrentLetter()!=-1)
-                    SaveListPosition();
+
+                SaveListPosition();
 
                 new GetWords(Consts.SPINNER_ITEMS.RECENT).execute("");
 
@@ -285,14 +345,14 @@ public class BaseWordListFragment extends Fragment
                 break;
 
             case ACTIVE:
-
+                Log.d(App.TAG, "Restoring letter " + appPreferences.GetCurrentLetter());
                 LoadWord(appPreferences.GetCurrentLetter());
                 break;
 
             case HIDDEN:
 
-                if(getCurrentLetter()!=-1)
-                    SaveListPosition();
+
+                SaveListPosition();
 
                 new GetWords(Consts.SPINNER_ITEMS.HIDDEN).execute();
                 setCurrentLetter(-1);
@@ -300,8 +360,8 @@ public class BaseWordListFragment extends Fragment
 
             case STARRED:
 
-                if(getCurrentLetter()!=-1)
-                    SaveListPosition();
+
+                SaveListPosition();
 
                 new GetWords(Consts.SPINNER_ITEMS.STARRED).execute("");
                 setCurrentLetter(-1);
@@ -309,8 +369,8 @@ public class BaseWordListFragment extends Fragment
 
             case UNSTARRED:
 
-                if(getCurrentLetter()!=-1)
-                    SaveListPosition();
+
+                SaveListPosition();
 
                 new GetWords(Consts.SPINNER_ITEMS.UNSTARRED).execute("");
                 setCurrentLetter(-1);
@@ -320,14 +380,13 @@ public class BaseWordListFragment extends Fragment
         }
 
 
-
     }
 
     public void LoadWord(int position)
     {
 
-        if(getCurrentLetter()!=-1)
-            SaveListPosition();
+
+        SaveListPosition(position);
 
         setCurrentLetter(position);
 
@@ -344,8 +403,6 @@ public class BaseWordListFragment extends Fragment
         Word word = (Word) wordsAdapter.getItem(position);
 
 
-
-
         Intent wordIntent = new Intent();
         wordIntent.setClass(getActivity(), WordActivity.class);
         wordIntent.setAction(Consts.ACTION_VIEW_WORD);
@@ -357,16 +414,9 @@ public class BaseWordListFragment extends Fragment
         startActivity(wordIntent);
     }
 
-    @Override
-    public void onResume()
-    {
-        super.onResume();
 
-        getActivity().supportInvalidateOptionsMenu();
 
-    }
-
-    protected  void RestoreListPosition()
+    protected void RestoreListPosition()
     {
         Log.d(App.TAG, "Restoring list position" + String.valueOf(currentLetter));
 
@@ -374,23 +424,27 @@ public class BaseWordListFragment extends Fragment
         {
 
 
-            WordsAdapter adapter=(WordsAdapter)listView.getAdapter();
+            WordsAdapter adapter = (WordsAdapter) listView.getAdapter();
 
-            if(adapter!=null)
+            if (adapter != null)
             {
                 Log.d(App.TAG, appPreferences.GetSortOrder(currentLetter).name());
                 adapter.Sort(appPreferences.GetSortOrder(currentLetter));
 
             }
 
-            int pos=appPreferences.GetListPosition(currentLetter);
+            int pos = appPreferences.GetListPosition(currentLetter);
 
-            if(listView.getCount() > pos)
+            if (listView.getCount() > pos)
+            {
                 listView.setSelectionFromTop(pos, 0);
+            }
 
         }
         else
+        {
             Log.d(App.TAG, "is null");
+        }
     }
 
     @Override
@@ -400,20 +454,33 @@ public class BaseWordListFragment extends Fragment
         SaveListPosition();
     }
 
-    protected  void SaveListPosition()
+    private void SaveListPosition()
     {
-        Log.d(App.TAG, "Saving list position" + String.valueOf(currentLetter));
+        SaveListPosition(-1);
+    }
 
-        if(listView!=null &&  appPreferences!=null)
+    private void SaveListPosition(int newLetter)
+    {
+        if(newLetter!=-1 && appPreferences!=null)
         {
-            int listPos=listView.getFirstVisiblePosition(); //appPreferences.SaveListPosition(currentLetter, listView.getFirstVisiblePosition());
-            WordsAdapter adapter=(WordsAdapter)listView.getAdapter();
-            if(adapter!=null)
-            {
-                //appPreferences.SetSortOrder(currentLetter, adapter.getActiveSortOrder());
-                appPreferences.SaveListPosition(currentLetter, listPos, adapter.getActiveSortOrder());
-            }
+                appPreferences.SaveCurrentLetter(newLetter);
+        }
 
+        if (getCurrentLetter() != -1)
+        {
+            Log.d(App.TAG, "Saving list position of" + String.valueOf(currentLetter));
+
+            if (listView != null && appPreferences != null)
+            {
+                int listPos = listView.getFirstVisiblePosition(); //appPreferences.SaveListPosition(currentLetter, listView.getFirstVisiblePosition());
+                WordsAdapter adapter = (WordsAdapter) listView.getAdapter();
+                if (adapter != null)
+                {
+                    //appPreferences.SetSortOrder(currentLetter, adapter.getActiveSortOrder());
+                    appPreferences.SaveListPosition(currentLetter, listPos, adapter.getActiveSortOrder());
+                }
+
+            }
         }
     }
 
@@ -421,14 +488,14 @@ public class BaseWordListFragment extends Fragment
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo)
     {
         super.onCreateContextMenu(menu, v, menuInfo);
-        boolean isPro=appPreferences.IsProMode();
+        boolean isPro = appPreferences.IsProMode();
 
         if (v.getId() == R.id.wordsListView)
         {
 
             getActivity().getMenuInflater().inflate(R.menu.context_menu, menu);
 
-            if(isPro)
+            if (isPro)
             {
                 menu.setGroupVisible(R.id.group_pro_context, true);
             }
@@ -436,21 +503,27 @@ public class BaseWordListFragment extends Fragment
             SwipeListView lv = (SwipeListView) v;
             AdapterView.AdapterContextMenuInfo acmi = (AdapterView.AdapterContextMenuInfo) menuInfo;
             Word word = (Word) lv.getItemAtPosition(acmi.position);
-            if(word!=null)
+            if (word != null)
             {
 
-                if(!word.isHidden())
+                if (!word.isHidden())
+                {
                     menu.findItem(R.id.action_hide).setTitle(getString(R.string.action_hide) + " " + word.getName());
+                }
                 else
+                {
                     menu.findItem(R.id.action_hide).setTitle(getString(R.string.action_unhide) + " " + word.getName());
+                }
 
-                if(word.isUserWord() && isPro)
+                if (word.isUserWord() && isPro)
                 {
                     menu.findItem(R.id.action_delete).setTitle(getString(R.string.action_delete) + " " + word.getName());
                     menu.findItem(R.id.action_delete).setVisible(true);
                 }
                 else
+                {
                     menu.findItem(R.id.action_delete).setVisible(false);
+                }
 
                 menu.findItem(R.id.action_edit).setTitle(getString(R.string.action_edit) + " " + word.getName());
                 menu.findItem(R.id.action_view).setTitle(getString(R.string.action_view) + " " + word.getName());
@@ -477,11 +550,14 @@ public class BaseWordListFragment extends Fragment
 
                 try
                 {
-                    if(!word.isHidden())
+                    if (!word.isHidden())
+                    {
                         VocabDB.getInstance(getActivity()).HideWord(word.getId());
+                    }
                     else
+                    {
                         VocabDB.getInstance(getActivity()).HideWord(word.getId(), false);
-
+                    }
 
 
                     WordsAdapter wordsAdapter = (WordsAdapter) listView.getAdapter();
@@ -497,11 +573,11 @@ public class BaseWordListFragment extends Fragment
                 return true;
 
             case R.id.action_edit:
-                wordIntent=new Intent();
+                wordIntent = new Intent();
                 wordIntent.setClass(getActivity(), WordActivity.class);
                 wordIntent.setAction(Consts.ACTION_EDIT_WORD);
 
-                data=new Bundle();
+                data = new Bundle();
                 data.putInt("id", word.getId());
                 wordIntent.putExtras(data);
 
@@ -510,11 +586,11 @@ public class BaseWordListFragment extends Fragment
                 return true;
 
             case R.id.action_view:
-                wordIntent=new Intent();
+                wordIntent = new Intent();
                 wordIntent.setClass(getActivity(), WordActivity.class);
                 wordIntent.setAction(Consts.ACTION_VIEW_WORD);
 
-                data=new Bundle();
+                data = new Bundle();
                 data.putInt("id", word.getId());
                 wordIntent.putExtras(data);
 
@@ -542,12 +618,10 @@ public class BaseWordListFragment extends Fragment
     }
 
 
-
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item)
     {
-        Log.d(App.TAG, (String)item.getTitle());
+        Log.d(App.TAG, (String) item.getTitle());
 
         int id = item.getItemId();
 
@@ -559,7 +633,7 @@ public class BaseWordListFragment extends Fragment
             return true;
         }
 
-        if(id==R.id.action_sortalpha_asc)
+        if (id == R.id.action_sortalpha_asc)
         {
             WordsAdapter wordApater = (WordsAdapter) listView.getAdapter();
             if (wordApater != null)
@@ -569,7 +643,7 @@ public class BaseWordListFragment extends Fragment
 
             return true;
         }
-         if(id==R.id.action_sortalpha_desc)
+        if (id == R.id.action_sortalpha_desc)
         {
             WordsAdapter wordApater = (WordsAdapter) listView.getAdapter();
             if (wordApater != null)
@@ -581,7 +655,7 @@ public class BaseWordListFragment extends Fragment
 
         }
 
-        if(id==R.id.action_sortstar_asc)
+        if (id == R.id.action_sortstar_asc)
         {
 
             WordsAdapter wordApater = (WordsAdapter) listView.getAdapter();
@@ -593,7 +667,7 @@ public class BaseWordListFragment extends Fragment
             return true;
         }
 
-        if(id==R.id.action_sortstar_desc)
+        if (id == R.id.action_sortstar_desc)
         {
 
             WordsAdapter wordApater = (WordsAdapter) listView.getAdapter();
@@ -606,7 +680,7 @@ public class BaseWordListFragment extends Fragment
         }
 
 
-        if(item.getItemId() == R.id.action_add)
+        if (item.getItemId() == R.id.action_add)
         {
             Intent wordIntent = new Intent();
             wordIntent.setClass(getActivity(), WordActivity.class);
@@ -627,12 +701,12 @@ public class BaseWordListFragment extends Fragment
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater)
-   {
+    {
 
 
         inflater.inflate(GetMenu(), menu);
 
-        if(appPreferences.IsProMode())
+        if (appPreferences.IsProMode())
         {
 
             menu.setGroupVisible(R.id.group_pro, true);
@@ -649,7 +723,7 @@ public class BaseWordListFragment extends Fragment
             @Override
             public boolean onQueryTextChange(String newText)
             {
-                if(listView!=null)
+                if (listView != null)
                 {
                     WordsAdapter adapter = (WordsAdapter) listView.getAdapter();
                     if (adapter != null)
@@ -674,7 +748,7 @@ public class BaseWordListFragment extends Fragment
             @Override
             public boolean onQueryTextSubmit(String query)
             {
-                if(listView!=null)
+                if (listView != null)
                 {
                     WordsAdapter adapter = (WordsAdapter) listView.getAdapter();
                     if (adapter != null)
@@ -710,7 +784,19 @@ public class BaseWordListFragment extends Fragment
 
     protected void setCurrentLetter(int currentLetter)
     {
+
+
         this.currentLetter = currentLetter;
+    }
+
+    public Consts.WORDS_MODE getWordMode()
+    {
+        return wordMode;
+    }
+
+    public void setWordMode(Consts.WORDS_MODE wordMode)
+    {
+        this.wordMode = wordMode;
     }
 
 
@@ -721,7 +807,7 @@ public class BaseWordListFragment extends Fragment
 
         public GetWords(Consts.SPINNER_ITEMS item)
         {
-            this.item=item;
+            this.item = item;
 
         }
 
@@ -740,23 +826,31 @@ public class BaseWordListFragment extends Fragment
             try
             {
 
-                if(item== Consts.SPINNER_ITEMS.HIDDEN)
+                if (item == Consts.SPINNER_ITEMS.HIDDEN)
+                {
                     words = vocabDB.GetHiddenWords();
-                else if(item==Consts.SPINNER_ITEMS.STARRED)
+                }
+                else if (item == Consts.SPINNER_ITEMS.STARRED)
+                {
                     words = vocabDB.GetFilteredWords(Consts.SELECT_NOTIFICATION_WORDS.BOTH);
-                else if(item==Consts.SPINNER_ITEMS.UNSTARRED)
-                    words=vocabDB.GetFilteredWords(Consts.SELECT_NOTIFICATION_WORDS.UNSTARRED);
+                }
+                else if (item == Consts.SPINNER_ITEMS.UNSTARRED)
+                {
+                    words = vocabDB.GetFilteredWords(Consts.SELECT_NOTIFICATION_WORDS.UNSTARRED);
+                }
                 else if (params.length > 0 && !TextUtils.isEmpty(params[0]))
                 {
                     words = vocabDB.GetWords(params[0]);
                     App.Cache.Put(params[0], words);
                 }
-                else if(item== Consts.SPINNER_ITEMS.RECENT)
+                else if (item == Consts.SPINNER_ITEMS.RECENT)
+                {
                     words = vocabDB.GetRecentWords();
+                }
             }
             catch (final Exception e)
             {
-                Log.e(App.TAG,"Error in do in background");
+                Log.e(App.TAG, "Error in do in background");
 
 
                 getActivity().runOnUiThread(new Runnable()
@@ -781,10 +875,12 @@ public class BaseWordListFragment extends Fragment
             super.onPostExecute(result);
             if (result != null)
             {
-                WordsAdapter adapter = new WordsAdapter(result, getActivity(), wordMode);
+                WordsAdapter adapter = new WordsAdapter(result, getActivity(), getWordMode());
 
-                if(item== Consts.SPINNER_ITEMS.RECENT)
+                if (item == Consts.SPINNER_ITEMS.RECENT)
+                {
                     adapter.Sort(Consts.WORDS_SORT_ORDER.DATE);
+                }
 
                 listView.setAdapter(adapter);
 

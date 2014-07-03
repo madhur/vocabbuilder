@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceScreen;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.preference.PreferenceFragment;
 import android.view.View;
 import android.view.ViewGroup;
@@ -84,7 +85,18 @@ public class SettingsFragment extends PreferenceFragment
     protected void SetListeners()
     {
 //        findPreference(Keys.WORDS_SORT_ORDER.key).setOnPreferenceChangeListener(listPreferenceChangeListerner);
-        findPreference(Keys.WORDS_MODE.key).setOnPreferenceChangeListener(listPreferenceChangeListerner);
+        findPreference(Keys.WORDS_MODE.key).setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener()
+        {
+            @Override
+            public boolean onPreferenceChange(Preference preference, Object newValue)
+            {
+                UpdateLabel((ListPreference)preference, (String) newValue);
+
+                LocalBroadcastManager.getInstance(getActivity()).sendBroadcast(new Intent().setAction(Consts.ACTION_LIST_SETTINGS_CHANGED));
+
+                return true;
+            }
+        });
         findPreference(Keys.PICK_THEME.key).setOnPreferenceChangeListener(listPreferenceChangeListerner);
         findPreference(Keys.NOTIFICATION_INTERVAL.key).setOnPreferenceChangeListener(listPreferenceChangeListerner);
         findPreference(Keys.SELECT_NOTIFICATION_WORDS.key).setOnPreferenceChangeListener(listPreferenceChangeListerner);

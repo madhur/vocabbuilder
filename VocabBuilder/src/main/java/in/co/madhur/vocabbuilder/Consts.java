@@ -20,6 +20,7 @@ public class Consts {
     public static final String ACTION_VIEW_WORD="in.co.madhur.vocabbuilder.ACTION.VIEW_WORD";
     public static final String ACTION_ADD_WORD="in.co.madhur.vocabbuilder.ACTION.ADD_WORD";
     public static final String ACTION_MARK_WORD="in.co.madhur.vocabbuilder.ACTION.MARK_WORD";
+    public static final String ACTION_LIST_SETTINGS_CHANGED="in.co.madhur.vocabbuilder.ACTION.LIST_SETTINGS_CHANGED";
     //public static final String ACTION_SHOW_RECENT="in.co.madhur.vocabbuilder.ACTION.SHOW_RECENT";
     public static final String INTENT_EXTRA_NOTIFICATION_ID ="notification_ID" ;
     public static final String TARGET_RATING="target_rating";

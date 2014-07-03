@@ -154,9 +154,13 @@
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content">
 
-                <TextView
+                <RatingBar
                     android:id="@+id/starred_words"
-                    android:drawableStart="@drawable/full_star"
+                    android:isIndicator="true"
+                    android:max="1"
+                    android:rating="1"
+                    android:numStars="1"
+                    android:layout_gravity="top"
                     android:layout_height="wrap_content"
                     android:layout_width="wrap_content"/>
 
@@ -164,6 +168,7 @@
                     android:id="@+id/starred_words_count"
                     style="@style/LastColumn"
                     android:text="123"
+                    android:layout_gravity="center_vertical"
                     android:layout_height="wrap_content"
                     android:layout_width="wrap_content"/>
 
@@ -171,6 +176,7 @@
                     android:id="@+id/starred_words_percent"
                     style="@style/LastColumn"
                     android:text="123"
+                    android:layout_gravity="center_vertical"
                     android:layout_height="wrap_content"
                     android:layout_width="wrap_content"
                     android:paddingLeft="@dimen/padding_4x"/>
@@ -183,9 +189,13 @@
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content">
 
-                <TextView
+                <RatingBar
                     android:id="@+id/halfstarred_words"
-                    android:drawableStart="@drawable/half_star"
+                    android:isIndicator="true"
+                    android:max="1"
+                    android:rating="0.5"
+                    android:numStars="1"
+
 
                     android:layout_height="wrap_content"
                     android:layout_width="wrap_content"/>
@@ -194,6 +204,7 @@
                     android:id="@+id/halfstarred_words_count"
                     style="@style/LastColumn"
                     android:text="123"
+                    android:layout_gravity="center_vertical"
                     android:layout_height="wrap_content"
                     android:layout_width="wrap_content"/>
 
@@ -201,6 +212,7 @@
                     android:id="@+id/halfstarred_words_percent"
                     style="@style/LastColumn"
                     android:text="123"
+                    android:layout_gravity="center_vertical"
                     android:layout_height="wrap_content"
                     android:layout_width="wrap_content"
                     android:paddingLeft="@dimen/padding_4x"
@@ -214,9 +226,12 @@
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content">
 
-                <TextView
+                <RatingBar
                     android:id="@+id/unstarred_words"
-                    android:drawableStart="@drawable/no_star"
+                    android:isIndicator="true"
+                    android:max="1"
+                    android:rating="0"
+                    android:numStars="1"
 
                     android:layout_height="wrap_content"
                     android:layout_width="wrap_content"/>
@@ -225,6 +240,7 @@
                     android:id="@+id/unstarred_words_count"
                     style="@style/LastColumn"
                     android:text="123"
+                    android:layout_gravity="center_vertical"
                     android:layout_height="wrap_content"
                     android:layout_width="wrap_content"/>
 
@@ -232,6 +248,7 @@
                     android:id="@+id/unstarred_words_percent"
                     style="@style/LastColumn"
                     android:text="123"
+                    android:layout_gravity="center_vertical"
                     android:layout_height="wrap_content"
                     android:layout_width="wrap_content"/>
 
