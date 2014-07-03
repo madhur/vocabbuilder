@@ -64,7 +64,16 @@ public class AppPreferences
 
     }
 
-    public void SaveListPosition(int letter, int position, Consts.WORDS_SORT_ORDER order)
+    public void SaveListPosition(int letter, int newLetter, int position, Consts.WORDS_SORT_ORDER order)
+    {
+        SharedPreferences.Editor edit = sharedPreferences.edit();
+        edit.putInt(Keys.LIST_POSITION.key+String.valueOf(letter), position);
+        edit.putInt(Keys.WORDS_SORT_ORDER.key+String.valueOf(letter), order.ordinal());
+        edit.putInt(Keys.CURRENT_LETTER.key, newLetter);
+        edit.commit();
+    }
+
+    public void SaveListPosition(int letter,  int position, Consts.WORDS_SORT_ORDER order)
     {
         SharedPreferences.Editor edit = sharedPreferences.edit();
         edit.putInt(Keys.LIST_POSITION.key+String.valueOf(letter), position);
@@ -73,13 +82,7 @@ public class AppPreferences
         edit.commit();
     }
 
-    public void SaveCurrentLetter(int letter)
-    {
-        SharedPreferences.Editor edit = sharedPreferences.edit();
-        edit.putInt(Keys.CURRENT_LETTER.key, letter);
-        edit.commit();
 
-    }
 
     public int GetCurrentLetter()
     {

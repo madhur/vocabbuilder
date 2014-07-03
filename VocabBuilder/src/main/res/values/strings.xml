@@ -107,5 +107,6 @@
     <string name="hidden">Hidden</string>
     <string name="action_unhide">Unhide</string>
     <string name="action_delete">Delete</string>
+    <string name="restart_app">This setting change requires app restart. Do you want to restart now?</string>
 
 </resources>

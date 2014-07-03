@@ -254,6 +254,16 @@ public class WordsAdapter extends BaseAdapter implements Filterable
         notifyDataSetChanged();
     }
 
+    public int getItemPositionById(final long id)
+    {
+        for (int i = 0; i < getCount(); i++)
+        {
+            if (getItemId(i) == id)
+                return i;
+        }
+        return -1;
+    }
+
 
     public void Sort(Consts.WORDS_SORT_ORDER sortOrder)
     {

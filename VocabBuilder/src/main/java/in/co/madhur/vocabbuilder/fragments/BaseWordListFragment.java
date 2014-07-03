@@ -68,8 +68,6 @@ public class BaseWordListFragment extends Fragment
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
-        Log.d(App.TAG, " WordListFragment: onCreate ");
-
 
         super.onCreate(savedInstanceState);
 
@@ -93,21 +91,21 @@ public class BaseWordListFragment extends Fragment
             public void onReceive(Context context, Intent intent)
             {
                 WordsAdapter oldAdapter = null;
-                Log.d(App.TAG, "message recieved");
+
 
                 // Get the udpated learning mode
                 wordMode=appPreferences.GetLearningMode();
-                Log.d(App.TAG, String.valueOf(wordMode));
+
 
                 if(listView!=null)
                     oldAdapter=(WordsAdapter)listView.getAdapter();
 
                 if(getView()!=null)
                     SetListMode(getView());
-                else
-                Log.d(App.TAG, "get view is null");
 
-               // WordsAdapter wordsAdapter = (WordsAdapter) listView.getAdapter();
+
+
+
 
                 if(oldAdapter!=null)
                 {
@@ -115,7 +113,7 @@ public class BaseWordListFragment extends Fragment
                     oldAdapter.setWordMode(wordMode);
                     listView.setAdapter(oldAdapter);
                     RestoreListPosition();
-                    //wordsAdapter.notifyDataSetChanged();
+
 
                 }
                 else
@@ -408,7 +406,7 @@ public class BaseWordListFragment extends Fragment
         wordIntent.setAction(Consts.ACTION_VIEW_WORD);
 
         Bundle data = new Bundle();
-        data.putInt("id", word.getId());
+        data.putInt(Consts.ID_PARAMETER, word.getId());
         wordIntent.putExtras(data);
 
         startActivity(wordIntent);
@@ -431,14 +429,17 @@ public class BaseWordListFragment extends Fragment
                 Log.d(App.TAG, appPreferences.GetSortOrder(currentLetter).name());
                 adapter.Sort(appPreferences.GetSortOrder(currentLetter));
 
+                int pos = appPreferences.GetListPosition(currentLetter);
+
+                if(pos!=-1 && listView.getCount()> pos)
+                {
+                    listView.setSelection(pos);
+
+                }
+
             }
 
-            int pos = appPreferences.GetListPosition(currentLetter);
 
-            if (listView.getCount() > pos)
-            {
-                listView.setSelectionFromTop(pos, 0);
-            }
 
         }
         else
@@ -461,10 +462,7 @@ public class BaseWordListFragment extends Fragment
 
     private void SaveListPosition(int newLetter)
     {
-        if(newLetter!=-1 && appPreferences!=null)
-        {
-                appPreferences.SaveCurrentLetter(newLetter);
-        }
+
 
         if (getCurrentLetter() != -1)
         {
@@ -472,12 +470,16 @@ public class BaseWordListFragment extends Fragment
 
             if (listView != null && appPreferences != null)
             {
-                int listPos = listView.getFirstVisiblePosition(); //appPreferences.SaveListPosition(currentLetter, listView.getFirstVisiblePosition());
+                int listPos = listView.getFirstVisiblePosition();
                 WordsAdapter adapter = (WordsAdapter) listView.getAdapter();
+
+
                 if (adapter != null)
                 {
-                    //appPreferences.SetSortOrder(currentLetter, adapter.getActiveSortOrder());
-                    appPreferences.SaveListPosition(currentLetter, listPos, adapter.getActiveSortOrder());
+                    if(newLetter!=-1)
+                        appPreferences.SaveListPosition(currentLetter, newLetter, (int) listPos, adapter.getActiveSortOrder());
+                    else
+                        appPreferences.SaveListPosition(currentLetter, (int) listPos, adapter.getActiveSortOrder());
                 }
 
             }

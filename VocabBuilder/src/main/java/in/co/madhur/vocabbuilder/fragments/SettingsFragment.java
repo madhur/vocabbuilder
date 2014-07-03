@@ -97,7 +97,39 @@ public class SettingsFragment extends PreferenceFragment
                 return true;
             }
         });
-        findPreference(Keys.PICK_THEME.key).setOnPreferenceChangeListener(listPreferenceChangeListerner);
+        findPreference(Keys.PICK_THEME.key).setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener()
+        {
+            @Override
+            public boolean onPreferenceChange(Preference preference, Object newValue)
+            {
+                UpdateLabel((ListPreference)preference, (String) newValue);
+
+                new AlertDialog.Builder(getActivity()).setTitle(R.string.app_name).setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener()
+                {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which)
+                    {
+
+                        Intent i = getActivity().getPackageManager()
+                                .getLaunchIntentForPackage( getActivity().getPackageName() );
+                        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK  | Intent.FLAG_ACTIVITY_NEW_TASK);
+
+                        startActivity(i);
+
+                    }
+                }).setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener()
+                {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which)
+                    {
+                        dialog.dismiss();
+                    }
+                }).setMessage(R.string.restart_app).show();
+
+
+                return true;
+            }
+        });
         findPreference(Keys.NOTIFICATION_INTERVAL.key).setOnPreferenceChangeListener(listPreferenceChangeListerner);
         findPreference(Keys.SELECT_NOTIFICATION_WORDS.key).setOnPreferenceChangeListener(listPreferenceChangeListerner);
 
