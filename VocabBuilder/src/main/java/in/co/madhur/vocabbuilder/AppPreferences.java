@@ -67,21 +67,20 @@ public class AppPreferences
     public void SaveListPosition(int letter, int newLetter, int position, Consts.WORDS_SORT_ORDER order)
     {
         SharedPreferences.Editor edit = sharedPreferences.edit();
-        edit.putInt(Keys.LIST_POSITION.key+String.valueOf(letter), position);
-        edit.putInt(Keys.WORDS_SORT_ORDER.key+String.valueOf(letter), order.ordinal());
+        edit.putInt(Keys.LIST_POSITION.key + String.valueOf(letter), position);
+        edit.putInt(Keys.WORDS_SORT_ORDER.key + String.valueOf(letter), order.ordinal());
         edit.putInt(Keys.CURRENT_LETTER.key, newLetter);
         edit.commit();
     }
 
-    public void SaveListPosition(int letter,  int position, Consts.WORDS_SORT_ORDER order)
+    public void SaveListPosition(int letter, int position, Consts.WORDS_SORT_ORDER order)
     {
         SharedPreferences.Editor edit = sharedPreferences.edit();
-        edit.putInt(Keys.LIST_POSITION.key+String.valueOf(letter), position);
-        edit.putInt(Keys.WORDS_SORT_ORDER.key+String.valueOf(letter), order.ordinal());
+        edit.putInt(Keys.LIST_POSITION.key + String.valueOf(letter), position);
+        edit.putInt(Keys.WORDS_SORT_ORDER.key + String.valueOf(letter), order.ordinal());
 
         edit.commit();
     }
-
 
 
     public int GetCurrentLetter()
@@ -91,7 +90,7 @@ public class AppPreferences
 
     public int GetListPosition(int letter)
     {
-        return sharedPreferences.getInt(Keys.LIST_POSITION.key+String.valueOf(letter), -1);
+        return sharedPreferences.getInt(Keys.LIST_POSITION.key + String.valueOf(letter), -1);
     }
 
 
@@ -112,12 +111,11 @@ public class AppPreferences
     public Consts.WORDS_SORT_ORDER GetSortOrder(int letter)
     {
 
-        int sortOrder = sharedPreferences.getInt(Keys.WORDS_SORT_ORDER.key+String.valueOf(letter), Integer.parseInt(context.getResources().getString(R.string.words_sort_order_default)));
+        int sortOrder = sharedPreferences.getInt(Keys.WORDS_SORT_ORDER.key + String.valueOf(letter), Integer.parseInt(context.getResources().getString(R.string.words_sort_order_default)));
 
         return Consts.WORDS_SORT_ORDER.values()[sortOrder];
 
     }
-
 
 
     public boolean IsNotificationEnabled()
