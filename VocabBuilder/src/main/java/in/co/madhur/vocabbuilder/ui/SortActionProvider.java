@@ -57,7 +57,7 @@ public class SortActionProvider extends ActionProvider implements PopupMenu.OnMe
     @Override
     public void onPrepareSubMenu(SubMenu subMenu)
     {
-        //super.onPrepareSubMenu(subMenu);
+
         subMenu.clear();
         subMenu.add(0, R.id.action_sortalpha_asc, 0, R.string.action_sortalpha_asc);
         subMenu.add(0, R.id.action_sortalpha_desc, 0, R.string.action_sortalpha_desc);

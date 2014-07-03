@@ -160,7 +160,7 @@ public class WordsAdapter extends BaseAdapter implements Filterable
                     return true;
 
                 }
-                return false;
+                return true;
             }
         });
 
@@ -261,7 +261,7 @@ public class WordsAdapter extends BaseAdapter implements Filterable
             if (getItemId(i) == id)
                 return i;
         }
-        return -1;
+        return Consts.VALUE_NOT_SET;
     }
 
 

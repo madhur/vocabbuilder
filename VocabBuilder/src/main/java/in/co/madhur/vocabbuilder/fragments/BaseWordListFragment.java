@@ -51,6 +51,8 @@ import in.co.madhur.vocabbuilder.model.Word;
 import in.co.madhur.vocabbuilder.ui.WordActivity;
 import in.co.madhur.vocabbuilder.ui.WordsAdapter;
 
+import static in.co.madhur.vocabbuilder.Consts.VALUE_NOT_SET;
+
 /**
  * Created by madhur on 25-Jun-14.
  */
@@ -63,6 +65,7 @@ public class BaseWordListFragment extends Fragment
     private ProgressBar progressBar;
     private int currentLetter = -1;
     private Consts.WORDS_MODE wordMode;
+    private boolean isActive=true;
 
 
     @Override
@@ -96,25 +99,17 @@ public class BaseWordListFragment extends Fragment
                 // Get the udpated learning mode
                 wordMode=appPreferences.GetLearningMode();
 
-
                 if(listView!=null)
                     oldAdapter=(WordsAdapter)listView.getAdapter();
 
                 if(getView()!=null)
                     SetListMode(getView());
 
-
-
-
-
                 if(oldAdapter!=null)
                 {
-
                     oldAdapter.setWordMode(wordMode);
                     listView.setAdapter(oldAdapter);
                     RestoreListPosition();
-
-
                 }
                 else
                 {
@@ -127,6 +122,24 @@ public class BaseWordListFragment extends Fragment
 
             }
         }, new IntentFilter(Consts.ACTION_LIST_SETTINGS_CHANGED));
+
+        LocalBroadcastManager.getInstance(getActivity()).registerReceiver(new BroadcastReceiver()
+        {
+            @Override
+            public void onReceive(Context context, Intent intent)
+            {
+                Log.d(App.TAG, "message");
+
+
+
+                    int index = ((MainActivity) getActivity()).getSupportActionBar().getSelectedNavigationIndex();
+                    Consts.SPINNER_ITEMS item = Consts.SPINNER_ITEMS.values()[index];
+                    LoadData(item);
+
+
+
+            }
+        }, new IntentFilter(Consts.ACTION_LIST_DATA_CHANGED));
 
 
     }
@@ -339,11 +352,11 @@ public class BaseWordListFragment extends Fragment
 
                 new GetWords(Consts.SPINNER_ITEMS.RECENT).execute("");
 
-                setCurrentLetter(-1);
+                setCurrentLetter(VALUE_NOT_SET);
                 break;
 
             case ACTIVE:
-                Log.d(App.TAG, "Restoring letter " + appPreferences.GetCurrentLetter());
+
                 LoadWord(appPreferences.GetCurrentLetter());
                 break;
 
@@ -353,7 +366,7 @@ public class BaseWordListFragment extends Fragment
                 SaveListPosition();
 
                 new GetWords(Consts.SPINNER_ITEMS.HIDDEN).execute();
-                setCurrentLetter(-1);
+                setCurrentLetter(VALUE_NOT_SET);
                 break;
 
             case STARRED:
@@ -362,7 +375,7 @@ public class BaseWordListFragment extends Fragment
                 SaveListPosition();
 
                 new GetWords(Consts.SPINNER_ITEMS.STARRED).execute("");
-                setCurrentLetter(-1);
+                setCurrentLetter(VALUE_NOT_SET);
                 break;
 
             case UNSTARRED:
@@ -371,7 +384,7 @@ public class BaseWordListFragment extends Fragment
                 SaveListPosition();
 
                 new GetWords(Consts.SPINNER_ITEMS.UNSTARRED).execute("");
-                setCurrentLetter(-1);
+                setCurrentLetter(VALUE_NOT_SET);
                 break;
 
 
@@ -416,7 +429,7 @@ public class BaseWordListFragment extends Fragment
 
     protected void RestoreListPosition()
     {
-        Log.d(App.TAG, "Restoring list position" + String.valueOf(currentLetter));
+        Log.d(App.TAG, "Starting Restoring list position of letter" + String.valueOf(currentLetter));
 
         if (listView != null && appPreferences != null)
         {
@@ -426,12 +439,14 @@ public class BaseWordListFragment extends Fragment
 
             if (adapter != null)
             {
-                Log.d(App.TAG, appPreferences.GetSortOrder(currentLetter).name());
+
                 adapter.Sort(appPreferences.GetSortOrder(currentLetter));
 
                 int pos = appPreferences.GetListPosition(currentLetter);
 
-                if(pos!=-1 && listView.getCount()> pos)
+                Log.d(App.TAG, "Restoring list position " + String.valueOf(pos));
+
+                if(pos!= VALUE_NOT_SET && listView.getCount()> pos)
                 {
                     listView.setSelection(pos);
 
@@ -449,34 +464,43 @@ public class BaseWordListFragment extends Fragment
     }
 
     @Override
+    public void onResume()
+    {
+        super.onResume();
+        isActive=true;
+    }
+
+    @Override
     public void onPause()
     {
         super.onPause();
         SaveListPosition();
+        isActive=false;
+
     }
 
     private void SaveListPosition()
     {
-        SaveListPosition(Consts.VALUE_NOT_SET);
+        SaveListPosition(VALUE_NOT_SET);
     }
 
     private void SaveListPosition(int newLetter)
     {
 
 
-        if (getCurrentLetter() != -1)
+        if (getCurrentLetter() != VALUE_NOT_SET && isActive )
         {
-            Log.d(App.TAG, "Saving list position of" + String.valueOf(currentLetter));
+            Log.d(App.TAG, "Starting Saving list position of letter " + String.valueOf(currentLetter));
 
             if (listView != null && appPreferences != null)
             {
                 int listPos = listView.getFirstVisiblePosition();
                 WordsAdapter adapter = (WordsAdapter) listView.getAdapter();
 
-
+                Log.d(App.TAG, "Saving position " + listPos);
                 if (adapter != null)
                 {
-                    if(newLetter!=-1)
+                    if(newLetter!= VALUE_NOT_SET)
                         appPreferences.SaveListPosition(currentLetter, newLetter, (int) listPos, adapter.getActiveSortOrder());
                     else
                         appPreferences.SaveListPosition(currentLetter, (int) listPos, adapter.getActiveSortOrder());

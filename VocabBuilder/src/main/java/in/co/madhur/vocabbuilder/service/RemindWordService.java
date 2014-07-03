@@ -23,7 +23,7 @@ import in.co.madhur.vocabbuilder.model.Word;
 public class RemindWordService extends WakefulIntentService
 {
     private AppPreferences appPreferences;
-    private int NOTIFICATION_ID=0;
+    private int NOTIFICATION_ID = 0;
 
     public RemindWordService()
     {
@@ -35,14 +35,13 @@ public class RemindWordService extends WakefulIntentService
     {
         Log.d(App.TAG, "Starting service");
 
-         appPreferences = new AppPreferences(this);
+        appPreferences = new AppPreferences(this);
 
         if (!CheckLastSync())
-    {
-        Log.d(App.TAG, "Successful notification within time interval. aborting");
-        return;
-    }
-
+        {
+            Log.d(App.TAG, "Successful notification within time interval. aborting");
+            return;
+        }
 
 
         VocabDB vocabDB = VocabDB.getInstance(this);
@@ -74,7 +73,7 @@ public class RemindWordService extends WakefulIntentService
 
         SendNotification(selectedWord);
 
-        if(appPreferences.IsWakelockEnabled())
+        if (appPreferences.IsWakelockEnabled())
         {
             PowerManager pm = (PowerManager) this.getSystemService(Context.POWER_SERVICE);
             PowerManager.WakeLock wl = pm.newWakeLock(PowerManager.SCREEN_DIM_WAKE_LOCK | PowerManager.ACQUIRE_CAUSES_WAKEUP, App.TAG);
@@ -102,18 +101,21 @@ public class RemindWordService extends WakefulIntentService
 
         // First time sync, Just return true
         if (lastSync == 0)
+        {
             return true;
+        }
 
         // Else see if we are not doing too much sync within the sync interval
         int syncIntervalSeconds = appPreferences.GetNotificationSchedule();
 
-        long syncIntervalMillisec = syncIntervalSeconds* 1000;
+        long syncIntervalMillisec = syncIntervalSeconds * 1000;
         if (System.currentTimeMillis() - lastSync > syncIntervalMillisec)
+        {
             return true;
+        }
 
         return false;
     }
-
 
 
     private void SendNotification(Word selectedWord)
@@ -125,7 +127,6 @@ public class RemindWordService extends WakefulIntentService
         NotificationCompat.Builder noti = notifications.GetNotificationBuilder(NOTIFICATION_ID, selectedWord.getId(), selectedWord.getName(), selectedWord.getMeaning(), selectedWord.getRating());
 
         noti = notifications.GetExpandedBuilder(noti, selectedWord.getMeaning(), selectedWord.getName());
-
 
 
         notifications.FireNotification(NOTIFICATION_ID, noti, appPreferences.getBoolMetadata(AppPreferences.Keys.ENABLE_VIBRATE), appPreferences.getBoolMetadata(AppPreferences.Keys.ENABLE_SOUND), appPreferences.getBoolMetadata(AppPreferences.Keys.ENABLE_LED));

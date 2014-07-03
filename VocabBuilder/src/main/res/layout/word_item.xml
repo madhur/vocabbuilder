@@ -50,6 +50,8 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
+        android:focusable="false"
+        android:focusableInTouchMode="false"
             android:layout_marginRight="@dimen/padding_2x"
             android:numStars="1"
             android:rating="0"

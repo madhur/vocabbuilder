@@ -9,6 +9,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -85,7 +86,23 @@ public class WordViewFragment extends Fragment
         ratingBar = (RatingBar) v.findViewById(R.id.ratingBar);
 
 
+        ratingBar.setOnFocusChangeListener(new View.OnFocusChangeListener()
+        {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus)
+            {
+                Log.d(App.TAG, String.valueOf(hasFocus));
+            }
+        });
 
+        ratingBar.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+
+            }
+        });
 
         ratingBar.setOnTouchListener(new View.OnTouchListener()
         {
@@ -93,39 +110,46 @@ public class WordViewFragment extends Fragment
             public boolean onTouch(View v, MotionEvent event)
             {
 
-                Log.d(App.TAG, String.valueOf(event.getAction()));
 
 
-                RatingBar ratingBar = (RatingBar) v;
-
-                if (ratingBar.getRating() == 1.0)
+                if (event.getAction() == MotionEvent.ACTION_UP)
                 {
-                    ratingBar.setRating((float) 0.0);
+                    RatingBar ratingBar = (RatingBar) v;
+
+
+
+                    if (ratingBar.getRating() == 1.0)
+                    {
+                        ratingBar.setRating((float) 0.0);
+                    }
+                    else if (ratingBar.getRating() == 0.0)
+                    {
+                        ratingBar.setRating((float) 0.5);
+                    }
+                    else if (ratingBar.getRating() == 0.5)
+                    {
+                        ratingBar.setRating((float) 1.0);
+                    }
+
+
+
+
+                    int dbRating = (int) (ratingBar.getRating() * 2);
+
+
+                    try
+                    {
+                        VocabDB.getInstance(getActivity()).SetRating(WordId, dbRating);
+                    }
+                    catch (Exception e)
+                    {
+                        Log.e(App.TAG, e.getMessage());
+                    }
+
+                    NotifyChange();
+
+                    return true;
                 }
-                else if (ratingBar.getRating() == 0.0)
-                {
-                    ratingBar.setRating((float) 0.5);
-                }
-                else if (ratingBar.getRating() == 0.5)
-                {
-                    ratingBar.setRating((float) 1.0);
-                }
-
-
-
-                int dbRating = (int) (ratingBar.getRating() * 2);
-
-
-                try
-                {
-                    VocabDB.getInstance(getActivity()).SetRating(WordId, dbRating);
-                }
-                catch (Exception e)
-                {
-                    Log.e(App.TAG, e.getMessage());
-                }
-
-
 
                 return true;
 
@@ -143,7 +167,7 @@ public class WordViewFragment extends Fragment
         super.onActivityCreated(savedInstanceState);
 
 
-        WordId = getArguments().getInt("id");
+        WordId = getArguments().getInt(Consts.ID_PARAMETER);
 
         LoadWord(WordId);
 
@@ -213,10 +237,15 @@ public class WordViewFragment extends Fragment
         wordIntent.setAction(Consts.ACTION_VIEW_WORD);
 
         Bundle data = new Bundle();
-        data.putInt("id", word.getId());
+        data.putInt(Consts.ID_PARAMETER, word.getId());
         wordIntent.putExtras(data);
 
         startActivity(wordIntent);
+    }
+
+    private void NotifyChange()
+    {
+        LocalBroadcastManager.getInstance(getActivity()).sendBroadcast(new Intent().setAction(Consts.ACTION_LIST_DATA_CHANGED));
     }
 
 
@@ -257,7 +286,7 @@ public class WordViewFragment extends Fragment
                 if (WordId != VALUE_NOT_SET)
                 {
                     LoadWord(WordId);
-
+                    NotifyChange();
                 }
             }
 
