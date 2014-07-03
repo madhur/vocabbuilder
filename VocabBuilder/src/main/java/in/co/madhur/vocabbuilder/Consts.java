@@ -26,6 +26,8 @@ public class Consts {
     public static final String TARGET_RATING="target_rating";
     public static final String TARGET_WORD="target_word";
     public static final String ID_PARAMETER="id";
+    public static final int VALUE_NOT_SET=-1;
+    public static final int WAKE_LOCK_TIME=5000;
 
 
     public enum STAR

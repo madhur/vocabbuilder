@@ -13,6 +13,7 @@ import java.util.Random;
 
 import in.co.madhur.vocabbuilder.App;
 import in.co.madhur.vocabbuilder.AppPreferences;
+import in.co.madhur.vocabbuilder.Consts;
 import in.co.madhur.vocabbuilder.db.VocabDB;
 import in.co.madhur.vocabbuilder.model.Word;
 
@@ -77,7 +78,7 @@ public class RemindWordService extends WakefulIntentService
         {
             PowerManager pm = (PowerManager) this.getSystemService(Context.POWER_SERVICE);
             PowerManager.WakeLock wl = pm.newWakeLock(PowerManager.SCREEN_DIM_WAKE_LOCK | PowerManager.ACQUIRE_CAUSES_WAKEUP, App.TAG);
-            wl.acquire(15000);
+            wl.acquire(Consts.WAKE_LOCK_TIME);
         }
 
 
@@ -120,8 +121,6 @@ public class RemindWordService extends WakefulIntentService
 
         Notifications notifications = new Notifications(this);
 
-//        if(appPreferences.IsMultipleNotifications())
-//            NOTIFICATION_ID++;
 
         NotificationCompat.Builder noti = notifications.GetNotificationBuilder(NOTIFICATION_ID, selectedWord.getId(), selectedWord.getName(), selectedWord.getMeaning(), selectedWord.getRating());
 

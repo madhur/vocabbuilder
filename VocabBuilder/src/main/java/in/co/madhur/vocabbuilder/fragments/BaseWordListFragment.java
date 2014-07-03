@@ -164,7 +164,7 @@ public class BaseWordListFragment extends Fragment
             listView = (ListView) v.findViewById(R.id.wordsPlainListView);
         }
 
-        Log.d(App.TAG, listView.toString());
+
         listView.setVisibility(View.VISIBLE);
 
         progressBar = (ProgressBar)v.findViewById(R.id.scroll_progressbar);
@@ -457,7 +457,7 @@ public class BaseWordListFragment extends Fragment
 
     private void SaveListPosition()
     {
-        SaveListPosition(-1);
+        SaveListPosition(Consts.VALUE_NOT_SET);
     }
 
     private void SaveListPosition(int newLetter)
@@ -580,7 +580,7 @@ public class BaseWordListFragment extends Fragment
                 wordIntent.setAction(Consts.ACTION_EDIT_WORD);
 
                 data = new Bundle();
-                data.putInt("id", word.getId());
+                data.putInt(Consts.ID_PARAMETER, word.getId());
                 wordIntent.putExtras(data);
 
                 startActivity(wordIntent);
@@ -593,7 +593,7 @@ public class BaseWordListFragment extends Fragment
                 wordIntent.setAction(Consts.ACTION_VIEW_WORD);
 
                 data = new Bundle();
-                data.putInt("id", word.getId());
+                data.putInt(Consts.ID_PARAMETER, word.getId());
                 wordIntent.putExtras(data);
 
                 startActivity(wordIntent);
@@ -623,7 +623,7 @@ public class BaseWordListFragment extends Fragment
     @Override
     public boolean onOptionsItemSelected(MenuItem item)
     {
-        Log.d(App.TAG, (String) item.getTitle());
+
 
         int id = item.getItemId();
 

@@ -35,7 +35,7 @@ public class AppPreferences
         SELECT_NOTIFICATION_WORDS("select_notification_words"),
         PICK_THEME("pick_theme"),
         LAST_NOTIFICATION_TIME("last_notification_time"),
-//        ALLOW_MULTIPLE_NOTIFICATIONS("allow_multiple_notifications"),
+
         NOTIFICATION_SCREEN_ON("notification_screen_on"),
         FOLLOW_TWITTER("follow_twitter"),
         LIST_POSITION("list_position_"),
@@ -101,12 +101,6 @@ public class AppPreferences
         return sharedPreferences.getBoolean(Keys.NOTIFICATION_SCREEN_ON.key, context.getResources().getBoolean(R.bool.notification_screen_on_default));
     }
 
-//    public boolean IsMultipleNotifications()
-//    {
-//        return sharedPreferences.getBoolean(Keys.ALLOW_MULTIPLE_NOTIFICATIONS.key, context.getResources().getBoolean(R.bool.allow_multiple_notifications_default));
-//
-//    }
-
 
     public Consts.THEME GetTheme()
     {
@@ -124,12 +118,7 @@ public class AppPreferences
 
     }
 
-//    public void SetSortOrder(int letter, Consts.WORDS_SORT_ORDER order)
-//    {
-//        SharedPreferences.Editor edit = sharedPreferences.edit();
-//
-//        edit.commit();
-//    }
+
 
     public boolean IsNotificationEnabled()
     {

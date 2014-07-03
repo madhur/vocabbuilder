@@ -231,7 +231,7 @@ public class VocabDB
         SQLiteDatabase database = db.getReadableDatabase();
         List<Word> wordList = new ArrayList<Word>();
 
-        //    String viewName = startLetter + "_VIEW";
+
 
         try
         {
@@ -272,7 +272,7 @@ public class VocabDB
         SQLiteDatabase database = db.getReadableDatabase();
         int count;
 
-        //    String viewName = startLetter + "_VIEW";
+
 
         try
         {
@@ -418,7 +418,7 @@ public class VocabDB
         SQLiteDatabase database = db.getReadableDatabase();
         List<Word> wordList = new ArrayList<Word>();
 
-        String viewName = startLetter + "_VIEW";
+        String viewName = startLetter + VocabContract.WORDS_VIEW;
 
         try
 

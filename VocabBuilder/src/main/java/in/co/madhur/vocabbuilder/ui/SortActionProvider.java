@@ -37,22 +37,7 @@ public class SortActionProvider extends ActionProvider implements PopupMenu.OnMe
     @Override
     public View onCreateActionView()
     {
-//        ImageView imageView = new ImageView(context);
-//        imageView.setImageResource(R.drawable.ic_action_sort_by_size);
-//
-//        final PopupMenu menu = new PopupMenu(context, imageView);
-//        menu.inflate(R.menu.sort_menu);
-//        menu.setOnMenuItemClickListener(this);
-//
-//        imageView.setOnClickListener(new View.OnClickListener() {
-//
-//            @Override
-//            public void onClick(View v){
-//                menu.show();
-//            }
-//        });
-//
-//        return imageView;
+
 
         return null;
     }
@@ -84,7 +69,7 @@ public class SortActionProvider extends ActionProvider implements PopupMenu.OnMe
     @Override
     public boolean onMenuItemClick(MenuItem menuItem)
     {
-       Log.d(App.TAG, (String)menuItem.getTitle());
+
         return true;
     }
 }

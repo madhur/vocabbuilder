@@ -14,22 +14,19 @@ import android.util.Log;
 
 import in.co.madhur.vocabbuilder.service.MarkWordService;
 
+import static in.co.madhur.vocabbuilder.Consts.VALUE_NOT_SET;
+
 /**
  * Created by madhur on 22-Jun-14.
  */
 public class NotificationActivity extends Activity
 {
-    @Override
-    protected void onResume()
-    {
-        super.onResume();
-        Log.d(App.TAG, "NotificationActivity: onResume");
-    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
-        Log.d(App.TAG, "NotificationActivity: onCreate");
+
 
         super.onCreate(savedInstanceState);
 
@@ -39,16 +36,16 @@ public class NotificationActivity extends Activity
         // This is required when using the action buttons in expanded notifications.
         // While the default action automatically closes the notification, the
         // actions initiated by buttons do not.
-        int notificationId = intent.getIntExtra(Consts.INTENT_EXTRA_NOTIFICATION_ID, -1);
-        if (notificationId != -1)
+        int notificationId = intent.getIntExtra(Consts.INTENT_EXTRA_NOTIFICATION_ID, VALUE_NOT_SET);
+        if (notificationId != VALUE_NOT_SET)
         {
             NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
             manager.cancel(notificationId);
         }
 
-        int targetRating=intent.getIntExtra(Consts.TARGET_RATING, -1);
-        int wordId=intent.getIntExtra(Consts.TARGET_WORD, -1);
-        if(targetRating==-1 || wordId==-1)
+        int targetRating=intent.getIntExtra(Consts.TARGET_RATING,  VALUE_NOT_SET);
+        int wordId=intent.getIntExtra(Consts.TARGET_WORD, VALUE_NOT_SET);
+        if(targetRating== VALUE_NOT_SET || wordId== VALUE_NOT_SET)
         {
             // Finish activity.
             finish();

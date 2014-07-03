@@ -83,8 +83,8 @@
     <string name="action_sortalpha_desc">Alphabetical (Desc)</string>
     <string name="action_sortstar_asc">Starred (Asc)</string>
     <string name="action_sortstar_desc">Starred (Desc)</string>
-    <string name="misc">Miscellaneous</string>
-    <string name="misc_desc">Miscelleaneous Preferences</string>
+    <string name="misc">WordList Maintainence</string>
+    <string name="misc_desc">Perform batch tasks on WordList</string>
     <string name="revert_database">Revert Word database</string>
     <string name="revert_database_desc">Revert word database to its original state. Caution: You will loose your added words, any customizations.</string>
     <string name="star_all">Star All Words</string>

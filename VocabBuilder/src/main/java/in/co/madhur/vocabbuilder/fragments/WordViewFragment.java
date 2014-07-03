@@ -9,10 +9,12 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -22,6 +24,7 @@ import android.widget.TextView;
 
 import de.keyboardsurfer.android.widget.crouton.Crouton;
 import de.keyboardsurfer.android.widget.crouton.Style;
+import in.co.madhur.vocabbuilder.App;
 import in.co.madhur.vocabbuilder.AppPreferences;
 import in.co.madhur.vocabbuilder.Consts;
 import in.co.madhur.vocabbuilder.R;
@@ -29,6 +32,8 @@ import in.co.madhur.vocabbuilder.db.VocabDB;
 import in.co.madhur.vocabbuilder.model.Word;
 import in.co.madhur.vocabbuilder.ui.WordActivity;
 import in.co.madhur.vocabbuilder.ui.WordTokenAdapter;
+
+import static in.co.madhur.vocabbuilder.Consts.VALUE_NOT_SET;
 
 /**
  * Created by madhur on 22-Jun-14.
@@ -80,90 +85,53 @@ public class WordViewFragment extends Fragment
         ratingBar = (RatingBar) v.findViewById(R.id.ratingBar);
 
 
-        ratingBar.setOnClickListener(new View.OnClickListener()
+
+
+        ratingBar.setOnTouchListener(new View.OnTouchListener()
         {
             @Override
-            public void onClick(View v)
+            public boolean onTouch(View v, MotionEvent event)
             {
-//                RatingBar ratingBar = (RatingBar) v;
-//
-//                if (ratingBar.getRating() == 1.0)
-//                {
-//                    ratingBar.setRating((float) 0.0);
-//                }
-//                else if (ratingBar.getRating() == 0.0)
-//                {
-//                    ratingBar.setRating((float) 0.5);
-//                }
-//                else if (ratingBar.getRating() == 0.5)
-//                {
-//                    ratingBar.setRating((float) 1.0);
-//                }
+
+                Log.d(App.TAG, String.valueOf(event.getAction()));
 
 
-                //  int itemId = (Integer) v.getTag();
-//                int dbRating = (int) (ratingBar.getRating() * 2);
-//
-//
-//                try
-//                {
-//                    VocabDB.getInstance(getActivity()).SetRating(WordId, dbRating);
-//                }
-//                catch (Exception e)
-//                {
-//                    Log.e(App.TAG, e.getMessage());
-//                }
+                RatingBar ratingBar = (RatingBar) v;
 
+                if (ratingBar.getRating() == 1.0)
+                {
+                    ratingBar.setRating((float) 0.0);
+                }
+                else if (ratingBar.getRating() == 0.0)
+                {
+                    ratingBar.setRating((float) 0.5);
+                }
+                else if (ratingBar.getRating() == 0.5)
+                {
+                    ratingBar.setRating((float) 1.0);
+                }
+
+
+
+                int dbRating = (int) (ratingBar.getRating() * 2);
+
+
+                try
+                {
+                    VocabDB.getInstance(getActivity()).SetRating(WordId, dbRating);
+                }
+                catch (Exception e)
+                {
+                    Log.e(App.TAG, e.getMessage());
+                }
+
+
+
+                return true;
 
             }
+
         });
-
-
-//        ratingBar.setOnTouchListener(new View.OnTouchListener()
-//        {
-//            @Override
-//            public boolean onTouch(View v, MotionEvent event)
-//            {
-//
-//                Log.d(App.TAG, String.valueOf(event.getAction()));
-//
-//
-//                RatingBar ratingBar = (RatingBar) v;
-//
-//                if (ratingBar.getRating() == 1.0)
-//                {
-//                    ratingBar.setRating((float) 0.0);
-//                }
-//                else if (ratingBar.getRating() == 0.0)
-//                {
-//                    ratingBar.setRating((float) 0.5);
-//                }
-//                else if (ratingBar.getRating() == 0.5)
-//                {
-//                    ratingBar.setRating((float) 1.0);
-//                }
-//
-//
-//                //  int itemId = (Integer) v.getTag();
-//                int dbRating = (int) (ratingBar.getRating() * 2);
-//
-//
-//                try
-//                {
-//                    VocabDB.getInstance(getActivity()).SetRating(WordId, dbRating);
-//                }
-//                catch (Exception e)
-//                {
-//                    Log.e(App.TAG, e.getMessage());
-//                }
-//
-//                //Word.findById(words, itemId).setRating(dbRating);
-//
-//                return true;
-//
-//            }
-//
-//        });
 
 
         return v;
@@ -265,7 +233,7 @@ public class WordViewFragment extends Fragment
             wordIntent.setAction(Consts.ACTION_EDIT_WORD);
 
             Bundle data = new Bundle();
-            data.putInt("id", WordId);
+            data.putInt(Consts.ID_PARAMETER, WordId);
             wordIntent.putExtras(data);
 
             startActivityForResult(wordIntent, EDIT_REQUEST_CODE);
@@ -285,8 +253,8 @@ public class WordViewFragment extends Fragment
         {
             if (data != null)
             {
-                int WordId = data.getIntExtra("id", -1);
-                if (WordId != -1)
+                int WordId = data.getIntExtra(Consts.ID_PARAMETER, VALUE_NOT_SET);
+                if (WordId != VALUE_NOT_SET)
                 {
                     LoadWord(WordId);
 

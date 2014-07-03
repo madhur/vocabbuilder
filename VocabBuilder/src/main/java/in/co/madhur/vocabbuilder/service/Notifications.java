@@ -66,7 +66,7 @@ public class Notifications
             noti.addAction(R.drawable.half_star, context.getString(R.string.set), BuildNotificationActionIntent(id, wordId, HALF_STAR.ordinal()));
         }
 
-        noti.addAction(R.drawable.ic_action_remove, context.getString(R.string.dismiss), BuildNotificationActionIntent(id,wordId, -1) );
+        noti.addAction(R.drawable.ic_action_remove, context.getString(R.string.dismiss), BuildNotificationActionIntent(id,wordId, Consts.VALUE_NOT_SET) );
 
 
         return noti;
@@ -88,7 +88,7 @@ public class Notifications
         notificationIntent.putExtra(Consts.TARGET_WORD, wordId);
 
         // Return a pending intent to pass to the notification manager.
-        Log.d(App.TAG, "creating PI with " + String.valueOf(PI_REQUEST_CODE));
+
         return PendingIntent.getActivity(context, PI_REQUEST_CODE++, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
@@ -156,24 +156,24 @@ public class Notifications
 
     }
 
-    public void FireNotification(int id, NotificationCompat.Builder builder)
-    {
-        FireNotification(id, builder, true, true, true);
-
-    }
-
-    public void Cancel(int id)
-    {
-        NotificationManager mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-        mNotificationManager.cancel(id);
-    }
-
-    private boolean isNotificationVisible()
-    {
-        Intent notificationIntent = new Intent(context, MainActivity.class);
-        PendingIntent test = PendingIntent.getActivity(context, PI_REQUEST_CODE, notificationIntent, PendingIntent.FLAG_NO_CREATE);
-        return test != null;
-    }
+//    public void FireNotification(int id, NotificationCompat.Builder builder)
+//    {
+//        FireNotification(id, builder, true, true, true);
+//
+//    }
+//
+//    public void Cancel(int id)
+//    {
+//        NotificationManager mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+//        mNotificationManager.cancel(id);
+//    }
+//
+//    private boolean isNotificationVisible()
+//    {
+//        Intent notificationIntent = new Intent(context, MainActivity.class);
+//        PendingIntent test = PendingIntent.getActivity(context, PI_REQUEST_CODE, notificationIntent, PendingIntent.FLAG_NO_CREATE);
+//        return test != null;
+//    }
 
 
 }

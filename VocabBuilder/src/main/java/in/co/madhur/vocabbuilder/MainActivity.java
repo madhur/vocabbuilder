@@ -30,20 +30,15 @@ public class MainActivity extends BaseActivity implements ActionBar.OnNavigation
     private DrawerLayout mDrawerLayout;
     private ListView mDrawerList;
     private ActionBarDrawerToggle mDrawerToggle;
-    private boolean initializing = true;
 
-    @Override
-    protected void onResume()
-    {
-        super.onResume();
-        Log.d(App.TAG, "MainActivity: onResume");
-    }
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
 
-        Log.d(App.TAG, "MainActivity: onCreate");
+
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -257,8 +252,5 @@ public class MainActivity extends BaseActivity implements ActionBar.OnNavigation
         mDrawerList.setItemChecked(position, true);
         mDrawerLayout.closeDrawer(mDrawerList);
     }
-
-
-
 
 }

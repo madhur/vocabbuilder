@@ -94,7 +94,7 @@ public class WordEditFragment extends BaseWordFragment
         super.onActivityCreated(savedInstanceState);
         Word word = null;
 
-         WordId = getArguments().getInt("id");
+         WordId = getArguments().getInt(Consts.ID_PARAMETER);
 
         VocabDB vocabDB = VocabDB.getInstance(getActivity());
 
@@ -151,7 +151,7 @@ public class WordEditFragment extends BaseWordFragment
             }
 
             Intent resultIntent=new Intent();
-            resultIntent.putExtra("id", WordId);
+            resultIntent.putExtra(Consts.ID_PARAMETER, WordId);
             getActivity().setResult(Activity.RESULT_OK, resultIntent);
 
             getActivity().finish();
