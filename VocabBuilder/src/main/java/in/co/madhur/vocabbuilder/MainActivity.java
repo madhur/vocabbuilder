@@ -58,7 +58,7 @@ public class MainActivity extends BaseActivity implements ActionBar.OnNavigation
             public void onDrawerClosed(View view)
             {
                 super.onDrawerClosed(view);
-                invalidateOptionsMenu(); // creates call to
+                //invalidateOptionsMenu(); // creates call to
                 // onPrepareOptionsMenu()
             }
 
@@ -66,7 +66,7 @@ public class MainActivity extends BaseActivity implements ActionBar.OnNavigation
             public void onDrawerOpened(View drawerView)
             {
                 super.onDrawerOpened(drawerView);
-                invalidateOptionsMenu(); // creates call to
+               // invalidateOptionsMenu(); // creates call to
                 // onPrepareOptionsMenu()
             }
         };

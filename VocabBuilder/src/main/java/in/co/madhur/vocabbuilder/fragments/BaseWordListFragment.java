@@ -356,7 +356,7 @@ public class BaseWordListFragment extends Fragment
     public void LoadData(Consts.SPINNER_ITEMS item)
     {
 
-        getActivity().invalidateOptionsMenu();
+        getActivity().supportInvalidateOptionsMenu();
 
         switch (item)
         {
@@ -409,6 +409,7 @@ public class BaseWordListFragment extends Fragment
 
     public void LoadWord(int position)
     {
+
 
 
         SaveListPosition(position);
@@ -758,6 +759,7 @@ public class BaseWordListFragment extends Fragment
         SearchableInfo info = searchManager.getSearchableInfo(getActivity().getComponentName());
         searchView.setSearchableInfo(info);
 
+
         SearchView.OnQueryTextListener textChangeListener = new SearchView.OnQueryTextListener()
         {
             @Override
@@ -814,6 +816,22 @@ public class BaseWordListFragment extends Fragment
         searchView.setOnQueryTextListener(textChangeListener);
 
         super.onCreateOptionsMenu(menu, inflater);
+
+    }
+
+    @Override
+    public void onPrepareOptionsMenu(Menu menu)
+    {
+        super.onPrepareOptionsMenu(menu);
+
+        SearchManager searchManager = (SearchManager) getActivity().getSystemService(Context.SEARCH_SERVICE);
+        MenuItem searchitem = menu.findItem(R.id.action_search);
+        SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchitem);
+        SearchableInfo info = searchManager.getSearchableInfo(getActivity().getComponentName());
+        searchView.setSearchableInfo(info);
+
+        searchView.setQuery("", false);
+        searchView.clearFocus();
 
     }
 
