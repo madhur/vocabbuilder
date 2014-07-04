@@ -15,6 +15,7 @@ import in.co.madhur.vocabbuilder.Consts;
 import in.co.madhur.vocabbuilder.model.Word;
 
 import static in.co.madhur.vocabbuilder.Consts.SELECT_NOTIFICATION_WORDS;
+import static in.co.madhur.vocabbuilder.Consts.VALUE_NOT_SET;
 
 /**
  * Created by madhur on 19-Jun-14.
@@ -304,8 +305,12 @@ public class VocabDB
         return count;
     }
 
-
     public List<Word> GetAllWords() throws Exception
+    {
+        return GetAllWords(false);
+    }
+
+    public List<Word> GetAllWords(boolean getRelated) throws Exception
     {
         SQLiteDatabase database = db.getReadableDatabase();
         List<Word> wordList = new ArrayList<Word>();
@@ -328,7 +333,10 @@ public class VocabDB
             {
                 do
                 {
-                    wordList.add(GetWordFromCursor(database, c));
+                    if(!getRelated)
+                        wordList.add(GetWordFromCursor(database, c));
+                    else
+                        wordList.add(GetWordFromCursor(database, c, true ));
                 }
                 while (c.moveToNext());
             }
@@ -637,7 +645,7 @@ public class VocabDB
     private List<Word> GetSynonymsOrSimilar(SQLiteDatabase database, String colName, int WordId, int groupId) throws Exception
     {
         List<Word> words = new ArrayList<Word>();
-        if(groupId==-1)
+        if(groupId==VALUE_NOT_SET)
             return words;
 
         try
@@ -695,49 +703,96 @@ public class VocabDB
 
     private void SetSynonyms(SQLiteDatabase database, int WordId, List<Word> syonyms) throws Exception
     {
-        SetSynonymsOrSimilar(database, VocabContract.Words.SYN_GROUP, WordId, syonyms, -1);
+        SetSynonymsOrSimilar(database, VocabContract.Words.SYN_GROUP, WordId, syonyms, VALUE_NOT_SET);
     }
 
     private void SetSimilar(SQLiteDatabase database, int WordId, List<Word> similar) throws Exception
     {
-        SetSynonymsOrSimilar(database, VocabContract.Words.SIM_GROUP, WordId, similar, -1);
+        SetSynonymsOrSimilar(database, VocabContract.Words.SIM_GROUP, WordId, similar, VALUE_NOT_SET);
     }
 
     private void SetSynonymsOrSimilar(SQLiteDatabase database, String colName, int WordId, List<Word> syonyms, int oldGroupId) throws Exception
     {
+
+
         int groupId = WordId;
 
         if (syonyms.size() == 0)
         {
-            groupId = -1;
+            // If there are no syns, no group is set
+            groupId = VALUE_NOT_SET;
 
         }
         else
         {
+            ArrayList<Word> tempList=new ArrayList<Word>();
             for (Word word : syonyms)
             {
                 if (word.getId() < groupId)
                     groupId = word.getId();
+
+
+                if(colName.equals(VocabContract.Words.SIM_GROUP))
+                {
+                    List<Word> syns=GetSingleWord(word.getId()).getSimilar();
+
+                    if(syns!=null)
+                    {
+
+                        //syonyms.addAll(syns);
+                        tempList.addAll(syns);
+                        for (Word simWord : syns)
+                        {
+                            if (simWord.getSimGroup() < groupId)
+                                groupId = simWord.getSimGroup();
+                        }
+                    }
+
+                }
+                else
+                {
+                    List<Word> syns=GetSingleWord(word.getId()).getSynonyms();
+                    if(syns!=null)
+                    {
+                       // syonyms.addAll(syns);
+                        tempList.addAll(syns);
+                        for (Word simWord : syns)
+                        {
+                            Log.d(App.TAG, "Evaluating word " + simWord.getName());
+                            if (simWord.getSynGroup() < groupId)
+                                groupId = simWord.getSynGroup();
+                        }
+                    }
+
+                }
             }
+
+            syonyms.addAll(tempList);
+
+
+
         }
+
+        Log.d(App.TAG, "Final group id: " + String.valueOf(groupId));
+        Log.d(App.TAG, Word.join(syonyms));
 
         ContentValues values = new ContentValues();
         values.put(colName, groupId);
 
         try
         {
-            Log.d(App.TAG, Word.join(syonyms));
-            Log.d(App.TAG, String.valueOf(groupId));
+
+
 
             if (syonyms.size() > 0)
             {
                 int rowsAffected = database.update(VocabContract.Words.TABLE_NAME, values, VocabContract.Words.ID + " IN (" + Word.join(syonyms) + "," + WordId + ")", null);
-                Log.d(App.TAG, "Rows affected with update " + String.valueOf(rowsAffected));
+
             }
             else
             {
                 int rowsAffected = database.update(VocabContract.Words.TABLE_NAME, values, VocabContract.Words.ID + "=" + WordId, null);
-                Log.d(App.TAG, "Rows affected with update " + String.valueOf(rowsAffected));
+
 
                 if (WordId == oldGroupId)
                     UpdateGroupId(database, oldGroupId, colName);
@@ -775,7 +830,7 @@ public class VocabDB
 
 
             int rowsAffected=database.update(VocabContract.Words.TABLE_NAME, values, VocabContract.Words.ID + " IN (" + Word.join(words) + ")", null);
-            Log.d(App.TAG, "Rows affected with update " + String.valueOf(rowsAffected));
+
 
         }
         catch (Exception e)
@@ -857,11 +912,11 @@ public class VocabDB
 
             SetSimilar(database, Id, similar, oldSimGroupId);
 
-            Log.d(App.TAG, "Rows affected with update " + String.valueOf(rowsAffected));
+
         }
         catch (Exception e)
         {
-            Log.e(App.TAG, e.getMessage());
+            e.printStackTrace();
             throw e;
 
         }
@@ -884,8 +939,7 @@ public class VocabDB
         ContentValues values = new ContentValues();
         values.put(VocabContract.Words.WORD, word);
         values.put(VocabContract.Words.MEANING, meaning);
-//        values.put(VocabContract.Words.SYNONYMS , FormatWords(synonyms));
-//        values.put(VocabContract.Words.SIMILAR , FormatWords(similar));
+
         values.put(VocabContract.Words.IS_HIDDEN, 0);
         values.put(VocabContract.Words.IS_USER, 1);
 
@@ -895,7 +949,7 @@ public class VocabDB
         {
 
             long wordId = database.insert(VocabContract.Words.TABLE_NAME, null, values);
-            Log.d(App.TAG, "Added word with insert " + String.valueOf(wordId));
+
 
             if (synonyms.size() > 0)
                 SetSynonyms(database, (int) wordId, synonyms);
@@ -922,8 +976,16 @@ public class VocabDB
 
     private Word GetWordFromCursor(SQLiteDatabase database, Cursor c) throws Exception
     {
-       return GetWordFromCursor(database, c, false, -1);
+       return GetWordFromCursor(database, c, false, VALUE_NOT_SET);
     }
+
+    private Word GetWordFromCursor(SQLiteDatabase database, Cursor c, boolean getRelatedWords) throws Exception
+    {
+        int Id=c.getInt(c.getColumnIndexOrThrow(VocabContract.Words.ID));
+
+        return GetWordFromCursor(database, c, false, Id);
+    }
+
 
     private Word GetWordFromCursor(SQLiteDatabase database, Cursor c, boolean getRelatedwords, int Id) throws Exception
     {

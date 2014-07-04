@@ -64,7 +64,7 @@ public abstract class BaseWordFragment extends Fragment
             List<Word> words = null;
             try
             {
-                return vocabDB.GetAllWords();
+                return vocabDB.GetAllWords(true);
             }
             catch (final Exception e)
             {

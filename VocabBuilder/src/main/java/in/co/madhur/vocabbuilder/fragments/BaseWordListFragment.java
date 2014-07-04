@@ -114,7 +114,7 @@ public class BaseWordListFragment extends Fragment
                     }
                     else
                     {
-                        Log.d(App.TAG, "wordsAdapter view is null");
+
 
                         int index = ((MainActivity) getActivity()).getSupportActionBar().getSelectedNavigationIndex();
                         Consts.SPINNER_ITEMS item = Consts.SPINNER_ITEMS.values()[index];
@@ -134,7 +134,7 @@ public class BaseWordListFragment extends Fragment
             @Override
             public void onReceive(Context context, Intent intent)
             {
-                Log.d(App.TAG, "message");
+
 
 
 
@@ -161,7 +161,7 @@ public class BaseWordListFragment extends Fragment
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
-        Log.d(App.TAG, " WordListFragment: onCreateView ");
+
 
         View v = inflater.inflate(R.layout.word_fragment, container, false);
 
@@ -356,6 +356,7 @@ public class BaseWordListFragment extends Fragment
     public void LoadData(Consts.SPINNER_ITEMS item)
     {
 
+        getActivity().invalidateOptionsMenu();
 
         switch (item)
         {
