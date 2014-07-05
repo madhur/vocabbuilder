@@ -163,6 +163,19 @@ public class Word implements Serializable
         this.isUserWord = isUserWord;
     }
 
+    @Override
+    public boolean equals(Object o)
+    {
+        if (o instanceof Word && ((Word) o).getId() == this.getId())
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
     public static class NameSorter implements Comparator<Word>
     {
 
@@ -183,11 +196,17 @@ public class Word implements Serializable
         public int compare(Word lhs, Word rhs)
         {
             if (lhs.getRating() < rhs.getRating())
+            {
                 return -1;
+            }
             else if (lhs.getRating() > rhs.getRating())
+            {
                 return 1;
+            }
             else
+            {
                 return 0;
+            }
         }
     }
 
@@ -199,11 +218,17 @@ public class Word implements Serializable
         public int compare(Word lhs, Word rhs)
         {
             if (lhs.getDate() < rhs.getDate())
+            {
                 return -1;
+            }
             else if (lhs.getDate() > rhs.getDate())
+            {
                 return 1;
+            }
             else
+            {
                 return 0;
+            }
         }
     }
 
@@ -218,8 +243,24 @@ public class Word implements Serializable
         for (Word e : elements)
         {
             if (sb.length() > 0)
+            {
                 sb.append(delimiter);
+            }
             sb.append(e.getId());
+        }
+        return sb.toString();
+    }
+
+    public static String print(Iterable<Word> elements)
+    {
+        StringBuilder sb = new StringBuilder();
+        for (Word e : elements)
+        {
+            if (sb.length() > 0)
+            {
+                sb.append(",");
+            }
+            sb.append(e.getName());
         }
         return sb.toString();
     }

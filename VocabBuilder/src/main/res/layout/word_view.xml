@@ -5,46 +5,41 @@
   ~ Copyright (c) 2014.
   -->
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:orientation="vertical"
-              android:paddingLeft="@dimen/padding_4x"
-              android:paddingRight="@dimen/padding_4x"
-              android:paddingTop="@dimen/padding_4x"
-              android:weightSum="1">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:paddingLeft="@dimen/padding_4x"
+                android:paddingRight="@dimen/padding_4x"
+                android:paddingTop="@dimen/padding_4x"
+                android:weightSum="1">
 
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
+    <TextView
+        android:id="@+id/word"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="madhur"
+        android:layout_alignParentLeft="true"
+        android:textSize="@dimen/font_size_large"
+        android:paddingTop="@dimen/padding_2x"
+        android:textStyle="italic"/>
 
-        <TextView
-            android:id="@+id/word"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" android:text="madhur"
-            android:layout_alignParentLeft="true"
-            android:textSize="@dimen/font_size_large"
-            android:paddingTop="@dimen/padding_2x"
-            android:textStyle="italic"/>
+    <RatingBar
+        android:id="@+id/ratingBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
 
-        <RatingBar
-            android:id="@+id/ratingBar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
+        android:layout_marginRight="@dimen/padding_2x"
+        android:numStars="1"
+        android:rating="0"
+        android:stepSize="0.5"/>
 
-            android:layout_marginRight="@dimen/padding_2x"
-            android:numStars="1"
-            android:rating="0"
-            android:stepSize="0.5"/>
-
-
-
-    </RelativeLayout>
 
     <TextView
         android:id="@+id/meaning"
+        android:layout_below="@id/word"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/padding_4x"
@@ -54,31 +49,47 @@
 
     <TextView
         android:id="@+id/synonymslabel"
+        android:layout_below="@id/meaning"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/padding_4x"
         android:text="@string/action_synonyms"
         android:textSize="@dimen/font_size_medium"/>
 
-    <ListView
-        android:id="@+id/synonymsListView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"></ListView>
-
-
     <TextView
         android:id="@+id/similarlabel"
+        android:layout_below="@id/meaning"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
         android:layout_marginTop="@dimen/padding_4x"
         android:text="@string/action_similar"
         android:textSize="@dimen/font_size_medium"/>
 
-
-    <ListView
-        android:id="@+id/similarListView"
+    <LinearLayout
+        android:layout_below="@id/synonymslabel"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"></ListView>
+        android:orientation="horizontal"
+        android:paddingTop="@dimen/padding_4x"
+        android:layout_height="match_parent">
+
+        <ListView
+            android:id="@+id/synonymsListView"
+            android:layout_below="@id/synonymslabel"
+            android:layout_alignParentLeft="true"
+            android:layout_width="wrap_content"
+            android:layout_weight="0.5"
+            android:layout_height="wrap_content"></ListView>
+
+        <ListView
+            android:id="@+id/similarListView"
+            android:layout_toRightOf="@id/synonymsListView"
+            android:layout_width="wrap_content"
+            android:layout_weight="0.5"
+            android:layout_height="wrap_content"></ListView>
 
 
-</LinearLayout>
+    </LinearLayout>
+
+
+</RelativeLayout>

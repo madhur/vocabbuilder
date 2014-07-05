@@ -714,6 +714,7 @@ public class VocabDB
     private void SetSynonymsOrSimilar(SQLiteDatabase database, String colName, int WordId, List<Word> syonyms, int oldGroupId) throws Exception
     {
 
+        List<Word> removedWords = new ArrayList<Word>();
 
         int groupId = WordId;
 
@@ -726,6 +727,20 @@ public class VocabDB
         else
         {
             ArrayList<Word> tempList=new ArrayList<Word>();
+            List<Word> previousSyns;
+
+            if(colName.equals(VocabContract.Words.SIM_GROUP))
+               previousSyns=GetSingleWord(WordId).getSimilar();
+            else
+                previousSyns=GetSingleWord(WordId).getSynonyms();
+
+
+            removedWords.addAll(previousSyns);
+            removedWords.removeAll(syonyms);
+
+            Log.d(App.TAG, "Removed words: " + Word.print(removedWords));
+
+
             for (Word word : syonyms)
             {
                 if (word.getId() < groupId)
@@ -771,6 +786,8 @@ public class VocabDB
 
 
 
+
+
         }
 
         Log.d(App.TAG, "Final group id: " + String.valueOf(groupId));
@@ -797,6 +814,14 @@ public class VocabDB
                 if (WordId == oldGroupId)
                     UpdateGroupId(database, oldGroupId, colName);
 
+            }
+
+            // unset group if some words have been removed
+            if(removedWords.size()>0)
+            {
+                values=new ContentValues();
+                values.put(colName, VALUE_NOT_SET);
+                database.update(VocabContract.Words.TABLE_NAME, values, VocabContract.Words.ID + " IN (" + Word.join(removedWords) +  ")", null);
             }
         }
         catch (Exception e)
