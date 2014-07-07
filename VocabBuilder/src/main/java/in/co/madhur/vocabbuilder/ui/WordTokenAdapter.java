@@ -12,11 +12,13 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Filter;
 import android.widget.Filterable;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import in.co.madhur.vocabbuilder.R;
 import in.co.madhur.vocabbuilder.model.Word;
 
 /**
@@ -68,8 +70,9 @@ public class WordTokenAdapter extends BaseAdapter implements Filterable
         {
             holder = new ViewHolder();
 
-            view = LayoutInflater.from(context).inflate(android.R.layout.simple_list_item_1, parent, false);
-            holder.word = (TextView) view.findViewById(android.R.id.text1);
+            view = LayoutInflater.from(context).inflate(R.layout.word_token_item, parent, false);
+            holder.word = (TextView) view.findViewById(R.id.word);
+            holder.ratingBar=(RatingBar)view.findViewById(R.id.ratingBar);
             view.setTag(holder);
 
 
@@ -82,6 +85,7 @@ public class WordTokenAdapter extends BaseAdapter implements Filterable
         }
 
         holder.word.setText(word.getName());
+        holder.ratingBar.setRating((float)word.getRating()/2);
 
         return view;
     }
@@ -161,5 +165,6 @@ public class WordTokenAdapter extends BaseAdapter implements Filterable
     {
 
         TextView word;
+        RatingBar ratingBar;
     }
 }

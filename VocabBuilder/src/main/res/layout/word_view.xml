@@ -6,6 +6,7 @@
   -->
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
@@ -59,15 +60,20 @@
     <TextView
         android:id="@+id/similarlabel"
         android:layout_below="@id/meaning"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
+
+        android:paddingLeft="@dimen/padding_4x"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
+       android:gravity="center"
+
+
         android:layout_marginTop="@dimen/padding_4x"
         android:text="@string/action_similar"
         android:textSize="@dimen/font_size_medium"/>
 
     <LinearLayout
         android:layout_below="@id/synonymslabel"
+        android:id="@+id/linear"
         android:layout_width="match_parent"
         android:orientation="horizontal"
         android:paddingTop="@dimen/padding_4x"
@@ -78,15 +84,20 @@
             android:layout_below="@id/synonymslabel"
             android:layout_alignParentLeft="true"
             android:layout_width="wrap_content"
+            android:paddingRight="@dimen/padding_2x"
+
             android:layout_weight="0.5"
-            android:layout_height="wrap_content"></ListView>
+            android:layout_height="wrap_content"
+            tools:listitem="@layout/word_token_item"></ListView>
 
         <ListView
             android:id="@+id/similarListView"
             android:layout_toRightOf="@id/synonymsListView"
             android:layout_width="wrap_content"
+
             android:layout_weight="0.5"
-            android:layout_height="wrap_content"></ListView>
+            android:layout_height="wrap_content"
+            tools:listitem="@layout/word_token_item"></ListView>
 
 
     </LinearLayout>
