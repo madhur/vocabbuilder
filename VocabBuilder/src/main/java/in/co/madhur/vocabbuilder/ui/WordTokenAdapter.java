@@ -85,6 +85,7 @@ public class WordTokenAdapter extends BaseAdapter implements Filterable
         }
 
         holder.word.setText(word.getName());
+        holder.word.setSelected(true);
         holder.ratingBar.setRating((float)word.getRating()/2);
 
         return view;
