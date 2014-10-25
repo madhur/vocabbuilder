@@ -10,6 +10,11 @@ buildscript {
     }
 }
 
+repositories {
+    mavenCentral()
+}
+
+
 apply plugin: 'android'
 
 android {
@@ -27,8 +32,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
         }
     }
-    productFlavors {
-    }
+
 }
 
 

@@ -83,7 +83,8 @@ public class BaseWordListFragment extends Fragment
 
         if (appPreferences.GetTheme() == Consts.THEME.DARK)
         {
-            activity.getSupportActionBar().setBackgroundDrawable(new ColorDrawable(android.R.color.transparent));
+            if(activity.getSupportActionBar()!=null)
+                activity.getSupportActionBar().setBackgroundDrawable(new ColorDrawable(android.R.color.transparent));
         }
 
 

@@ -1,11 +1,9 @@
 package in.co.madhur.vocabbuilder.fragments;
 
 import android.content.Intent;
-import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -16,7 +14,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import java.text.NumberFormat;
-import java.util.List;
 
 import de.keyboardsurfer.android.widget.crouton.Crouton;
 import de.keyboardsurfer.android.widget.crouton.Style;
@@ -27,7 +24,6 @@ import in.co.madhur.vocabbuilder.MainActivity;
 import in.co.madhur.vocabbuilder.R;
 import in.co.madhur.vocabbuilder.SettingsActivity;
 import in.co.madhur.vocabbuilder.db.VocabDB;
-import in.co.madhur.vocabbuilder.model.Word;
 
 /**
  * Created by madhur on 19-Jun-14.
@@ -75,9 +71,9 @@ public class StatsFragment extends Fragment
         appPreferences = new AppPreferences(getActivity());
 
         MainActivity activity= (MainActivity) getActivity();
-
-        if(appPreferences.GetTheme()== Consts.THEME.DARK)
-            activity.getSupportActionBar().setBackgroundDrawable(getActivity().getResources().getDrawable(android.support.v7.appcompat.R.drawable.abc_ab_transparent_dark_holo));
+//
+//        if(appPreferences.GetTheme()== Consts.THEME.DARK)
+//            activity.getSupportActionBar().setBackgroundDrawable(getActivity().getResources().getDrawable(android.support.v7.appcompat.R.drawable.abc_ab_share_pack_holo_dark));
 
         setHasOptionsMenu(true);
 

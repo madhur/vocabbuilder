@@ -1,15 +1,40 @@
 <android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/drawer_layout"
+    android:id="@+id/drawer_layout" android:fitsSystemWindows="false"
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
-    <!-- The main content view -->
 
-    <FrameLayout
-        android:id="@+id/content_frame"
+    in front of the action bar -->
+
+
+    <!-- The main content view -->
+    <!-- Your normal content view -->
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent" >
-    </FrameLayout>
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <!-- We use a Toolbar so that our drawer can be displayed -->
+        <android.support.v7.widget.Toolbar xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/my_awesome_toolbar"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:minHeight="?attr/actionBarSize"  app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+            app:popupTheme="@style/ThemeOverlay.AppCompat"
+            android:background="?attr/colorPrimary" />
+
+        <!-- The rest of your content view -->
+
+        <FrameLayout
+            android:id="@+id/content_frame"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+        </FrameLayout>
+
+    </LinearLayout>
+
+
     <!-- The navigation drawer -->
 
     <ListView

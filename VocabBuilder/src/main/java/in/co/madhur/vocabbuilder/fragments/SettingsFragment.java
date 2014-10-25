@@ -19,10 +19,6 @@ import android.view.ViewParent;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 
-
-import java.lang.reflect.Array;
-
-import in.co.madhur.vocabbuilder.AppPreferences;
 import in.co.madhur.vocabbuilder.Consts;
 import in.co.madhur.vocabbuilder.R;
 import in.co.madhur.vocabbuilder.db.DbHelper;
@@ -303,7 +299,8 @@ public class SettingsFragment extends PreferenceFragment
         if (dialog != null)
         {
             // Inialize the action bar
-            dialog.getActionBar().setDisplayHomeAsUpEnabled(true);
+            if(dialog.getActionBar()!=null)
+                dialog.getActionBar().setDisplayHomeAsUpEnabled(true);
 
             // Apply custom home button area click listener to close the
             // PreferenceScreen because PreferenceScreens are dialogs which

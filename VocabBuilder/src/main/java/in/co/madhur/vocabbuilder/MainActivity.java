@@ -2,11 +2,11 @@ package in.co.madhur.vocabbuilder;
 
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
-import android.util.Log;
+import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -17,9 +17,7 @@ import com.crittercism.app.Crittercism;
 
 import de.keyboardsurfer.android.widget.crouton.Crouton;
 import in.co.madhur.vocabbuilder.fragments.BaseWordListFragment;
-
 import in.co.madhur.vocabbuilder.fragments.StatsFragment;
-
 import in.co.madhur.vocabbuilder.service.Alarms;
 
 import static in.co.madhur.vocabbuilder.Consts.LISTS;
@@ -34,12 +32,9 @@ public class MainActivity extends BaseActivity implements ActionBar.OnNavigation
     private ActionBarDrawerToggle mDrawerToggle;
 
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
-
 
 
         super.onCreate(savedInstanceState);
@@ -50,8 +45,10 @@ public class MainActivity extends BaseActivity implements ActionBar.OnNavigation
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerList = (ListView) findViewById(R.id.left_drawer);
+        Toolbar mToolbar = (Toolbar) findViewById(R.id.my_awesome_toolbar);
 
-        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.drawable.ic_drawer, R.string.drawer_open, R.string.drawer_close)
+        setSupportActionBar(mToolbar);
+        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, mToolbar,  R.string.drawer_open, R.string.drawer_close)
         {
 
             /** Called when a drawer has settled in a completely closed state. */
@@ -66,7 +63,7 @@ public class MainActivity extends BaseActivity implements ActionBar.OnNavigation
             public void onDrawerOpened(View drawerView)
             {
                 super.onDrawerOpened(drawerView);
-               // invalidateOptionsMenu(); // creates call to
+                // invalidateOptionsMenu(); // creates call to
                 // onPrepareOptionsMenu()
             }
         };
@@ -107,12 +104,12 @@ public class MainActivity extends BaseActivity implements ActionBar.OnNavigation
         if (!alarms.DoesAlarmExist())
         {
             if (alarms.ShouldSchedule())
+            {
                 alarms.Schedule();
+            }
         }
 
     }
-
-
 
 
     @Override
@@ -123,7 +120,6 @@ public class MainActivity extends BaseActivity implements ActionBar.OnNavigation
 
 
     }
-
 
 
     @Override
@@ -150,16 +146,19 @@ public class MainActivity extends BaseActivity implements ActionBar.OnNavigation
         SPINNER_ITEMS item = SPINNER_ITEMS.values()[itemPosition];
 
 
-
-        if(item==SPINNER_ITEMS.ACTIVE || item==SPINNER_ITEMS.RECENT || item==SPINNER_ITEMS.STARRED || item == SPINNER_ITEMS.UNSTARRED || item==SPINNER_ITEMS.HIDDEN)
+        if (item == SPINNER_ITEMS.ACTIVE || item == SPINNER_ITEMS.RECENT || item == SPINNER_ITEMS.STARRED || item == SPINNER_ITEMS.UNSTARRED || item == SPINNER_ITEMS.HIDDEN)
         {
-            if(item==SPINNER_ITEMS.ACTIVE)
+            if (item == SPINNER_ITEMS.ACTIVE)
+            {
                 LockDrawer(false);
+            }
             else
+            {
                 LockDrawer(true);
+            }
 
 
-            if(getSupportFragmentManager().getFragments()!=null && getSupportFragmentManager().getFragments().size()>0)
+            if (getSupportFragmentManager().getFragments() != null && getSupportFragmentManager().getFragments().size() > 0)
             {
                 Fragment fragment = getSupportFragmentManager().getFragments().get(0);
                 if (fragment instanceof BaseWordListFragment)
@@ -168,7 +167,9 @@ public class MainActivity extends BaseActivity implements ActionBar.OnNavigation
 
                 }
                 else
+                {
                     LoadMainFragment(itemPosition);
+                }
             }
             else
             {
@@ -177,7 +178,7 @@ public class MainActivity extends BaseActivity implements ActionBar.OnNavigation
 
         }
 
-        else if(item==SPINNER_ITEMS.STATS)
+        else if (item == SPINNER_ITEMS.STATS)
         {
             LockDrawer(true);
             getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, new StatsFragment()).commit();
@@ -202,7 +203,7 @@ public class MainActivity extends BaseActivity implements ActionBar.OnNavigation
         mDrawerToggle.setDrawerIndicatorEnabled(!isLock);
         getSupportActionBar().setDisplayHomeAsUpEnabled(!isLock);
 
-        if(isLock)
+        if (isLock)
         {
             mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
         }
@@ -214,7 +215,6 @@ public class MainActivity extends BaseActivity implements ActionBar.OnNavigation
     }
 
 
-
     private class DrawerItemClickListener implements
             ListView.OnItemClickListener
     {
@@ -224,7 +224,6 @@ public class MainActivity extends BaseActivity implements ActionBar.OnNavigation
             selectItem(position);
         }
     }
-
 
 
     @Override
