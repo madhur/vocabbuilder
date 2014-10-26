@@ -181,6 +181,8 @@ public class MainActivity extends BaseActivity implements ActionBar.OnNavigation
             getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, new StatsFragment()).commit();
         }
 
+        mDrawerToggle.syncState();
+        
         return true;
     }
 
