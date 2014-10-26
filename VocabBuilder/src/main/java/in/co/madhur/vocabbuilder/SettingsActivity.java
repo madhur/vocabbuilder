@@ -15,6 +15,8 @@ public class SettingsActivity extends BaseActivity
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
+
+
         super.onCreate(savedInstanceState);
 
         View v = getLayoutInflater().inflate(R.layout.toolbar, null);
@@ -24,6 +26,7 @@ public class SettingsActivity extends BaseActivity
         Toolbar mToolbar = (Toolbar) findViewById(R.id.my_awesome_toolbar);
 
         setSupportActionBar(mToolbar);
+
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 

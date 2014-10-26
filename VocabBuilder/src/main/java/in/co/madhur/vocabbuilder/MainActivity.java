@@ -55,16 +55,14 @@ public class MainActivity extends BaseActivity implements ActionBar.OnNavigation
             public void onDrawerClosed(View view)
             {
                 super.onDrawerClosed(view);
-                //invalidateOptionsMenu(); // creates call to
-                // onPrepareOptionsMenu()
+
             }
 
             /** Called when a drawer has settled in a completely open state. */
             public void onDrawerOpened(View drawerView)
             {
                 super.onDrawerOpened(drawerView);
-                // invalidateOptionsMenu(); // creates call to
-                // onPrepareOptionsMenu()
+
             }
         };
 
@@ -73,8 +71,7 @@ public class MainActivity extends BaseActivity implements ActionBar.OnNavigation
 
         mDrawerList.setAdapter(new ArrayAdapter<String>(this, R.layout.drawer_list_item, LISTS.names()));
 
-        // Set the adapter for the list view
-        //  mDrawerList.setAdapter(new ArrayAdapter<String>(this, R.layout.drawer_list_item, mPlanetTitles));
+
         // Set the list's click listener
         mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
 
