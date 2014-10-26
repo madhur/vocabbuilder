@@ -13,6 +13,8 @@ import android.preference.Preference;
 import android.preference.PreferenceScreen;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.preference.PreferenceFragment;
+import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
@@ -287,6 +289,7 @@ public class SettingsFragment extends PreferenceFragment
     {
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.settings);
+
     }
 
 
@@ -363,6 +366,7 @@ public class SettingsFragment extends PreferenceFragment
                 // bar
                 if (preference instanceof PreferenceScreen)
                 {
+
                     initializeActionBar((PreferenceScreen) preference);
                 }
             }
@@ -370,7 +374,10 @@ public class SettingsFragment extends PreferenceFragment
             if (preference != null)
                 if (preference instanceof PreferenceScreen)
                     if (((PreferenceScreen) preference).getDialog() != null)
+                    {
                         ((PreferenceScreen) preference).getDialog().getWindow().getDecorView().setBackgroundDrawable(getActivity().getWindow().getDecorView().getBackground().getConstantState().newDrawable());
+
+                    }
 
             return false;
         }

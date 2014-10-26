@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest
-    package="in.co.madhur.vocabbuilder"   xmlns:tools="http://schemas.android.com/tools"
+    package="in.co.madhur.vocabbuilder" android:versionCode="2" android:versionName="1.1"   xmlns:tools="http://schemas.android.com/tools"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
 

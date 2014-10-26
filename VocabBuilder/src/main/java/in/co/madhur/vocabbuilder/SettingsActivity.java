@@ -1,7 +1,8 @@
 package in.co.madhur.vocabbuilder;
 
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.Toolbar;
+import android.view.View;
 
 import in.co.madhur.vocabbuilder.fragments.SettingsFragment;
 
@@ -16,7 +17,17 @@ public class SettingsActivity extends BaseActivity
     {
         super.onCreate(savedInstanceState);
 
-        getSupportFragmentManager().beginTransaction().replace(android.R.id.content, new SettingsFragment()).commit();
+        View v = getLayoutInflater().inflate(R.layout.toolbar, null);
+
+        setContentView(v);
+
+        Toolbar mToolbar = (Toolbar) findViewById(R.id.my_awesome_toolbar);
+
+        setSupportActionBar(mToolbar);
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        getSupportFragmentManager().beginTransaction().add(R.id.toolbar_layout, new SettingsFragment()).commit();
 
     }
 }

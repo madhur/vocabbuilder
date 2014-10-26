@@ -1,50 +1,47 @@
-<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/drawer_layout" android:fitsSystemWindows="false"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+<!-- We use a Toolbar so that our drawer can be displayed -->
 
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
 
-    in front of the action bar -->
+<include layout="@layout/toolbar"></include>
 
-
-    <!-- The main content view -->
-    <!-- Your normal content view -->
-
-    <LinearLayout
+    <android.support.v4.widget.DrawerLayout
+        android:id="@+id/drawer_layout"
+        android:fitsSystemWindows="false"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
 
-        <!-- We use a Toolbar so that our drawer can be displayed -->
-        <android.support.v7.widget.Toolbar xmlns:app="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/my_awesome_toolbar"
-            android:layout_height="wrap_content"
-            android:layout_width="match_parent"
-            android:minHeight="?attr/actionBarSize"  app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-            app:popupTheme="@style/ThemeOverlay.AppCompat"
-            android:background="?attr/colorPrimary" />
+
+        in front of the action bar -->
+
+
+        <!-- The main content view -->
+        <!-- Your normal content view -->
+
 
         <!-- The rest of your content view -->
 
         <FrameLayout
             android:id="@+id/content_frame"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" >
+            android:layout_height="match_parent">
         </FrameLayout>
 
-    </LinearLayout>
 
+        <!-- The navigation drawer -->
 
-    <!-- The navigation drawer -->
+        <ListView
+            android:id="@+id/left_drawer"
+            android:layout_width="120dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="start"
 
-    <ListView
-        android:id="@+id/left_drawer"
-        android:layout_width="120dp"
-        android:layout_height="match_parent"
-        android:layout_gravity="start"
+            android:choiceMode="singleChoice"
+            android:divider="@android:color/darker_gray"
+            android:dividerHeight="1dp"/>
 
-        android:choiceMode="singleChoice"
-        android:divider="@android:color/darker_gray"
-        android:dividerHeight="1dp" />
+    </android.support.v4.widget.DrawerLayout>
 
-</android.support.v4.widget.DrawerLayout>
+</LinearLayout>
