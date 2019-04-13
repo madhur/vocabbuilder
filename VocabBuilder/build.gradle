@@ -2,27 +2,32 @@
 buildscript {
     repositories {
         mavenCentral()
+        maven { url 'https://maven.google.com' }
+        maven {url 'https://oss.sonatype.org/content/groups/public/'}
+        jcenter()
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:0.13.2'
+        classpath 'com.android.tools.build:gradle:3.3.2'
 
     }
 }
 
 repositories {
     mavenCentral()
+    maven { url 'https://maven.google.com' }
+    maven {url 'https://oss.sonatype.org/content/groups/public/'}
+    jcenter()
 }
 
 
 apply plugin: 'android'
 
 android {
-    compileSdkVersion 21
-    buildToolsVersion '21.0.2'
+    compileSdkVersion 26
     defaultConfig {
-        minSdkVersion 11
-        targetSdkVersion 21
+        minSdkVersion 14
+        targetSdkVersion 26
         versionCode 2
         versionName '1.0'
     }
@@ -38,7 +43,7 @@ android {
 
     buildTypes {
         release {
-            runProguard false
+            minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
             signingConfig signingConfigs.release
         }
@@ -56,16 +61,18 @@ android {
 
 
 dependencies {
-    compile 'com.android.support:appcompat-v7:21.0.0'
-    compile 'com.android.support:support-v4:21.0.0'
+    compile 'com.android.support:appcompat-v7:26.0.0'
+    compile 'com.android.support:support-v4:26.0.0'
     compile 'com.nineoldandroids:library:2.4.0'
-    compile 'com.crittercism:crittercism-android-agent:+'
-    compile 'com.commonsware.cwac:wakeful:1.0.1'
+
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile('de.keyboardsurfer.android.widget:crouton:1.8.4@aar') {
         exclude group: 'com.google.android', module: 'support-v4'
     }
+
     compile project(':libraries:android-support-v4-preferencefragment')
-    compile project(':android-swipelistview')
-    compile project(':library')
+    compile project(':libraries:android-swipelistview')
+    //compile project(':android-swipelistview')
+    compile "com.splitwise:tokenautocomplete:3.0.1@aar"
+
 }

@@ -13,8 +13,6 @@ import android.preference.Preference;
 import android.preference.PreferenceScreen;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.preference.PreferenceFragment;
-import android.support.v7.app.ActionBarActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;

@@ -65,6 +65,11 @@ public class WordEditFragment extends BaseWordFragment
             {
                 synonyms.remove(o);
             }
+
+            @Override
+            public void onTokenIgnored(Object token) {
+
+            }
         });
 
         similarTextView.setTokenListener(new TokenCompleteTextView.TokenListener()
@@ -79,6 +84,11 @@ public class WordEditFragment extends BaseWordFragment
             public void onTokenRemoved(Object o)
             {
                 similar.remove(o);
+            }
+
+            @Override
+            public void onTokenIgnored(Object token) {
+
             }
         });
 
@@ -114,12 +124,12 @@ public class WordEditFragment extends BaseWordFragment
 
         for(Word w: word.getSynonyms())
         {
-            synonymsTextView.addObject(w);
+            synonymsTextView.addObjectSync(w);
         }
 
         for(Word w:word.getSimilar())
         {
-            similarTextView.addObject(w);
+            similarTextView.addObjectSync(w);
         }
 
 
