@@ -2,12 +2,12 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/ImproveyourVocabulary.iml" filepath="$PROJECT_DIR$/ImproveyourVocabulary.iml" />
       <module fileurl="file://$PROJECT_DIR$/VocabBuilder/VocabBuilder.iml" filepath="$PROJECT_DIR$/VocabBuilder/VocabBuilder.iml" />
       <module fileurl="file://$PROJECT_DIR$/libraries/android-support-v4-preferencefragment/android-support-v4-preferencefragment.iml" filepath="$PROJECT_DIR$/libraries/android-support-v4-preferencefragment/android-support-v4-preferencefragment.iml" />
       <module fileurl="file://$PROJECT_DIR$/libraries/android-swipelistview/android-swipelistview.iml" filepath="$PROJECT_DIR$/libraries/android-swipelistview/android-swipelistview.iml" />
-      <module fileurl="file://$PROJECT_DIR$/libraries/TokenAutoComplete/library/library.iml" filepath="$PROJECT_DIR$/libraries/TokenAutoComplete/library/library.iml" />
+      <module fileurl="file://$PROJECT_DIR$/libraries/libraries.iml" filepath="$PROJECT_DIR$/libraries/libraries.iml" />
+      <module fileurl="file://$PROJECT_DIR$/libraries/android-swipelistview/swipelistview/swipelistview.iml" filepath="$PROJECT_DIR$/libraries/android-swipelistview/swipelistview/swipelistview.iml" />
+      <module fileurl="file://$PROJECT_DIR$/vocabbuilder.iml" filepath="$PROJECT_DIR$/vocabbuilder.iml" />
     </modules>
   </component>
 </project>
-

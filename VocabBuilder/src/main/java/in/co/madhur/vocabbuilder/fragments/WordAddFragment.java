@@ -60,6 +60,11 @@ public class WordAddFragment extends BaseWordFragment
             {
                 synonyms.remove(o);
             }
+
+            @Override
+            public void onTokenIgnored(Object token) {
+
+            }
         });
 
         similarTextView.setTokenListener(new TokenCompleteTextView.TokenListener()
@@ -74,6 +79,11 @@ public class WordAddFragment extends BaseWordFragment
             public void onTokenRemoved(Object o)
             {
                 similar.remove(o);
+            }
+
+            @Override
+            public void onTokenIgnored(Object token) {
+
             }
         });
 
