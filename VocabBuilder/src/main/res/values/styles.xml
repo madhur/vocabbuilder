@@ -1,9 +1,10 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="AppTheme" parent="Theme.AppCompat.NoActionBar">
         <!-- Customize your theme here. -->
 
+        <item name="windowNoTitle">true</item>
     </style>
 
     <style name="Black" parent="@style/Theme.AppCompat.NoActionBar">
@@ -12,8 +13,12 @@
         <!-- <item name="android:windowBackground">@color/pitch_black</item> -->
 
         <!--<item name="android:listViewStyle">@style/ListViewDark</item>-->
-        <item name="listBackgroundColor">@android:color/black</item>
-        <item name="drawerlistBackgroundColor">@drawable/activated_background</item>
+        <!--<item name="listBackgroundColor">@android:color/black</item>-->
+        <!--<item name="drawerlistBackgroundColor">@drawable/activated_background</item>-->
+
+        <item name="windowNoTitle">true</item>
+        <!--<item name="android:windowFullscreen">true</item>-->
+        <!--<item name="android:windowContentOverlay">@null</item>-->
 
         <!--<item name="android:actionBarStyle">@style/MyActionBar.Dark</item>-->
 
@@ -27,9 +32,12 @@
 
     <style name="Light" parent="@style/Theme.AppCompat.Light.NoActionBar">
         <!--<item name="android:listViewStyle">@style/ListViewLight</item>-->
-        <item name="listBackgroundColor">@android:color/white</item>
-        <item name="drawerlistBackgroundColor">@drawable/activated_background_light</item>
+        <!--<item name="listBackgroundColor">@android:color/white</item>-->
+        <!--<item name="drawerlistBackgroundColor">@drawable/activated_background_light</item>-->
 
+        <item name="windowNoTitle">true</item>
+        <!--<item name="android:windowFullscreen">true</item>-->
+        <!--<item name="android:windowContentOverlay">@null</item>-->
 
         <!--<item name="android:actionBarWidgetTheme">@style/Theme.AppCompat.Light.DarkActionBar</item>-->
         <!--<item name="actionBarWidgetTheme">@style/Theme.AppCompat.Light.DarkActionBar</item>-->
