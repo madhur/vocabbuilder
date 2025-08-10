@@ -53,7 +53,8 @@
 
         <activity
             android:name=".ui.WordActivity"
-            android:parentActivityName=".MainActivity">
+            android:parentActivityName=".MainActivity"
+            android:exported="false">
 
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -77,13 +78,13 @@
             android:noHistory="true" android:taskAffinity=""
             android:theme="@android:style/Theme.Translucent.NoTitleBar"></activity>
 
-        <receiver android:name=".receiver.AlarmReceiver">
+        <receiver android:name=".receiver.AlarmReceiver" android:exported="false">
             <intent-filter>
                 <action android:name="in.co.madhur.vocabbuilder.ACTION.REMIND_WORD"></action>
             </intent-filter>
         </receiver>
 
-        <receiver android:name=".receiver.BootReceiver">
+        <receiver android:name=".receiver.BootReceiver" android:exported="false">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED"/>
             </intent-filter>
