@@ -585,76 +585,76 @@ public class BaseWordListFragment extends Fragment
         Intent wordIntent;
         Bundle data;
 
-        switch (item.getItemId())
+        int itemId = item.getItemId();
+
+        if (itemId == R.id.action_hide)
         {
-
-            case R.id.action_hide:
-
-                try
+            try
+            {
+                if (!word.isHidden())
                 {
-                    if (!word.isHidden())
-                    {
-                        VocabDB.getInstance(getActivity()).HideWord(word.getId());
-                    }
-                    else
-                    {
-                        VocabDB.getInstance(getActivity()).HideWord(word.getId(), false);
-                    }
-
-
-                    WordsAdapter wordsAdapter = (WordsAdapter) listView.getAdapter();
-                    wordsAdapter.HideWord(word.getId());
-                    wordsAdapter.notifyDataSetChanged();
-
+                    VocabDB.getInstance(getActivity()).HideWord(word.getId());
                 }
-                catch (Exception e)
+                else
                 {
-                    e.printStackTrace();
+                    VocabDB.getInstance(getActivity()).HideWord(word.getId(), false);
                 }
 
-                return true;
+                WordsAdapter wordsAdapter = (WordsAdapter) listView.getAdapter();
+                wordsAdapter.HideWord(word.getId());
+                wordsAdapter.notifyDataSetChanged();
 
-            case R.id.action_edit:
-                wordIntent = new Intent();
-                wordIntent.setClass(getActivity(), WordActivity.class);
-                wordIntent.setAction(Consts.ACTION_EDIT_WORD);
+            }
+            catch (Exception e)
+            {
+                e.printStackTrace();
+            }
 
-                data = new Bundle();
-                data.putInt(Consts.ID_PARAMETER, word.getId());
-                wordIntent.putExtras(data);
+            return true;
+        }
+        else if (itemId == R.id.action_edit)
+        {
+            wordIntent = new Intent();
+            wordIntent.setClass(getActivity(), WordActivity.class);
+            wordIntent.setAction(Consts.ACTION_EDIT_WORD);
 
-                startActivity(wordIntent);
+            data = new Bundle();
+            data.putInt(Consts.ID_PARAMETER, word.getId());
+            wordIntent.putExtras(data);
 
-                return true;
+            startActivity(wordIntent);
 
-            case R.id.action_view:
-                wordIntent = new Intent();
-                wordIntent.setClass(getActivity(), WordActivity.class);
-                wordIntent.setAction(Consts.ACTION_VIEW_WORD);
+            return true;
+        }
+        else if (itemId == R.id.action_view)
+        {
+            wordIntent = new Intent();
+            wordIntent.setClass(getActivity(), WordActivity.class);
+            wordIntent.setAction(Consts.ACTION_VIEW_WORD);
 
-                data = new Bundle();
-                data.putInt(Consts.ID_PARAMETER, word.getId());
-                wordIntent.putExtras(data);
+            data = new Bundle();
+            data.putInt(Consts.ID_PARAMETER, word.getId());
+            wordIntent.putExtras(data);
 
-                startActivity(wordIntent);
-                return true;
+            startActivity(wordIntent);
+            return true;
+        }
+        else if (itemId == R.id.action_delete)
+        {
+            try
+            {
+                VocabDB.getInstance(getActivity()).DeleteWord(word.getId());
 
-            case R.id.action_delete:
-                try
-                {
-                    VocabDB.getInstance(getActivity()).DeleteWord(word.getId());
+                WordsAdapter wordsAdapter = (WordsAdapter) listView.getAdapter();
+                wordsAdapter.HideWord(word.getId());
+                wordsAdapter.notifyDataSetChanged();
+            }
+            catch (Exception e)
+            {
+                e.printStackTrace();
+            }
 
-                    WordsAdapter wordsAdapter = (WordsAdapter) listView.getAdapter();
-                    wordsAdapter.HideWord(word.getId());
-                    wordsAdapter.notifyDataSetChanged();
-                }
-                catch (Exception e)
-                {
-                    e.printStackTrace();
-                }
-
-                return true;
-
+            return true;
         }
         return super.onContextItemSelected(item);
     }

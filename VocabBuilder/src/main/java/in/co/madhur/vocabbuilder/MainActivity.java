@@ -24,7 +24,7 @@ import static in.co.madhur.vocabbuilder.Consts.LISTS;
 import static in.co.madhur.vocabbuilder.Consts.SPINNER_ITEMS;
 
 
-public class MainActivity extends BaseActivity implements ActionBar.OnNavigationListener
+public class MainActivity extends BaseActivity
 {
 
     private DrawerLayout mDrawerLayout;
@@ -35,8 +35,9 @@ public class MainActivity extends BaseActivity implements ActionBar.OnNavigation
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
-
-
+        // Ensure theme is properly applied for AppCompatActivity compatibility
+        setTheme(R.style.Black);
+        
         super.onCreate(savedInstanceState);
 
 
@@ -81,19 +82,16 @@ public class MainActivity extends BaseActivity implements ActionBar.OnNavigation
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
 
-        getSupportActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
+        // Note: ActionBar.NAVIGATION_MODE_LIST is deprecated in newer support library versions
+        // The navigation functionality is now handled through the drawer layout
 
-        ArrayAdapter<CharSequence> someAdapter = new
-                ArrayAdapter<CharSequence>(getSupportActionBar().getThemedContext(), R.layout.support_simple_spinner_dropdown_item,
-                android.R.id.text1, getResources().getStringArray(R.array.spinner_items));
-
-        someAdapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
-
-
-        getSupportActionBar().setListNavigationCallbacks(someAdapter, this);
+        // Note: ActionBar list navigation is deprecated, using drawer navigation instead
+        // The spinner functionality is now handled through the drawer list
 
         PreferenceManager.setDefaultValues(this, R.xml.settings, false);
 
+        // Load default fragment (ACTIVE words) when app starts
+        LoadMainFragment(0); // 0 corresponds to ACTIVE in SPINNER_ITEMS
 
         // Schedule alarm if its enabled
         Alarms alarms = new Alarms(this);
@@ -136,55 +134,7 @@ public class MainActivity extends BaseActivity implements ActionBar.OnNavigation
     }
 
 
-    @Override
-    public boolean onNavigationItemSelected(int itemPosition, long itemId)
-    {
 
-        SPINNER_ITEMS item = SPINNER_ITEMS.values()[itemPosition];
-
-
-        if (item == SPINNER_ITEMS.ACTIVE || item == SPINNER_ITEMS.RECENT || item == SPINNER_ITEMS.STARRED || item == SPINNER_ITEMS.UNSTARRED || item == SPINNER_ITEMS.HIDDEN)
-        {
-            if (item == SPINNER_ITEMS.ACTIVE)
-            {
-                LockDrawer(false);
-            }
-            else
-            {
-                LockDrawer(true);
-            }
-
-
-            if (getSupportFragmentManager().getFragments() != null && getSupportFragmentManager().getFragments().size() > 0)
-            {
-                Fragment fragment = getSupportFragmentManager().getFragments().get(0);
-                if (fragment instanceof BaseWordListFragment)
-                {
-                    ((BaseWordListFragment) (fragment)).LoadData(item);
-
-                }
-                else
-                {
-                    LoadMainFragment(itemPosition);
-                }
-            }
-            else
-            {
-                LoadMainFragment(itemPosition);
-            }
-
-        }
-
-        else if (item == SPINNER_ITEMS.STATS)
-        {
-            LockDrawer(true);
-            getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, new StatsFragment()).commit();
-        }
-
-        mDrawerToggle.syncState();
-        
-        return true;
-    }
 
     private void LoadMainFragment(int itemPosition)
     {
@@ -237,20 +187,74 @@ public class MainActivity extends BaseActivity implements ActionBar.OnNavigation
      */
     private void selectItem(int position)
     {
-        // An alphabet list is selected, return
-        if (position >= 0 && position < 27)
+        // Handle main navigation items (ACTIVE, RECENT, STARRED, etc.)
+        if (position >= 27)
         {
-            Fragment wordFragment = getSupportFragmentManager().getFragments().get(0);
-            if (wordFragment instanceof BaseWordListFragment)
+            int itemIndex = position - 27;
+            SPINNER_ITEMS item = SPINNER_ITEMS.values()[itemIndex];
+            
+            if (item == SPINNER_ITEMS.ACTIVE || item == SPINNER_ITEMS.RECENT || item == SPINNER_ITEMS.STARRED || item == SPINNER_ITEMS.UNSTARRED || item == SPINNER_ITEMS.HIDDEN)
             {
-                BaseWordListFragment wordsFragment = (BaseWordListFragment) wordFragment;
-                wordsFragment.LoadWord(position);
+                if (item == SPINNER_ITEMS.ACTIVE)
+                {
+                    LockDrawer(false);
+                }
+                else
+                {
+                    LockDrawer(true);
+                }
 
+                if (getSupportFragmentManager().getFragments() != null && getSupportFragmentManager().getFragments().size() > 0)
+                {
+                    Fragment fragment = getSupportFragmentManager().getFragments().get(0);
+                    if (fragment instanceof BaseWordListFragment)
+                    {
+                        ((BaseWordListFragment) (fragment)).LoadData(item);
+                    }
+                    else
+                    {
+                        LoadMainFragment(itemIndex);
+                    }
+                }
+                else
+                {
+                    LoadMainFragment(itemIndex);
+                }
             }
-
-
+            else if (item == SPINNER_ITEMS.STATS)
+            {
+                LockDrawer(true);
+                getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, new StatsFragment()).commit();
+            }
         }
-
+        else
+        {
+            // An alphabet list is selected
+            if (getSupportFragmentManager().getFragments() != null && getSupportFragmentManager().getFragments().size() > 0)
+            {
+                Fragment wordFragment = getSupportFragmentManager().getFragments().get(0);
+                if (wordFragment instanceof BaseWordListFragment)
+                {
+                    BaseWordListFragment wordsFragment = (BaseWordListFragment) wordFragment;
+                    wordsFragment.LoadWord(position);
+                }
+            }
+            else
+            {
+                // No fragments exist, load the default fragment first
+                LoadMainFragment(0);
+                // Then try to load the word
+                if (getSupportFragmentManager().getFragments() != null && getSupportFragmentManager().getFragments().size() > 0)
+                {
+                    Fragment wordFragment = getSupportFragmentManager().getFragments().get(0);
+                    if (wordFragment instanceof BaseWordListFragment)
+                    {
+                        BaseWordListFragment wordsFragment = (BaseWordListFragment) wordFragment;
+                        wordsFragment.LoadWord(position);
+                    }
+                }
+            }
+        }
 
         mDrawerList.setItemChecked(position, true);
         mDrawerLayout.closeDrawer(mDrawerList);

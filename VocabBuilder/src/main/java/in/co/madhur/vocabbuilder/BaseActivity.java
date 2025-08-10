@@ -32,9 +32,7 @@ public abstract class BaseActivity extends AppCompatActivity
         else if(currentTheme== Consts.THEME.LIGHT)
         {
             this.setTheme(R.style.Light);
-
         }
-
     }
 
 }

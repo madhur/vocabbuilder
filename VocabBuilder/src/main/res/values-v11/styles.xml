@@ -6,7 +6,7 @@
 
     </style>
 
-    <style name="Black" parent="@style/Theme.AppCompat">
+    <style name="Black" parent="@style/Theme.AppCompat.NoActionBar">
 
         <!-- API 14 theme customizations can go here. -->
         <!-- <item name="android:windowBackground">@color/pitch_black</item> -->
@@ -15,7 +15,6 @@
         <item name="listBackgroundColor">@android:color/black</item>
         <item name="drawerlistBackgroundColor">@drawable/activated_background</item>
         <!--<item name="android:activatedBackgroundIndicator">@drawable/activated_background</item>-->
-        <item name="windowActionBar">false</item>
         <!--<item name="android:actionBarStyle">@style/MyActionBar.Dark</item>-->
 
 
@@ -28,12 +27,11 @@
 
 
 
-    <style name="Light" parent="@style/Theme.AppCompat.Light.DarkActionBar">
+    <style name="Light" parent="@style/Theme.AppCompat.Light.NoActionBar">
         <!--<item name="android:listViewStyle">@style/ListViewLight</item>-->
         <item name="listBackgroundColor">@android:color/white</item>
         <item name="drawerlistBackgroundColor">@drawable/activated_background_light</item>
         <!--<item name="android:activatedBackgroundIndicator">@drawable/activated_background</item>-->
-        <item name="windowActionBar">false</item>
 
         <!--<item name="android:actionBarWidgetTheme">@style/Theme.AppCompat.Light.DarkActionBar</item>-->
         <!--<item name="actionBarWidgetTheme">@style/Theme.AppCompat.Light.DarkActionBar</item>-->
