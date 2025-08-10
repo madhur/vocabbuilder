@@ -18,8 +18,6 @@ allprojects {
             url 'http://clinker.47deg.com/nexus/content/groups/public'
             allowInsecureProtocol = true
         }
-        maven {
-            url "https://s3.amazonaws.com/repo.commonsware.com"
-        }
+
     }
 }

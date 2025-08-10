@@ -13,7 +13,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-import com.crittercism.app.Crittercism;
+
 
 import de.keyboardsurfer.android.widget.crouton.Crouton;
 import in.co.madhur.vocabbuilder.fragments.BaseWordListFragment;
@@ -39,7 +39,7 @@ public class MainActivity extends BaseActivity implements ActionBar.OnNavigation
 
         super.onCreate(savedInstanceState);
 
-        Crittercism.initialize(getApplicationContext(), "53b516d207229a5658000002");
+
 
         setContentView(R.layout.activity_main);
 

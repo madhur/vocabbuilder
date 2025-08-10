@@ -50,4 +50,9 @@ dependencies {
     implementation project(':libraries:android-swipelistview:swipelistview')
     implementation project(':libraries:TokenAutoComplete:library')
 }
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
+}
 
