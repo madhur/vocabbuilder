@@ -6,8 +6,8 @@
 package in.co.madhur.vocabbuilder.ui;
 
 import android.content.Context;
-import android.support.v4.view.ActionProvider;
-import android.support.v7.widget.PopupMenu;
+import androidx.core.view.ActionProvider;
+import androidx.appcompat.widget.PopupMenu;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.SubMenu;

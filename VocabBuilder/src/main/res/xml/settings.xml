@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
     <PreferenceCategory android:title="@string/configuration">
@@ -8,17 +7,7 @@
             android:defaultValue="@bool/enable_pro_default"
             android:key="enable_pro"
             android:summary="@string/enable_pro_desc"
-            android:title="@string/enable_pro">
-
-        </CheckBoxPreference>
-
-        <!--<ListPreference-->
-        <!--android:defaultValue="@string/words_sort_order_default"-->
-        <!--android:entries="@array/words_sort_order"-->
-        <!--android:entryValues="@array/words_sort_order_values"-->
-        <!--android:key="words_sort_order"-->
-        <!--android:summary="@string/words_sort_order_desc"-->
-        <!--android:title="@string/words_sort_order"></ListPreference>-->
+            android:title="@string/enable_pro" />
 
         <ListPreference
             android:defaultValue="@string/pick_theme_default"
@@ -27,117 +16,100 @@
             android:entryValues="@array/themes_values"
             android:key="pick_theme"
             android:summary="@string/themes_desc"
-            android:title="@string/themes"/>
+            android:title="@string/themes" />
 
     </PreferenceCategory>
 
     <PreferenceCategory
         android:summary="@string/customize_vocabpro_desc"
         android:title="@string/customize_vocabpro">
+        
         <ListPreference
             android:defaultValue="@string/words_mode_default"
             android:entries="@array/words_mode"
             android:entryValues="@array/words_mode_values"
             android:key="words_mode"
             android:summary="@string/words_mode_desc"
-            android:title="@string/words_mode"></ListPreference>
+            android:title="@string/words_mode" />
 
-        <PreferenceScreen
-            android:key="notification_preference"
-            android:summary="@string/notification_preference_desc"
-            android:title="@string/notification_preference">
+    </PreferenceCategory>
 
-            <CheckBoxPreference
-                android:defaultValue="@bool/enabled_notifications_default"
-                android:key="enable_notifications"
-                android:summary="@string/enable_notifications_desc"
-                android:title="@string/enable_notifications"></CheckBoxPreference>
+    <PreferenceCategory
+        android:title="@string/notifications"
+        android:summary="@string/notifications_desc">
 
-            <!--<CheckBoxPreference-->
-            <!--android:defaultValue="@bool/allow_multiple_notifications_default"-->
-            <!--android:key="allow_multiple_notifications"-->
-            <!--android:summary="@string/allow_multiple_notifications_desc"-->
-            <!--android:title="@string/allow_multiple_notifications">-->
+        <CheckBoxPreference
+            android:defaultValue="@bool/enabled_notifications_default"
+            android:key="enable_notifications"
+            android:summary="@string/enable_notifications_desc"
+            android:title="@string/enable_notifications" />
 
-            <!--</CheckBoxPreference>-->
+        <CheckBoxPreference
+            android:defaultValue="@bool/notification_screen_on_default"
+            android:dependency="enable_notifications"
+            android:key="notification_screen_on"
+            android:summary="@string/notification_screen_on_desc"
+            android:title="@string/notification_screen_on" />
 
-            <CheckBoxPreference
-                android:defaultValue="@bool/notification_screen_on_default"
-                android:dependency="enable_notifications"
-                android:key="notification_screen_on"
-                android:summary="@string/notification_screen_on_desc"
-                android:title="@string/notification_screen_on"></CheckBoxPreference>
+        <ListPreference
+            android:defaultValue="@string/interval_default"
+            android:dependency="enable_notifications"
+            android:entries="@array/notification_interval"
+            android:entryValues="@array/notification_interval_values"
+            android:key="notification_interval"
+            android:summary="@string/notification_interval_desc"
+            android:title="@string/notification_interval" />
 
-            <ListPreference
-                android:defaultValue="@string/interval_default"
-                android:dependency="enable_notifications"
-                android:entries="@array/notification_interval"
-                android:entryValues="@array/notification_interval_values"
-                android:key="notification_interval"
-                android:summary="@string/notification_interval_desc"
-                android:title="@string/notification_interval"/>
+        <ListPreference
+            android:defaultValue="@string/select_notification_words_default"
+            android:dependency="enable_notifications"
+            android:entries="@array/select_notification_words"
+            android:entryValues="@array/select_notification_words_values"
+            android:key="select_notification_words"
+            android:summary="@string/select_notification_words_desc"
+            android:title="@string/select_notification_words" />
 
-            <ListPreference
-                android:defaultValue="@string/select_notification_words_default"
-                android:dependency="enable_notifications"
-                android:entries="@array/select_notification_words"
-                android:entryValues="@array/select_notification_words_values"
-                android:key="select_notification_words"
-                android:summary="@string/select_notification_words_desc"
-                android:title="@string/select_notification_words">
+        <CheckBoxPreference
+            android:defaultValue="@bool/enable_sound"
+            android:dependency="enable_notifications"
+            android:key="enable_sound"
+            android:summary="@string/enable_sound_desc"
+            android:title="@string/enable_sound" />
 
-            </ListPreference>
+        <CheckBoxPreference
+            android:defaultValue="@bool/enable_vibrate"
+            android:dependency="enable_notifications"
+            android:key="enable_vibrate"
+            android:summary="@string/enable_vibrate_desc"
+            android:title="@string/enable_vibrate" />
 
-            <CheckBoxPreference
-                android:defaultValue="@bool/enable_sound"
-                android:dependency="enable_notifications"
-                android:key="enable_sound"
-                android:summary="@string/enable_sound_desc"
-                android:title="@string/enable_sound"/>
-            <CheckBoxPreference
-                android:defaultValue="@bool/enable_vibrate"
-                android:dependency="enable_notifications"
-                android:key="enable_vibrate"
-                android:summary="@string/enable_vibrate_desc"
-                android:title="@string/enable_vibrate"/>
-            <CheckBoxPreference
-                android:defaultValue="@bool/enable_led"
-                android:dependency="enable_notifications"
-                android:key="enable_led"
-                android:summary="@string/enable_led_desc"
-                android:title="@string/enable_led"/>
-
-        </PreferenceScreen>
-
+        <CheckBoxPreference
+            android:defaultValue="@bool/enable_led"
+            android:dependency="enable_notifications"
+            android:key="enable_led"
+            android:summary="@string/enable_led_desc"
+            android:title="@string/enable_led" />
 
     </PreferenceCategory>
 
     <PreferenceCategory
         android:title="@string/misc"
         android:summary="@string/misc_desc">
-        <PreferenceScreen
-            android:title="@string/misc"
-            android:summary="@string/misc_desc"
-            android:key="misc">
 
+        <Preference
+            android:title="@string/star_all"
+            android:summary="@string/star_all_desc"
+            android:key="star_all" />
 
-            <Preference
-                android:title="@string/star_all"
-                android:summary="@string/star_all_desc"
-                android:key="star_all"></Preference>
-            <Preference
-                android:title="@string/unstar_all"
-                android:summary="@string/unstar_all_desc"
-                android:key="unstar_all"></Preference>
+        <Preference
+            android:title="@string/unstar_all"
+            android:summary="@string/unstar_all_desc"
+            android:key="unstar_all" />
 
-            <Preference
-                android:title="@string/revert_database"
-                android:summary="@string/revert_database_desc"
-                android:key="revert_database">
-
-            </Preference>
-
-        </PreferenceScreen>
+        <Preference
+            android:title="@string/revert_database"
+            android:summary="@string/revert_database_desc"
+            android:key="revert_database" />
 
     </PreferenceCategory>
 
@@ -145,11 +117,11 @@
         <Preference
             android:key="action_about"
             android:summary="@string/action_about_desc"
-            android:title="@string/action_about"/>
+            android:title="@string/action_about" />
+        
         <Preference
             android:key="follow_twitter"
-            android:title="@string/follow_twitter"/>
+            android:title="@string/follow_twitter" />
     </PreferenceCategory>
-
 
 </PreferenceScreen>

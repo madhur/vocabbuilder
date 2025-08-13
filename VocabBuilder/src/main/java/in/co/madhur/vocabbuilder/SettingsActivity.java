@@ -1,7 +1,7 @@
 package in.co.madhur.vocabbuilder;
 
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
+import androidx.appcompat.widget.Toolbar;
 import android.view.View;
 
 import in.co.madhur.vocabbuilder.fragments.SettingsFragment;
