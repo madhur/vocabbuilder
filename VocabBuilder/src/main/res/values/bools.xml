@@ -4,6 +4,8 @@
     <bool name="enabled_notifications_default">true</bool>
     <bool name="allow_multiple_notifications_default">true</bool>
     <bool name="notification_screen_on_default">true</bool>
+    <bool name="enable_autosync">true</bool>
+    <bool name="enable_notifications">true</bool>
     <bool name="enable_sound">true</bool>
     <bool name="enable_vibrate">true</bool>
     <bool name="enable_led">true</bool>

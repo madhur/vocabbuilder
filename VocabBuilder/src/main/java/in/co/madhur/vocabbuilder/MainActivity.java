@@ -19,6 +19,7 @@ import de.keyboardsurfer.android.widget.crouton.Crouton;
 import in.co.madhur.vocabbuilder.fragments.BaseWordListFragment;
 import in.co.madhur.vocabbuilder.fragments.StatsFragment;
 import in.co.madhur.vocabbuilder.service.Alarms;
+import in.co.madhur.vocabbuilder.utils.AnalyticsHelper;
 
 import static in.co.madhur.vocabbuilder.Consts.LISTS;
 import static in.co.madhur.vocabbuilder.Consts.SPINNER_ITEMS;
@@ -92,6 +93,9 @@ public class MainActivity extends BaseActivity
 
         // Load default fragment (ACTIVE words) when app starts
         LoadMainFragment(0); // 0 corresponds to ACTIVE in SPINNER_ITEMS
+
+        // Track app opened event
+        AnalyticsHelper.trackAppOpened();
 
         // Schedule alarm if its enabled
         Alarms alarms = new Alarms(this);
@@ -192,6 +196,12 @@ public class MainActivity extends BaseActivity
         {
             int itemIndex = position - 27;
             SPINNER_ITEMS item = SPINNER_ITEMS.values()[itemIndex];
+            
+            // Track navigation event
+            Bundle bundle = new Bundle();
+            bundle.putString("navigation_item", item.name());
+            bundle.putInt("position", position);
+            AnalyticsHelper.trackEvent("navigation_selected", bundle);
             
             if (item == SPINNER_ITEMS.ACTIVE || item == SPINNER_ITEMS.RECENT || item == SPINNER_ITEMS.STARRED || item == SPINNER_ITEMS.UNSTARRED || item == SPINNER_ITEMS.HIDDEN)
             {

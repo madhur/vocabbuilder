@@ -50,6 +50,7 @@ import in.co.madhur.vocabbuilder.db.VocabDB;
 import in.co.madhur.vocabbuilder.model.Word;
 import in.co.madhur.vocabbuilder.ui.WordActivity;
 import in.co.madhur.vocabbuilder.ui.WordsAdapter;
+import in.co.madhur.vocabbuilder.utils.AnalyticsHelper;
 
 import static in.co.madhur.vocabbuilder.Consts.VALUE_NOT_SET;
 
@@ -805,6 +806,11 @@ public class BaseWordListFragment extends Fragment
 
                             }
                         });
+                    }
+
+                    // Track search event
+                    if (!TextUtils.isEmpty(query)) {
+                        AnalyticsHelper.trackSearch(query);
                     }
 
                     return true;

@@ -15,6 +15,8 @@ import in.co.madhur.vocabbuilder.R;
 import in.co.madhur.vocabbuilder.fragments.WordAddFragment;
 import in.co.madhur.vocabbuilder.fragments.WordEditFragment;
 import in.co.madhur.vocabbuilder.fragments.WordViewFragment;
+import in.co.madhur.vocabbuilder.utils.AnalyticsHelper;
+import com.google.firebase.analytics.FirebaseAnalytics;
 
 /**
  * Created by madhur on 22-Jun-14.
@@ -39,15 +41,29 @@ public class WordActivity extends BaseActivity
         if(action.equalsIgnoreCase(Consts.ACTION_EDIT_WORD))
         {
             fragment=new WordEditFragment();
+            // Track word edit screen view
+            Bundle bundle = new Bundle();
+            bundle.putString(FirebaseAnalytics.Param.SCREEN_NAME, "WordEditScreen");
+            bundle.putString(FirebaseAnalytics.Param.SCREEN_CLASS, "WordEditFragment");
+            AnalyticsHelper.trackEvent(FirebaseAnalytics.Event.SCREEN_VIEW, bundle);
         }
         else if(action.equalsIgnoreCase(Consts.ACTION_VIEW_WORD))
         {
             fragment=new WordViewFragment();
-
+            // Track word view screen view
+            Bundle bundle = new Bundle();
+            bundle.putString(FirebaseAnalytics.Param.SCREEN_NAME, "WordViewScreen");
+            bundle.putString(FirebaseAnalytics.Param.SCREEN_CLASS, "WordViewFragment");
+            AnalyticsHelper.trackEvent(FirebaseAnalytics.Event.SCREEN_VIEW, bundle);
         }
         else if(action.equalsIgnoreCase(Consts.ACTION_ADD_WORD))
         {
             fragment=new WordAddFragment();
+            // Track word add screen view
+            Bundle bundle = new Bundle();
+            bundle.putString(FirebaseAnalytics.Param.SCREEN_NAME, "WordAddScreen");
+            bundle.putString(FirebaseAnalytics.Param.SCREEN_CLASS, "WordAddFragment");
+            AnalyticsHelper.trackEvent(FirebaseAnalytics.Event.SCREEN_VIEW, bundle);
         }
 
         if(getIntent().getExtras()!=null)

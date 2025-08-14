@@ -26,6 +26,7 @@ import in.co.madhur.vocabbuilder.R;
 import in.co.madhur.vocabbuilder.db.DbHelper;
 import in.co.madhur.vocabbuilder.db.VocabDB;
 import in.co.madhur.vocabbuilder.service.Alarms;
+import in.co.madhur.vocabbuilder.utils.AnalyticsHelper;
 
 import static in.co.madhur.vocabbuilder.AppPreferences.Keys;
 
@@ -95,6 +96,9 @@ public class SettingsFragment extends PreferenceFragmentCompat
             {
                 UpdateLabel((ListPreference)preference, (String) newValue);
 
+                // Track setting change
+                AnalyticsHelper.trackSettingChanged("words_mode", newValue.toString());
+
                 LocalBroadcastManager.getInstance(getActivity()).sendBroadcast(new Intent().setAction(Consts.ACTION_LIST_SETTINGS_CHANGED));
 
                 return true;
@@ -106,6 +110,9 @@ public class SettingsFragment extends PreferenceFragmentCompat
             public boolean onPreferenceChange(Preference preference, Object newValue)
             {
                 UpdateLabel((ListPreference)preference, (String) newValue);
+
+                // Track theme change
+                AnalyticsHelper.trackSettingChanged("theme", newValue.toString());
 
                 new AlertDialog.Builder(getActivity()).setTitle(R.string.app_name).setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener()
                 {
@@ -133,8 +140,32 @@ public class SettingsFragment extends PreferenceFragmentCompat
                 return true;
             }
         });
-        findPreference(Keys.NOTIFICATION_INTERVAL.key).setOnPreferenceChangeListener(listPreferenceChangeListerner);
-        findPreference(Keys.SELECT_NOTIFICATION_WORDS.key).setOnPreferenceChangeListener(listPreferenceChangeListerner);
+        findPreference(Keys.NOTIFICATION_INTERVAL.key).setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener()
+        {
+            @Override
+            public boolean onPreferenceChange(Preference preference, Object newValue)
+            {
+                UpdateLabel((ListPreference)preference, (String) newValue);
+                
+                // Track notification interval change
+                AnalyticsHelper.trackSettingChanged("notification_interval", newValue.toString());
+                
+                return true;
+            }
+        });
+        findPreference(Keys.SELECT_NOTIFICATION_WORDS.key).setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener()
+        {
+            @Override
+            public boolean onPreferenceChange(Preference preference, Object newValue)
+            {
+                UpdateLabel((ListPreference)preference, (String) newValue);
+                
+                // Track notification words selection change
+                AnalyticsHelper.trackSettingChanged("notification_words_selection", newValue.toString());
+                
+                return true;
+            }
+        });
 
         findPreference(Keys.ACTION_ABOUT.key).setOnPreferenceClickListener(new Preference.OnPreferenceClickListener()
         {
@@ -169,6 +200,9 @@ public class SettingsFragment extends PreferenceFragmentCompat
             {
                 Boolean newVal = (Boolean) newValue;
                 Alarms alarms = new Alarms(getActivity());
+
+                // Track notification setting change
+                AnalyticsHelper.trackSettingChanged("notifications_enabled", newVal.toString());
 
                 if (newVal)
                     alarms.Schedule();

@@ -8,11 +8,7 @@
     <item name="font_size_medium" type="dimen">16dp</item>
     <item name="font_size_large" type="dimen">24dp</item>
 
-    <bool name="enable_autosync">true</bool>
-    <bool name="enable_notifications">true</bool>
-    <bool name="enable_sound">true</bool>
-    <bool name="enable_vibrate">true</bool>
-    <bool name="enable_led">true</bool>
+
 
     <declare-styleable name="customAttrs">
         <attr name="listBackgroundColor" format="reference" />

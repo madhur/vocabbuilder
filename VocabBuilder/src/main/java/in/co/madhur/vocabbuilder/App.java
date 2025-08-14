@@ -1,6 +1,10 @@
 package in.co.madhur.vocabbuilder;
 
 import android.app.Application;
+import android.util.Log;
+
+import com.google.firebase.analytics.FirebaseAnalytics;
+import com.google.firebase.FirebaseApp;
 
 import in.co.madhur.vocabbuilder.db.Cache;
 
@@ -10,6 +14,20 @@ import in.co.madhur.vocabbuilder.db.Cache;
 public class App extends Application
 {
     public static final String TAG="VocabBuilder";
+    public static FirebaseAnalytics mFirebaseAnalytics;
 
     public static Cache Cache;
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        
+        // Initialize Firebase
+        FirebaseApp.initializeApp(this);
+        
+        // Initialize Firebase Analytics
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+        
+        Log.d(TAG, "Firebase Analytics initialized successfully");
+    }
 }
