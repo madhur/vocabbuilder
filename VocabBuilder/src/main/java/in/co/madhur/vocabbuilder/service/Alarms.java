@@ -51,7 +51,7 @@ public class Alarms
 
     public boolean DoesAlarmExist()
     {
-        PendingIntent existingIntent=PendingIntent.getBroadcast(context, REQUEST_CODE_ALARM, GetIntent(), PendingIntent.FLAG_NO_CREATE);
+        PendingIntent existingIntent=PendingIntent.getBroadcast(context, REQUEST_CODE_ALARM, GetIntent(), PendingIntent.FLAG_NO_CREATE | PendingIntent.FLAG_IMMUTABLE);
 
         if(existingIntent!=null)
         {
@@ -77,7 +77,7 @@ public class Alarms
 
     private PendingIntent GetPendingIntentAlarm(Context context)
     {
-        return PendingIntent.getBroadcast(context, REQUEST_CODE_ALARM, GetIntent(), PendingIntent.FLAG_UPDATE_CURRENT);
+        return PendingIntent.getBroadcast(context, REQUEST_CODE_ALARM, GetIntent(), PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
     }
 
 //    public PendingIntent GetPendingIntentWidget(Context context)

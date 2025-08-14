@@ -33,6 +33,8 @@
     <string name="configuration">Configuration</string>
     <string name="words_mode">Words Look and Feel</string>
     <string name="words_mode_desc">Customize if words are to be shown as flashcards or standard dictionary</string>
+    <string name="notifications">Notifications</string>
+    <string name="notifications_desc">Customize notification settings according to your learning preferences</string>
     <string name="notification_preference">Learning Notifications</string>
     <string name="notification_preference_desc">Customize notification according to your learning preferences</string>
 

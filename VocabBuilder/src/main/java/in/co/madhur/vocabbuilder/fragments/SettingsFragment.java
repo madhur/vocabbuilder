@@ -8,13 +8,13 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.preference.ListPreference;
-import android.preference.Preference;
-import android.preference.PreferenceScreen;
-import android.support.v4.content.LocalBroadcastManager;
-import android.support.v4.preference.PreferenceFragment;
-import android.support.v7.app.ActionBarActivity;
-import android.support.v7.widget.Toolbar;
+import androidx.preference.ListPreference;
+import androidx.preference.Preference;
+import androidx.preference.PreferenceScreen;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+import androidx.preference.PreferenceFragmentCompat;
+
+import androidx.appcompat.widget.Toolbar;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
@@ -26,14 +26,20 @@ import in.co.madhur.vocabbuilder.R;
 import in.co.madhur.vocabbuilder.db.DbHelper;
 import in.co.madhur.vocabbuilder.db.VocabDB;
 import in.co.madhur.vocabbuilder.service.Alarms;
+import in.co.madhur.vocabbuilder.utils.AnalyticsHelper;
 
 import static in.co.madhur.vocabbuilder.AppPreferences.Keys;
 
 /**
  * Created by madhur on 21-Jun-14.
  */
-public class SettingsFragment extends PreferenceFragment
+public class SettingsFragment extends PreferenceFragmentCompat
 {
+
+    @Override
+    public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
+        addPreferencesFromResource(R.xml.settings);
+    }
 
     private final Preference.OnPreferenceChangeListener listPreferenceChangeListerner = new Preference.OnPreferenceChangeListener()
     {
@@ -90,6 +96,9 @@ public class SettingsFragment extends PreferenceFragment
             {
                 UpdateLabel((ListPreference)preference, (String) newValue);
 
+                // Track setting change
+                AnalyticsHelper.trackSettingChanged("words_mode", newValue.toString());
+
                 LocalBroadcastManager.getInstance(getActivity()).sendBroadcast(new Intent().setAction(Consts.ACTION_LIST_SETTINGS_CHANGED));
 
                 return true;
@@ -101,6 +110,9 @@ public class SettingsFragment extends PreferenceFragment
             public boolean onPreferenceChange(Preference preference, Object newValue)
             {
                 UpdateLabel((ListPreference)preference, (String) newValue);
+
+                // Track theme change
+                AnalyticsHelper.trackSettingChanged("theme", newValue.toString());
 
                 new AlertDialog.Builder(getActivity()).setTitle(R.string.app_name).setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener()
                 {
@@ -128,8 +140,32 @@ public class SettingsFragment extends PreferenceFragment
                 return true;
             }
         });
-        findPreference(Keys.NOTIFICATION_INTERVAL.key).setOnPreferenceChangeListener(listPreferenceChangeListerner);
-        findPreference(Keys.SELECT_NOTIFICATION_WORDS.key).setOnPreferenceChangeListener(listPreferenceChangeListerner);
+        findPreference(Keys.NOTIFICATION_INTERVAL.key).setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener()
+        {
+            @Override
+            public boolean onPreferenceChange(Preference preference, Object newValue)
+            {
+                UpdateLabel((ListPreference)preference, (String) newValue);
+                
+                // Track notification interval change
+                AnalyticsHelper.trackSettingChanged("notification_interval", newValue.toString());
+                
+                return true;
+            }
+        });
+        findPreference(Keys.SELECT_NOTIFICATION_WORDS.key).setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener()
+        {
+            @Override
+            public boolean onPreferenceChange(Preference preference, Object newValue)
+            {
+                UpdateLabel((ListPreference)preference, (String) newValue);
+                
+                // Track notification words selection change
+                AnalyticsHelper.trackSettingChanged("notification_words_selection", newValue.toString());
+                
+                return true;
+            }
+        });
 
         findPreference(Keys.ACTION_ABOUT.key).setOnPreferenceClickListener(new Preference.OnPreferenceClickListener()
         {
@@ -164,6 +200,9 @@ public class SettingsFragment extends PreferenceFragment
             {
                 Boolean newVal = (Boolean) newValue;
                 Alarms alarms = new Alarms(getActivity());
+
+                // Track notification setting change
+                AnalyticsHelper.trackSettingChanged("notifications_enabled", newVal.toString());
 
                 if (newVal)
                     alarms.Schedule();
@@ -288,8 +327,7 @@ public class SettingsFragment extends PreferenceFragment
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        addPreferencesFromResource(R.xml.settings);
-
+        // addPreferencesFromResource is already called in onCreatePreferences
     }
 
 
@@ -297,67 +335,15 @@ public class SettingsFragment extends PreferenceFragment
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     public static void initializeActionBar(PreferenceScreen preferenceScreen)
     {
-        final Dialog dialog = preferenceScreen.getDialog();
-
-        if (dialog != null)
-        {
-            // Inialize the action bar
-            if(dialog.getActionBar()!=null)
-                dialog.getActionBar().setDisplayHomeAsUpEnabled(true);
-
-            // Apply custom home button area click listener to close the
-            // PreferenceScreen because PreferenceScreens are dialogs which
-            // swallow
-            // events instead of passing to the activity
-            // Related Issue:
-            // https://code.google.com/p/android/issues/detail?id=4611
-            View homeBtn = dialog.findViewById(android.R.id.home);
-
-            if (homeBtn != null)
-            {
-                View.OnClickListener dismissDialogClickListener = new View.OnClickListener()
-                {
-                    @Override
-                    public void onClick(View v)
-                    {
-                        dialog.dismiss();
-                    }
-                };
-
-                // Prepare yourselves for some hacky programming
-                ViewParent homeBtnContainer = homeBtn.getParent();
-
-                // The home button is an ImageView inside a FrameLayout
-                if (homeBtnContainer instanceof FrameLayout)
-                {
-                    ViewGroup containerParent = (ViewGroup) homeBtnContainer.getParent();
-
-                    if (containerParent instanceof LinearLayout)
-                    {
-                        // This view also contains the title text, set the whole
-                        // view as clickable
-                        ((LinearLayout) containerParent).setOnClickListener(dismissDialogClickListener);
-                    }
-                    else
-                    {
-                        // Just set it on the home button
-                        ((FrameLayout) homeBtnContainer).setOnClickListener(dismissDialogClickListener);
-                    }
-                }
-                else
-                {
-                    // The 'If all else fails' default case
-                    homeBtn.setOnClickListener(dismissDialogClickListener);
-                }
-            }
-        }
+        // AndroidX PreferenceScreen doesn't have getDialog() method
+        // This method is no longer needed in modern Android
     }
 
 
         @Override
-        public boolean onPreferenceTreeClick(PreferenceScreen preferenceScreen, Preference preference)
+        public boolean onPreferenceTreeClick(Preference preference)
         {
-            super.onPreferenceTreeClick(preferenceScreen, preference);
+            super.onPreferenceTreeClick(preference);
 
             // This code cannot run pre honeycomb
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
@@ -366,18 +352,9 @@ public class SettingsFragment extends PreferenceFragment
                 // bar
                 if (preference instanceof PreferenceScreen)
                 {
-
                     initializeActionBar((PreferenceScreen) preference);
                 }
             }
-
-            if (preference != null)
-                if (preference instanceof PreferenceScreen)
-                    if (((PreferenceScreen) preference).getDialog() != null)
-                    {
-                        ((PreferenceScreen) preference).getDialog().getWindow().getDecorView().setBackgroundDrawable(getActivity().getWindow().getDecorView().getBackground().getConstantState().newDrawable());
-
-                    }
 
             return false;
         }

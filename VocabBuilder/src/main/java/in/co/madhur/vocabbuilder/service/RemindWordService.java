@@ -1,12 +1,11 @@
 package in.co.madhur.vocabbuilder.service;
 
+import android.app.IntentService;
 import android.content.Context;
 import android.content.Intent;
 import android.os.PowerManager;
-import android.support.v4.app.NotificationCompat;
+import androidx.core.app.NotificationCompat;
 import android.util.Log;
-
-import com.commonsware.cwac.wakeful.WakefulIntentService;
 
 import java.util.List;
 import java.util.Random;
@@ -19,80 +18,102 @@ import in.co.madhur.vocabbuilder.model.Word;
 
 /**
  * Created by madhur on 21-Jun-14.
+ * Updated to use standard IntentService instead of deprecated WakefulIntentService
  */
-public class RemindWordService extends WakefulIntentService
+public class RemindWordService extends IntentService
 {
     private AppPreferences appPreferences;
     private int NOTIFICATION_ID = 0;
+    private PowerManager.WakeLock wakeLock;
 
     public RemindWordService()
     {
-        super("");
+        super("RemindWordService");
     }
 
     @Override
-    protected void doWakefulWork(Intent intent)
+    public void onCreate() {
+        super.onCreate();
+        // Acquire wake lock when service starts
+        PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
+        wakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, App.TAG + ":RemindWordService");
+        wakeLock.acquire();
+    }
+
+    @Override
+    protected void onHandleIntent(Intent intent)
     {
-        Log.d(App.TAG, "Starting service");
+        try {
+            Log.d(App.TAG, "Starting service");
 
-        appPreferences = new AppPreferences(this);
+            appPreferences = new AppPreferences(this);
 
-        if (!CheckLastSync())
-        {
-            Log.d(App.TAG, "Successful notification within time interval. aborting");
-            return;
+            if (!CheckLastSync())
+            {
+                Log.d(App.TAG, "Successful notification within time interval. aborting");
+                return;
+            }
+
+            VocabDB vocabDB = VocabDB.getInstance(this);
+
+            List<Word> words = null;
+
+            try
+            {
+                words = vocabDB.GetFilteredWords(appPreferences.GetNotificationWordSetting());
+            }
+            catch (Exception e)
+            {
+                e.printStackTrace();
+            }
+
+            if (words == null || words.size() == 0)
+            {
+                Log.d(App.TAG, "No suitable words");
+                return;
+            }
+
+            appPreferences = new AppPreferences(this);
+
+            Random rnd = new Random();
+            int rndNumber = rnd.nextInt(words.size());
+
+            Word selectedWord = words.get(rndNumber);
+
+            SendNotification(selectedWord);
+
+            if (appPreferences.IsWakelockEnabled())
+            {
+                PowerManager pm = (PowerManager) this.getSystemService(Context.POWER_SERVICE);
+                PowerManager.WakeLock wl = pm.newWakeLock(PowerManager.SCREEN_DIM_WAKE_LOCK | PowerManager.ACQUIRE_CAUSES_WAKEUP, App.TAG);
+                wl.acquire(Consts.WAKE_LOCK_TIME);
+            }
+
+            try
+            {
+                vocabDB.PutRecentWord(selectedWord.getId());
+            }
+            catch (Exception e)
+            {
+                e.printStackTrace();
+            }
+
+            appPreferences.SaveSuccessfulNotification();
+        } finally {
+            // Release wake lock when work is done
+            if (wakeLock != null && wakeLock.isHeld()) {
+                wakeLock.release();
+            }
         }
+    }
 
-
-        VocabDB vocabDB = VocabDB.getInstance(this);
-
-        List<Word> words = null;
-
-        try
-        {
-            words = vocabDB.GetFilteredWords(appPreferences.GetNotificationWordSetting());
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        // Ensure wake lock is released when service is destroyed
+        if (wakeLock != null && wakeLock.isHeld()) {
+            wakeLock.release();
         }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-        }
-
-        if (words.size() == 0)
-        {
-            Log.d(App.TAG, "No suitable words");
-            return;
-        }
-
-        appPreferences = new AppPreferences(this);
-
-        Random rnd = new Random();
-        int rndNumber = rnd.nextInt(words.size());
-
-        Word selectedWord = words.get(rndNumber);
-
-
-        SendNotification(selectedWord);
-
-        if (appPreferences.IsWakelockEnabled())
-        {
-            PowerManager pm = (PowerManager) this.getSystemService(Context.POWER_SERVICE);
-            PowerManager.WakeLock wl = pm.newWakeLock(PowerManager.SCREEN_DIM_WAKE_LOCK | PowerManager.ACQUIRE_CAUSES_WAKEUP, App.TAG);
-            wl.acquire(Consts.WAKE_LOCK_TIME);
-        }
-
-
-        try
-        {
-            vocabDB.PutRecentWord(selectedWord.getId());
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-        }
-
-        appPreferences.SaveSuccessfulNotification();
-
-
     }
 
     private boolean CheckLastSync()
@@ -117,32 +138,14 @@ public class RemindWordService extends WakefulIntentService
         return false;
     }
 
-
     private void SendNotification(Word selectedWord)
     {
-
         Notifications notifications = new Notifications(this);
-
 
         NotificationCompat.Builder noti = notifications.GetNotificationBuilder(NOTIFICATION_ID, selectedWord.getId(), selectedWord.getName(), selectedWord.getMeaning(), selectedWord.getRating());
 
         noti = notifications.GetExpandedBuilder(noti, selectedWord.getMeaning(), selectedWord.getName());
 
-
         notifications.FireNotification(NOTIFICATION_ID, noti, appPreferences.getBoolMetadata(AppPreferences.Keys.ENABLE_VIBRATE), appPreferences.getBoolMetadata(AppPreferences.Keys.ENABLE_SOUND), appPreferences.getBoolMetadata(AppPreferences.Keys.ENABLE_LED));
-
-
     }
-
-    /**
-     * Creates an IntentService.  Invoked by your subclass's constructor.
-     *
-     * @param name Used to name the worker thread, important only for debugging.
-     */
-    public RemindWordService(String name)
-    {
-        super(name);
-    }
-
-
 }

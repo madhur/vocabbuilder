@@ -1,4 +1,7 @@
-include ':VocabBuilder', ':android-swipelistview', ':library'
+plugins {
+    id 'org.gradle.toolchains.foojay-resolver-convention' version '0.8.0'
+}
+include ':VocabBuilder'
+include ':libraries:android-swipelistview:swipelistview'
 include ':libraries:android-support-v4-preferencefragment'
-project(':android-swipelistview').projectDir = new File('libraries/android-swipelistview')
-project(':library').projectDir = new File('libraries/TokenAutoComplete/library')
+include ':libraries:TokenAutoComplete:library'

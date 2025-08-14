@@ -6,12 +6,12 @@
 package in.co.madhur.vocabbuilder;
 
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
+import androidx.appcompat.app.AppCompatActivity;
 
 /**
  * Created by madhur on 21-Jun-14.
  */
-public abstract class BaseActivity extends ActionBarActivity
+public abstract class BaseActivity extends AppCompatActivity
 {
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -32,9 +32,7 @@ public abstract class BaseActivity extends ActionBarActivity
         else if(currentTheme== Consts.THEME.LIGHT)
         {
             this.setTheme(R.style.Light);
-
         }
-
     }
 
 }

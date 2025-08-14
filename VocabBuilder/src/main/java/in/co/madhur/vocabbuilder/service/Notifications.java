@@ -8,8 +8,8 @@ import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.provider.Settings;
-import android.support.v4.app.NotificationCompat;
-import android.support.v4.app.TaskStackBuilder;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.TaskStackBuilder;
 import android.util.Log;
 
 import in.co.madhur.vocabbuilder.App;
@@ -89,7 +89,7 @@ public class Notifications
 
         // Return a pending intent to pass to the notification manager.
 
-        return PendingIntent.getActivity(context, PI_REQUEST_CODE++, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        return PendingIntent.getActivity(context, PI_REQUEST_CODE++, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
     }
 
 
@@ -112,7 +112,7 @@ public class Notifications
 
         //PendingIntent resultPendingIntent = PendingIntent.getActivity(context, PI_REQUEST_CODE, launchIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
-        PendingIntent resultPendingIntent =stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent resultPendingIntent =stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
 
         return resultPendingIntent;
 
